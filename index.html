@@ -1,15 +1,14 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cardápio Digital - Restaurante</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <style>
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cardápio Digital - Restaurante</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
         body {
             box-sizing: border-box;
         }
@@ -66,84 +65,6 @@
         
         .nav-btn:hover {
             box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-        }
-        
-        .pulse-btn {
-            animation: pulse 1.5s infinite, glow 2s infinite alternate, shake 3s infinite;
-            background: linear-gradient(45deg, #ff0000, #ff6b00, #ffff00, #ff0000) !important;
-            background-size: 400% 400% !important;
-            animation: pulse 1.5s infinite, glow 2s infinite alternate, shake 3s infinite, gradient 2s ease infinite !important;
-            border: 3px solid #ffff00 !important;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .pulse-btn::before {
-            content: '🔥';
-            position: absolute;
-            left: -5px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 16px;
-            animation: fire 1s infinite;
-        }
-        
-        .pulse-btn::after {
-            content: '🔥';
-            position: absolute;
-            right: -5px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 16px;
-            animation: fire 1s infinite reverse;
-        }
-        
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-                box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.8);
-            }
-            50% {
-                transform: scale(1.1);
-                box-shadow: 0 0 0 15px rgba(255, 215, 0, 0.3);
-            }
-            100% {
-                transform: scale(1);
-                box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
-            }
-        }
-        
-        @keyframes glow {
-            0% {
-                box-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000, 0 0 15px #ff0000;
-            }
-            100% {
-                box-shadow: 0 0 10px #ffff00, 0 0 20px #ffff00, 0 0 30px #ffff00, 0 0 40px #ffff00;
-            }
-        }
-        
-        @keyframes shake {
-            0%, 100% { transform: translateX(0) scale(1); }
-            10% { transform: translateX(-2px) scale(1.02); }
-            20% { transform: translateX(2px) scale(1.02); }
-            30% { transform: translateX(-2px) scale(1.02); }
-            40% { transform: translateX(2px) scale(1.02); }
-            50% { transform: translateX(0) scale(1.05); }
-            60% { transform: translateX(2px) scale(1.02); }
-            70% { transform: translateX(-2px) scale(1.02); }
-            80% { transform: translateX(2px) scale(1.02); }
-            90% { transform: translateX(-2px) scale(1.02); }
-        }
-        
-        @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        
-        @keyframes fire {
-            0%, 100% { transform: translateY(-50%) scale(1); }
-            50% { transform: translateY(-60%) scale(1.2); }
         }
         
         .notification {
@@ -275,282 +196,334 @@
         .text-shadow-md {
             text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
         }
-    </style>
-</head>
-<body class="bg-gray-50">
-    <!-- Header -->
-    <header class="bg-white shadow-lg sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-4">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-4">
-                    <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-red-500">
-                        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEhtI8TskeLJv2S49G5NbBX_Q2-qmkJxU6mSkJLwoKCCe5qa6_HSm2n0XEvT0g11B7GUgXrs9iZ6feAlvrnFecAogM5L0P0nmTEPzrwUvJ3p8qKgtliQvWA1Ja6dUv68aV9TCNdgMoi_Qf_szWXgJQNjh-KfvjdAKN3KCF9OZEL7J84HE3YGn3wwJYzEHVuu" alt="Logo do Restaurante" class="w-full h-full object-cover" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\'text-white font-bold text-xl bg-gradient-to-r from-red-500 to-red-600 w-full h-full flex items-center justify-center rounded-full\'>R</span>';">
-                    </div>
-                    <div>
-                        <h1 class="text-2xl font-bold text-gray-800">Cardápio Digital</h1>
-                        <p class="text-gray-600 text-sm">Sabores únicos, experiências inesquecíveis</p>
-                    </div>
-                </div>
-                <div class="hidden md:flex items-center space-x-4">
-                    <span class="text-gray-600">📞 (83) 9179-5370</span>
-                </div>
-            </div>
-        </div>
-    </header>
 
-    <!-- Banner Section -->
-    <div class="banner-container relative h-96 overflow-hidden">
-        <div class="relative h-full">
-            <!-- Slide 1 -->
-            <div class="banner-slide slide-1 active flex items-center justify-center text-white text-center" style="background-image: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjIygdJl0zlDqB2M-HKoX_kPWNt2Dnnt0juhtpwYnJqc4baAaGzzahREGevZWEzyXIngQ5gR2o1zbWyr_ZxmxY8iM9jzpeyIMNnx92n8xvNpNlbbnuAEpnxEwwjJnEV6fI3u9Lh7TNNC-8LWAtZiOjU-XMEipM7X3C5n1O6HJAnNS1cpPlCWNLkMOgUsMrD/s1584/Banner%20para%20LinkedIn%20Advogada%20Moderno%20Elegante%20Simples%20Azul%20Branco.png'); background-size: cover; background-position: center; background-repeat: no-repeat;">
-                <div class="absolute inset-0 bg-black bg-opacity-40"></div>
-                <div class="max-w-4xl mx-auto px-4 relative z-10">
-                    <h1 class="text-5xl font-bold mb-4 text-shadow-lg">Bem-vindos ao nosso Restaurante</h1>
-                    <p class="text-xl mb-8 text-shadow-md">Descubra sabores únicos e pratos especiais preparados com carinho</p>
-                    <button onclick="scrollToSection('entradas')" class="bg-white text-gray-800 font-semibold py-3 px-8 rounded-full hover:bg-gray-100 transition-colors shadow-lg">
-                        Ver Cardápio
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Slide 2 -->
-            <div class="banner-slide slide-2 flex items-center justify-center text-white text-center" style="background-image: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjuECi2xjpnvk3EfiX5cqj6qofdqy2tRifJmeELJoYX4E53FQfMVost7cLJTzmQAMFneHiJV0LW-JRzQTW9LTRUSaWZ8ZrGXY55vLVU4klYY840uD5XXr3Qoio1JtLq9cFR5xqo4Oq5D-y5PCkYwLDJtabV_ZaVydLGsSJY6TdREMNoAs-oMIpQm_-3HOrH/s6240/IMG_0588.jpeg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
-                <div class="absolute inset-0 bg-black bg-opacity-50"></div>
-                <div class="max-w-4xl mx-auto px-4 relative z-10">
-                    <h1 class="text-5xl font-bold mb-4 text-shadow-lg">Pratos Executivos</h1>
-                    <p class="text-xl mb-8 text-shadow-md">Refeições completas e saborosas para o seu dia a dia</p>
-                    <button onclick="scrollToSection('executivos')" class="bg-white text-gray-800 font-semibold py-3 px-8 rounded-full hover:bg-gray-100 transition-colors shadow-lg">
-                        Ver Executivos
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Slide 3 -->
-            <div class="banner-slide slide-3 flex items-center justify-center text-white text-center" style="background-image: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgHIcIycf3R3LuY-iN4fMAGq-fYhqWzQqNY1pfqwMeEPz9ktQ81a8lrcDwsQPuxq2HuGJOja4hrPXh36Tt3OmuSyj21s9FEyBLK9KU0OdGPH_eKFRloDywjIZW2aibnjGqBsSygNw9G7t6ZAd882lJ3t3aKsDaKqxSnkQHWSmmCXTIKalTvk8mLQSZd2P8E/s16000/IMG_0469.jpeg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
-                <div class="absolute inset-0 bg-black bg-opacity-50"></div>
-                <div class="max-w-4xl mx-auto px-4 relative z-10">
-                    <h1 class="text-5xl font-bold mb-4 text-shadow-lg">Entradas Especiais</h1>
-                    <p class="text-xl mb-8 text-shadow-md">Comece sua refeição com nossas deliciosas entradas</p>
-                    <button onclick="scrollToSection('entradas')" class="bg-white text-gray-800 font-semibold py-3 px-8 rounded-full hover:bg-gray-100 transition-colors shadow-lg">
-                        Ver Entradas
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Slide 4 -->
-            <div class="banner-slide slide-4 flex items-center justify-center text-white text-center" style="background-image: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEixP2cSPCmz4MddiB3uvXgmly3xOfaIL91HCmv8KgxNc6McBecOvNChyvhesS73iG0oPnR5tnAj951Ymes2yAi14h-UtOCXE85iDSn9ME8F1uH_0cQ4Gpiq6yPaqdwIJ05od3He9lXES-Y1wH26CVvsR_h16k3CcqefNoTZf-3PkF6UWjx3xmmMQ-TmXnbc/s3888/IMG_0483.jpeg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
-                <div class="absolute inset-0 bg-black bg-opacity-50"></div>
-                <div class="max-w-4xl mx-auto px-4 relative z-10">
-                    <h1 class="text-5xl font-bold mb-4 text-shadow-lg">Pratos Principais</h1>
-                    <p class="text-xl mb-8 text-shadow-md">Experimente nossos pratos principais cheios de sabor</p>
-                    <button onclick="scrollToSection('pratos-principais')" class="bg-white text-gray-800 font-semibold py-3 px-8 rounded-full hover:bg-gray-100 transition-colors shadow-lg">
-                        Ver Pratos
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Slide 5 -->
-            <div class="banner-slide slide-5 flex items-center justify-center text-white text-center" style="background-image: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjwvwE6DcQbcze_mB2L4tneoeonRVv0eXCxXGSMiE1_f3NxBSkOeFhKNVC9QyTTVVVQgm6G5Oi59aUStQKVh7f5AODDYHn4rPRXlrwksG78o8KRQlCgP2Q3mRa5uLwADZ__0N_1_rx_92GzwXRIB4V7wYlfywNYh38YirtyklGexiCrVpj5wCehiJVrVslo/s3888/IMG_0474.jpeg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
-                <div class="absolute inset-0 bg-black bg-opacity-50"></div>
-                <div class="max-w-4xl mx-auto px-4 relative z-10">
-                    <h1 class="text-5xl font-bold mb-4 text-shadow-lg">Peça pelo WhatsApp</h1>
-                    <p class="text-xl mb-8 text-shadow-md">Faça seu pedido de forma rápida e prática</p>
-                    <button onclick="openWhatsApp('Cardápio Digital')" class="bg-green-500 text-white font-semibold py-3 px-8 rounded-full hover:bg-green-600 transition-colors flex items-center gap-2 mx-auto shadow-lg">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
-                        </svg>
-                        Fazer Pedido
-                    </button>
-                </div>
-            </div>
-        </div>
+        /* Estilos do Modo Edição */
+        .edit-mode {
+            position: relative;
+        }
         
-        <!-- Banner Navigation -->
-        <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2">
-            <div class="flex space-x-3">
-                <button class="banner-indicator w-3 h-3 rounded-full bg-white opacity-50 hover:opacity-100 transition-opacity" onclick="goToSlide(0)"></button>
-                <button class="banner-indicator w-3 h-3 rounded-full bg-white opacity-50 hover:opacity-100 transition-opacity" onclick="goToSlide(1)"></button>
-                <button class="banner-indicator w-3 h-3 rounded-full bg-white opacity-50 hover:opacity-100 transition-opacity" onclick="goToSlide(2)"></button>
-                <button class="banner-indicator w-3 h-3 rounded-full bg-white opacity-50 hover:opacity-100 transition-opacity" onclick="goToSlide(3)"></button>
-                <button class="banner-indicator w-3 h-3 rounded-full bg-white opacity-50 hover:opacity-100 transition-opacity" onclick="goToSlide(4)"></button>
-            </div>
-        </div>
+        .edit-mode::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 2px dashed #3b82f6;
+            background: rgba(59, 130, 246, 0.1);
+            pointer-events: none;
+            z-index: 10;
+        }
+        
+        .edit-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, #1e40af, #3b82f6);
+            color: white;
+            padding: 10px 20px;
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        
+        .edit-overlay.active {
+            display: flex;
+        }
+        
+        .edit-panel {
+            position: fixed;
+            top: 60px;
+            right: -400px;
+            width: 380px;
+            height: calc(100vh - 60px);
+            background: white;
+            box-shadow: -5px 0 20px rgba(0,0,0,0.2);
+            z-index: 999;
+            transition: right 0.3s ease;
+            overflow-y: auto;
+            border-left: 3px solid #3b82f6;
+        }
+        
+        .edit-panel.active {
+            right: 0;
+        }
+        
+        .edit-form {
+            padding: 20px;
+        }
+        
+        .edit-form h3 {
+            color: #1e40af;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 8px;
+        }
+        
+        .edit-form label {
+            display: block;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        
+        .edit-form input, .edit-form textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .edit-form input:focus, .edit-form textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .edit-form textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .edit-btn {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+        }
+        
+        .edit-btn:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+        
+        .edit-btn.danger {
+            background: #ef4444;
+        }
+        
+        .edit-btn.danger:hover {
+            background: #dc2626;
+        }
+        
+        .edit-btn.success {
+            background: #10b981;
+        }
+        
+        .edit-btn.success:hover {
+            background: #059669;
+        }
+        
+        .editable {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .editable:hover {
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 4px;
+        }
+        
+        .admin-toolbar {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            padding: 15px;
+            z-index: 1001;
+        }
+        
+        .admin-toolbar.active {
+            display: block;
+        }
+        
+        .admin-toolbar button {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .admin-toolbar button:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="/_sdk/element_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="bg-gray-50"><!-- Edit Overlay -->
+  <div id="editOverlay" class="edit-overlay">
+   <div class="flex items-center"><span class="text-xl font-bold mr-4">🔧 MODO EDIÇÃO ATIVO</span> <span class="text-sm opacity-90">Clique em qualquer elemento para editar</span>
+   </div>
+   <div><button onclick="toggleEditPanel()" class="edit-btn mr-2">📝 Painel</button> <button onclick="saveChanges()" class="edit-btn success mr-2">💾 Salvar</button> <button onclick="exitEditMode()" class="edit-btn danger">❌ Sair</button>
+   </div>
+  </div><!-- Edit Panel -->
+  <div id="editPanel" class="edit-panel">
+   <div class="edit-form">
+    <h3>Editor de Conteúdo</h3>
+    <div id="editFormContent">
+     <p class="text-gray-500 text-center py-8">Clique em um elemento para editá-lo</p>
     </div>
-
-    <!-- Main Content -->
-    <div class="container mx-auto px-4 py-8">
-        <!-- Search Bar -->
-        <div class="max-w-md mx-auto mb-8">
-            <div class="relative">
-                <input 
-                    type="text" 
-                    id="searchInput" 
-                    placeholder="Pesquisar pratos..." 
-                    class="w-full pl-12 pr-4 py-3 border-2 border-gray-300 rounded-xl focus:border-red-500 focus:outline-none transition-colors text-gray-700 bg-white shadow-lg"
-                    oninput="searchDishes()"
-                >
-                <div class="absolute left-4 top-1/2 transform -translate-y-1/2">
-                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                    </svg>
-                </div>
-                <button 
-                    id="clearSearch" 
-                    class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors hidden"
-                    onclick="clearSearch()"
-                >
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                </button>
-            </div>
-        </div>
-
-        <!-- Navigation Buttons -->
-        <div class="flex justify-center gap-2 sm:gap-4 mb-12 px-2">
-            <button onclick="scrollToSection('entradas')" class="nav-btn bg-red-800 hover:bg-red-900 text-white font-bold py-3 px-3 sm:px-4 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center min-w-0 flex-1 max-w-[100px] sm:max-w-none">
-                <span class="text-xs sm:text-sm font-semibold">Entradas</span>
-            </button>
-            
-            <button onclick="showPrecoBaixo()" class="nav-btn bg-red-800 hover:bg-red-900 text-white font-bold py-3 px-3 sm:px-4 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center min-w-0 flex-1 max-w-[100px] sm:max-w-none">
-                <span class="text-xs sm:text-sm font-semibold">Preço baixo</span>
-            </button>
-            
-            <button onclick="openVinhos()" class="nav-btn bg-red-800 hover:bg-red-900 text-white font-bold py-3 px-3 sm:px-4 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center min-w-0 flex-1 max-w-[100px] sm:max-w-none">
-                <span class="text-xs sm:text-sm font-semibold">Vinhos</span>
-            </button>
-            
-            <button onclick="showPromotion()" class="nav-btn pulse-btn bg-red-800 hover:bg-red-900 text-white font-bold py-3 px-3 sm:px-4 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center min-w-0 flex-1 max-w-[100px] sm:max-w-none">
-                <span class="text-xs sm:text-sm font-semibold">Promoção</span>
-            </button>
-            
-            <button onclick="openBebidas()" class="nav-btn bg-red-800 hover:bg-red-900 text-white font-bold py-3 px-3 sm:px-4 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center min-w-0 flex-1 max-w-[100px] sm:max-w-none">
-                <span class="text-xs sm:text-sm font-semibold">Bebidas</span>
-            </button>
-        </div>
+   </div>
+  </div><!-- Admin Toolbar -->
+  <div id="adminToolbar" class="admin-toolbar"><button onclick="addNewDish()" style="background: #10b981; color: white;">➕ Adicionar Prato</button> <button onclick="editMenuStructure()" style="background: #f59e0b; color: white;">🏗️ Estrutura</button> <button onclick="exportData()" style="background: #8b5cf6; color: white;">📤 Exportar</button> <button onclick="importData()" style="background: #06b6d4; color: white;">📥 Importar</button>
+  </div><!-- Header -->
+  <header class="bg-white shadow-lg sticky top-0 z-50">
+   <div class="container mx-auto px-4 py-4">
+    <div class="flex items-center justify-between">
+     <div class="flex items-center space-x-4">
+      <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-red-500"><img src="https://blogger.googleusercontent.com/img/a/AVvXsEhtI8TskeLJv2S49G5NbBX_Q2-qmkJxU6mSkJLwoKCCe5qa6_HSm2n0XEvT0g11B7GUgXrs9iZ6feAlvrnFecAogM5L0P0nmTEPzrwUvJ3p8qKgtliQvWA1Ja6dUv68aV9TCNdgMoi_Qf_szWXgJQNjh-KfvjdAKN3KCF9OZEL7J84HE3YGn3wwJYzEHVuu" alt="Logo do Restaurante" class="w-full h-full object-cover" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\'text-white font-bold text-xl bg-gradient-to-r from-red-500 to-red-600 w-full h-full flex items-center justify-center rounded-full\'>R</span>';">
+      </div>
+      <div>
+       <h1 class="text-2xl font-bold text-gray-800 editable" data-type="text" data-key="restaurant-name">Cardápio Digital</h1>
+       <p class="text-gray-600 text-sm editable" data-type="text" data-key="restaurant-subtitle">Sabores únicos, experiências inesquecíveis</p>
+      </div>
+     </div>
+     <div class="hidden md:flex items-center space-x-4"><span class="text-gray-600 editable" data-type="text" data-key="phone-display">📞 (83) 9179-5370</span>
+     </div>
     </div>
-
-    <!-- Modal para visualizar imagens -->
-    <div id="imageModal" class="modal">
-        <span class="close" onclick="closeModal()">&times;</span>
-        <img class="modal-content" id="modalImage" alt="Imagem ampliada">
+   </div>
+  </header><!-- Banner Section -->
+  <div class="banner-container relative h-96 overflow-hidden">
+   <div class="relative h-full"><!-- Slide 1 -->
+    <div class="banner-slide slide-1 active flex items-center justify-center text-white text-center" style="background-image: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjIygdJl0zlDqB2M-HKoX_kPWNt2Dnnt0juhtpwYnJqc4baAaGzzahREGevZWEzyXIngQ5gR2o1zbWyr_ZxmxY8iM9jzpeyIMNnx92n8xvNpNlbbnuAEpnxEwwjJnEV6fI3u9Lh7TNNC-8LWAtZiOjU-XMEipM7X3C5n1O6HJAnNS1cpPlCWNLkMOgUsMrD/s1584/Banner%20para%20LinkedIn%20Advogada%20Moderno%20Elegante%20Simples%20Azul%20Branco.png'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+     <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+     <div class="max-w-4xl mx-auto px-4 relative z-10">
+      <h1 class="text-5xl font-bold mb-4 text-shadow-lg editable" data-type="text" data-key="banner-1-title">Bem-vindos ao nosso Restaurante</h1>
+      <p class="text-xl mb-8 text-shadow-md editable" data-type="text" data-key="banner-1-subtitle">Descubra sabores únicos e pratos especiais preparados com carinho</p><button onclick="scrollToSection('entradas')" class="bg-white text-gray-800 font-semibold py-3 px-8 rounded-full hover:bg-gray-100 transition-colors shadow-lg"> Ver Cardápio </button>
+     </div>
+    </div><!-- Slide 2 -->
+    <div class="banner-slide slide-2 flex items-center justify-center text-white text-center" style="background-image: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjuECi2xjpnvk3EfiX5cqj6qofdqy2tRifJmeELJoYX4E53FQfMVost7cLJTzmQAMFneHiJV0LW-JRzQTW9LTRUSaWZ8ZrGXY55vLVU4klYY840uD5XXr3Qoio1JtLq9cFR5xqo4Oq5D-y5PCkYwLDJtabV_ZaVydLGsSJY6TdREMNoAs-oMIpQm_-3HOrH/s6240/IMG_0588.jpeg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+     <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+     <div class="max-w-4xl mx-auto px-4 relative z-10">
+      <h1 class="text-5xl font-bold mb-4 text-shadow-lg editable" data-type="text" data-key="banner-2-title">Pratos Executivos</h1>
+      <p class="text-xl mb-8 text-shadow-md editable" data-type="text" data-key="banner-2-subtitle">Refeições completas e saborosas para o seu dia a dia</p><button onclick="scrollToSection('executivos')" class="bg-white text-gray-800 font-semibold py-3 px-8 rounded-full hover:bg-gray-100 transition-colors shadow-lg"> Ver Executivos </button>
+     </div>
+    </div><!-- Slide 3 -->
+    <div class="banner-slide slide-3 flex items-center justify-center text-white text-center" style="background-image: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgHIcIycf3R3LuY-iN4fMAGq-fYhqWzQqNY1pfqwMeEPz9ktQ81a8lrcDwsQPuxq2HuGJOja4hrPXh36Tt3OmuSyj21s9FEyBLK9KU0OdGPH_eKFRloDywjIZW2aibnjGqBsSygNw9G7t6ZAd882lJ3t3aKsDaKqxSnkQHWSmmCXTIKalTvk8mLQSZd2P8E/s16000/IMG_0469.jpeg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+     <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+     <div class="max-w-4xl mx-auto px-4 relative z-10">
+      <h1 class="text-5xl font-bold mb-4 text-shadow-lg editable" data-type="text" data-key="banner-3-title">Entradas Especiais</h1>
+      <p class="text-xl mb-8 text-shadow-md editable" data-type="text" data-key="banner-3-subtitle">Comece sua refeição com nossas deliciosas entradas</p><button onclick="scrollToSection('entradas')" class="bg-white text-gray-800 font-semibold py-3 px-8 rounded-full hover:bg-gray-100 transition-colors shadow-lg"> Ver Entradas </button>
+     </div>
+    </div><!-- Slide 4 -->
+    <div class="banner-slide slide-4 flex items-center justify-center text-white text-center" style="background-image: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEixP2cSPCmz4MddiB3uvXgmly3xOfaIL91HCmv8KgxNc6McBecOvNChyvhesS73iG0oPnR5tnAj951Ymes2yAi14h-UtOCXE85iDSn9ME8F1uH_0cQ4Gpiq6yPaqdwIJ05od3He9lXES-Y1wH26CVvsR_h16k3CcqefNoTZf-3PkF6UWjx3xmmMQ-TmXnbc/s3888/IMG_0483.jpeg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+     <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+     <div class="max-w-4xl mx-auto px-4 relative z-10">
+      <h1 class="text-5xl font-bold mb-4 text-shadow-lg editable" data-type="text" data-key="banner-4-title">Pratos Principais</h1>
+      <p class="text-xl mb-8 text-shadow-md editable" data-type="text" data-key="banner-4-subtitle">Experimente nossos pratos principais cheios de sabor</p><button onclick="scrollToSection('pratos-principais')" class="bg-white text-gray-800 font-semibold py-3 px-8 rounded-full hover:bg-gray-100 transition-colors shadow-lg"> Ver Pratos </button>
+     </div>
+    </div><!-- Slide 5 -->
+    <div class="banner-slide slide-5 flex items-center justify-center text-white text-center" style="background-image: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjwvwE6DcQbcze_mB2L4tneoeonRVv0eXCxXGSMiE1_f3NxBSkOeFhKNVC9QyTTVVVQgm6G5Oi59aUStQKVh7f5AODDYHn4rPRXlrwksG78o8KRQlCgP2Q3mRa5uLwADZ__0N_1_rx_92GzwXRIB4V7wYlfywNYh38YirtyklGexiCrVpj5wCehiJVrVslo/s3888/IMG_0474.jpeg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+     <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+     <div class="max-w-4xl mx-auto px-4 relative z-10">
+      <h1 class="text-5xl font-bold mb-4 text-shadow-lg editable" data-type="text" data-key="banner-5-title">Peça pelo WhatsApp</h1>
+      <p class="text-xl mb-8 text-shadow-md editable" data-type="text" data-key="banner-5-subtitle">Faça seu pedido de forma rápida e prática</p><button onclick="openWhatsApp('Cardápio Digital')" class="bg-green-500 text-white font-semibold py-3 px-8 rounded-full hover:bg-green-600 transition-colors flex items-center gap-2 mx-auto shadow-lg">
+       <svg width="20" height="20" viewbox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488" />
+       </svg> Fazer Pedido </button>
+     </div>
     </div>
-
-    <!-- Notification -->
-    <div id="notification" class="notification">
-        🎉 Deixe seu feedback e ganhe 5% de desconto na sua conta!
-        <br>
-        <button class="confirm-btn" onclick="confirmPromotion()">Confirmar</button>
+   </div><!-- Banner Navigation -->
+   <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2">
+    <div class="flex space-x-3"><button class="banner-indicator w-3 h-3 rounded-full bg-white opacity-50 hover:opacity-100 transition-opacity" onclick="goToSlide(0)"></button> <button class="banner-indicator w-3 h-3 rounded-full bg-white opacity-50 hover:opacity-100 transition-opacity" onclick="goToSlide(1)"></button> <button class="banner-indicator w-3 h-3 rounded-full bg-white opacity-50 hover:opacity-100 transition-opacity" onclick="goToSlide(2)"></button> <button class="banner-indicator w-3 h-3 rounded-full bg-white opacity-50 hover:opacity-100 transition-opacity" onclick="goToSlide(3)"></button> <button class="banner-indicator w-3 h-3 rounded-full bg-white opacity-50 hover:opacity-100 transition-opacity" onclick="goToSlide(4)"></button>
     </div>
-
-    <!-- Menu Container -->
-    <div class="container mx-auto px-4 py-8">
-        <!-- Search Results Section -->
-        <div id="searchResults" class="mb-12 hidden">
-            <h2 class="section-title text-3xl font-bold text-gray-800 mb-8 text-left pb-4" style="font-family: 'Mediapro', sans-serif;">
-                Resultados da Pesquisa
-            </h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="searchGrid">
-                <!-- Search results will be populated by JavaScript -->
-            </div>
-            <div id="noResults" class="text-center py-12 hidden">
-                <div class="text-6xl mb-4">🔍</div>
-                <h3 class="text-xl font-semibold text-gray-600 mb-2">Nenhum prato encontrado</h3>
-                <p class="text-gray-500">Tente pesquisar com outras palavras-chave</p>
-            </div>
-        </div>
-
-        <!-- Preço Baixo Section -->
-        <div id="preco-baixo" class="mb-12 hidden">
-            <h2 class="section-title text-3xl font-bold text-gray-800 mb-8 text-left pb-4" style="font-family: 'Mediapro', sans-serif;">
-                💰 Preços Baixos (R$ 20 - R$ 50)
-            </h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="precoBaixoGrid">
-                <!-- Preço baixo items will be populated by JavaScript -->
-            </div>
-        </div>
-
-        <!-- Entradas Section -->
-        <div id="entradas" class="mb-12">
-            <h2 class="section-title text-3xl font-bold text-gray-800 mb-8 text-left pb-4" style="font-family: 'Mediapro', sans-serif;">
-                Entradas
-            </h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="entradasGrid">
-                <!-- Entradas will be populated by JavaScript -->
-            </div>
-        </div>
-
-        <!-- Pratos Principais Section -->
-        <div id="pratos-principais" class="mb-12">
-            <h2 class="section-title text-3xl font-bold text-gray-800 mb-8 text-left pb-4" style="font-family: 'Mediapro', sans-serif;">
-                Pratos Principais
-            </h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="pratosGrid">
-                <!-- Pratos principais will be populated by JavaScript -->
-            </div>
-        </div>
-
-        <!-- Pratos Executivos Section -->
-        <div id="executivos" class="mb-12">
-            <h2 class="section-title text-3xl font-bold text-gray-800 mb-8 text-left pb-4" style="font-family: 'Mediapro', sans-serif;">
-                Pratos Executivos
-            </h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="executivosGrid">
-                <!-- Pratos executivos will be populated by JavaScript -->
-            </div>
-        </div>
-
-        <!-- Sobremesas Section -->
-        <div id="sobremesas" class="mb-12">
-            <h2 class="section-title text-3xl font-bold text-gray-800 mb-8 text-left pb-4" style="font-family: 'Mediapro', sans-serif;">
-                Sobremesas
-            </h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="sobremesasGrid">
-                <!-- Sobremesas will be populated by JavaScript -->
-            </div>
-        </div>
-
+   </div>
+  </div><!-- Main Content -->
+  <div class="container mx-auto px-4 py-8"><!-- Search Bar -->
+   <div class="max-w-md mx-auto mb-8">
+    <div class="relative"><input type="text" id="searchInput" placeholder="Pesquisar pratos..." class="w-full pl-12 pr-4 py-3 border-2 border-gray-300 rounded-xl focus:border-red-500 focus:outline-none transition-colors text-gray-700 bg-white shadow-lg" oninput="searchDishes()">
+     <div class="absolute left-4 top-1/2 transform -translate-y-1/2">
+      <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+      </svg>
+     </div><button id="clearSearch" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors hidden" onclick="clearSearch()">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg></button>
     </div>
+   </div><!-- Navigation Buttons -->
+   <div class="flex justify-center gap-2 sm:gap-4 mb-12 px-2"><button onclick="scrollToSection('entradas')" class="nav-btn bg-red-800 hover:bg-red-900 text-white font-bold py-3 px-3 sm:px-4 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center min-w-0 flex-1 max-w-[100px] sm:max-w-none"> <span class="text-xs sm:text-sm font-semibold">Entradas</span> </button> <button onclick="showPrecoBaixo()" class="nav-btn bg-red-800 hover:bg-red-900 text-white font-bold py-3 px-3 sm:px-4 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center min-w-0 flex-1 max-w-[100px] sm:max-w-none"> <span class="text-xs sm:text-sm font-semibold">Preço baixo</span> </button> <button onclick="openVinhos()" class="nav-btn bg-red-800 hover:bg-red-900 text-white font-bold py-3 px-3 sm:px-4 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center min-w-0 flex-1 max-w-[100px] sm:max-w-none"> <span class="text-xs sm:text-sm font-semibold">Vinhos</span> </button> <button onclick="openBebidas()" class="nav-btn bg-red-800 hover:bg-red-900 text-white font-bold py-3 px-3 sm:px-4 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center min-w-0 flex-1 max-w-[100px] sm:max-w-none"> <span class="text-xs sm:text-sm font-semibold">Bebidas</span> </button>
+   </div>
+  </div><!-- Modal para visualizar imagens -->
+  <div id="imageModal" class="modal"><span class="close" onclick="closeModal()">×</span> <img class="modal-content" id="modalImage" alt="Imagem ampliada">
+  </div><!-- Menu Container -->
+  <div class="container mx-auto px-4 py-8"><!-- Search Results Section -->
+   <div id="searchResults" class="mb-12 hidden">
+    <h2 class="section-title text-3xl font-bold text-gray-800 mb-8 text-left pb-4 editable" data-type="text" data-key="search-results-title" style="font-family: 'Mediapro', sans-serif;">Resultados da Pesquisa</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="searchGrid"><!-- Search results will be populated by JavaScript -->
+    </div>
+    <div id="noResults" class="text-center py-12 hidden">
+     <div class="text-6xl mb-4">
+      🔍
+     </div>
+     <h3 class="text-xl font-semibold text-gray-600 mb-2">Nenhum prato encontrado</h3>
+     <p class="text-gray-500">Tente pesquisar com outras palavras-chave</p>
+    </div>
+   </div><!-- Preço Baixo Section -->
+   <div id="preco-baixo" class="mb-12 hidden">
+    <h2 class="section-title text-3xl font-bold text-gray-800 mb-8 text-left pb-4 editable" data-type="text" data-key="preco-baixo-title" style="font-family: 'Mediapro', sans-serif;">💰 Preços Baixos (R$ 20 - R$ 50)</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="precoBaixoGrid"><!-- Preço baixo items will be populated by JavaScript -->
+    </div>
+   </div><!-- Entradas Section -->
+   <div id="entradas" class="mb-12">
+    <h2 class="section-title text-3xl font-bold text-gray-800 mb-8 text-left pb-4 editable" data-type="text" data-key="entradas-title" style="font-family: 'Mediapro', sans-serif;">Entradas</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="entradasGrid"><!-- Entradas will be populated by JavaScript -->
+    </div>
+   </div><!-- Pratos Principais Section -->
+   <div id="pratos-principais" class="mb-12">
+    <h2 class="section-title text-3xl font-bold text-gray-800 mb-8 text-left pb-4 editable" data-type="text" data-key="pratos-principais-title" style="font-family: 'Mediapro', sans-serif;">Pratos Principais</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="pratosGrid"><!-- Pratos principais will be populated by JavaScript -->
+    </div>
+   </div><!-- Pratos Executivos Section -->
+   <div id="executivos" class="mb-12">
+    <h2 class="section-title text-3xl font-bold text-gray-800 mb-8 text-left pb-4 editable" data-type="text" data-key="executivos-title" style="font-family: 'Mediapro', sans-serif;">Pratos Executivos</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="executivosGrid"><!-- Pratos executivos will be populated by JavaScript -->
+    </div>
+   </div><!-- Sobremesas Section -->
+   <div id="sobremesas" class="mb-12">
+    <h2 class="section-title text-3xl font-bold text-gray-800 mb-8 text-left pb-4 editable" data-type="text" data-key="sobremesas-title" style="font-family: 'Mediapro', sans-serif;">Sobremesas</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="sobremesasGrid"><!-- Sobremesas will be populated by JavaScript -->
+    </div>
+   </div>
+  </div><!-- Scroll to Top Button --> <button id="scrollToTop" class="fixed bottom-6 right-6 bg-red-600 hover:bg-red-700 text-white p-4 rounded-full shadow-lg hover:shadow-xl transform hover:scale-110 transition-all duration-300 z-50 opacity-0 invisible" onclick="scrollToTop()" aria-label="Voltar ao topo">
+   <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+   </svg></button> <!-- Footer -->
+  <footer class="bg-gray-800 text-white py-8 mt-12">
+   <div class="container mx-auto px-4 text-center">
+    <div class="border-t border-gray-700 pt-6">
+     <p class="text-gray-400 text-sm editable" data-type="text" data-key="footer-text">© 2025 Todos os direitos reservados | Criado por <a href="https://instagram.com/zerotofameoficial" target="_blank" rel="noopener noreferrer" class="text-red-400 hover:text-red-300 font-semibold transition-colors"> @zerotofameoficial </a></p>
+     <div class="mt-4"><button onclick="requestPassword()" class="bg-gray-700 hover:bg-gray-600 text-gray-300 hover:text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors border border-gray-600"> 🔧 Admin </button>
+     </div>
+    </div>
+   </div>
+  </footer>
+  <script>
+        // Variáveis globais
+        let isEditMode = false;
+        let currentEditElement = null;
+        let editData = {};
 
-    <!-- Scroll to Top Button -->
-    <button 
-        id="scrollToTop" 
-        class="fixed bottom-6 right-6 bg-red-600 hover:bg-red-700 text-white p-4 rounded-full shadow-lg hover:shadow-xl transform hover:scale-110 transition-all duration-300 z-50 opacity-0 invisible"
-        onclick="scrollToTop()"
-        aria-label="Voltar ao topo"
-    >
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
-        </svg>
-    </button>
-
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-8 mt-12">
-        <div class="container mx-auto px-4 text-center">
-            <div class="border-t border-gray-700 pt-6">
-                <p class="text-gray-400 text-sm">
-                    © 2025 Todos os direitos reservados | Criado por 
-                    <a href="https://instagram.com/zerotofameoficial" target="_blank" rel="noopener noreferrer" class="text-red-400 hover:text-red-300 font-semibold transition-colors">
-                        @zerotofameoficial
-                    </a>
-                </p>
-                <div class="mt-4">
-                    <button 
-                        onclick="requestPassword()" 
-                        class="bg-gray-700 hover:bg-gray-600 text-gray-300 hover:text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors border border-gray-600"
-                    >
-                        🔧 Admin
-                    </button>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <script>
         // Dados do cardápio
         const menuItems = [
             {
@@ -852,6 +825,276 @@
             }
         ];
 
+        // Funções do Modo Edição
+        function enterEditMode() {
+            isEditMode = true;
+            document.body.classList.add('edit-mode');
+            document.getElementById('editOverlay').classList.add('active');
+            document.getElementById('adminToolbar').classList.add('active');
+            
+            // Adicionar eventos de clique aos elementos editáveis
+            const editableElements = document.querySelectorAll('.editable');
+            editableElements.forEach(element => {
+                element.addEventListener('click', handleEditClick);
+            });
+            
+            showEditMessage('Modo de edição ativado! Clique em qualquer elemento para editá-lo.');
+        }
+
+        function exitEditMode() {
+            isEditMode = false;
+            document.body.classList.remove('edit-mode');
+            document.getElementById('editOverlay').classList.remove('active');
+            document.getElementById('editPanel').classList.remove('active');
+            document.getElementById('adminToolbar').classList.remove('active');
+            
+            // Remover eventos de clique
+            const editableElements = document.querySelectorAll('.editable');
+            editableElements.forEach(element => {
+                element.removeEventListener('click', handleEditClick);
+            });
+            
+            showEditMessage('Modo de edição desativado.');
+        }
+
+        function toggleEditPanel() {
+            const panel = document.getElementById('editPanel');
+            panel.classList.toggle('active');
+        }
+
+        function handleEditClick(event) {
+            if (!isEditMode) return;
+            
+            event.preventDefault();
+            event.stopPropagation();
+            
+            currentEditElement = event.target;
+            const key = currentEditElement.getAttribute('data-key');
+            const type = currentEditElement.getAttribute('data-type');
+            const currentValue = currentEditElement.textContent || currentEditElement.value;
+            
+            showEditForm(key, type, currentValue);
+            document.getElementById('editPanel').classList.add('active');
+        }
+
+        function showEditForm(key, type, currentValue) {
+            const formContent = document.getElementById('editFormContent');
+            
+            let formHTML = `
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        Elemento: <span class="font-bold">${key}</span>
+                    </label>
+                </div>
+            `;
+            
+            if (type === 'text') {
+                formHTML += `
+                    <div class="mb-4">
+                        <label for="editValue" class="block text-sm font-medium text-gray-700 mb-2">
+                            Texto:
+                        </label>
+                        <textarea 
+                            id="editValue" 
+                            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" 
+                            rows="3"
+                        >${currentValue}</textarea>
+                    </div>
+                `;
+            } else if (type === 'image') {
+                formHTML += `
+                    <div class="mb-4">
+                        <label for="editValue" class="block text-sm font-medium text-gray-700 mb-2">
+                            URL da Imagem:
+                        </label>
+                        <input 
+                            type="url" 
+                            id="editValue" 
+                            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" 
+                            value="${currentValue}"
+                        >
+                    </div>
+                `;
+            }
+            
+            formHTML += `
+                <div class="flex gap-2">
+                    <button onclick="applyEdit()" class="edit-btn success flex-1">
+                        💾 Aplicar
+                    </button>
+                    <button onclick="cancelEdit()" class="edit-btn danger">
+                        ❌ Cancelar
+                    </button>
+                </div>
+            `;
+            
+            formContent.innerHTML = formHTML;
+        }
+
+        function applyEdit() {
+            if (!currentEditElement) return;
+            
+            const newValue = document.getElementById('editValue').value;
+            const key = currentEditElement.getAttribute('data-key');
+            
+            // Aplicar a mudança
+            if (currentEditElement.tagName === 'INPUT') {
+                currentEditElement.value = newValue;
+            } else {
+                currentEditElement.textContent = newValue;
+            }
+            
+            // Salvar no editData
+            editData[key] = newValue;
+            
+            showEditMessage(`Elemento "${key}" atualizado com sucesso!`);
+            document.getElementById('editPanel').classList.remove('active');
+            currentEditElement = null;
+        }
+
+        function cancelEdit() {
+            document.getElementById('editPanel').classList.remove('active');
+            currentEditElement = null;
+        }
+
+        function saveChanges() {
+            // Simular salvamento (em um sistema real, enviaria para o servidor)
+            localStorage.setItem('menuEditData', JSON.stringify(editData));
+            showEditMessage('Todas as alterações foram salvas com sucesso!');
+        }
+
+        function loadSavedChanges() {
+            const saved = localStorage.getItem('menuEditData');
+            if (saved) {
+                editData = JSON.parse(saved);
+                
+                // Aplicar mudanças salvas
+                Object.keys(editData).forEach(key => {
+                    const element = document.querySelector(`[data-key="${key}"]`);
+                    if (element) {
+                        if (element.tagName === 'INPUT') {
+                            element.value = editData[key];
+                        } else {
+                            element.textContent = editData[key];
+                        }
+                    }
+                });
+            }
+        }
+
+        function showEditMessage(message) {
+            // Criar ou atualizar mensagem de edição
+            let messageEl = document.getElementById('editMessage');
+            if (!messageEl) {
+                messageEl = document.createElement('div');
+                messageEl.id = 'editMessage';
+                messageEl.className = 'fixed top-20 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 text-sm font-medium opacity-0 transition-opacity duration-300';
+                document.body.appendChild(messageEl);
+            }
+            
+            messageEl.textContent = message;
+            messageEl.classList.remove('opacity-0');
+            messageEl.classList.add('opacity-100');
+            
+            setTimeout(() => {
+                messageEl.classList.remove('opacity-100');
+                messageEl.classList.add('opacity-0');
+            }, 3000);
+        }
+
+        // Funções administrativas avançadas
+        function addNewDish() {
+            const name = prompt('Nome do prato:');
+            if (!name) return;
+            
+            const price = prompt('Preço (ex: 29,90):');
+            if (!price) return;
+            
+            const description = prompt('Descrição:');
+            if (!description) return;
+            
+            const category = prompt('Categoria (entradas, pratos-principais, executivos, sobremesas):');
+            if (!category) return;
+            
+            const imageUrl = prompt('URL da imagem (opcional):') || '';
+            const image = prompt('Emoji do prato:') || '🍽️';
+            
+            const newDish = {
+                name,
+                price,
+                description,
+                image,
+                imageUrl,
+                category
+            };
+            
+            menuItems.push(newDish);
+            renderMenu();
+            showEditMessage(`Prato "${name}" adicionado com sucesso!`);
+        }
+
+        function editMenuStructure() {
+            showEditMessage('Funcionalidade de edição de estrutura em desenvolvimento...');
+        }
+
+        function exportData() {
+            const data = {
+                menuItems: menuItems,
+                editData: editData,
+                timestamp: new Date().toISOString()
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `cardapio-backup-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showEditMessage('Dados exportados com sucesso!');
+        }
+
+        function importData() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            
+            input.onchange = function(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const data = JSON.parse(e.target.result);
+                        
+                        if (data.menuItems) {
+                            menuItems.length = 0;
+                            menuItems.push(...data.menuItems);
+                        }
+                        
+                        if (data.editData) {
+                            editData = data.editData;
+                        }
+                        
+                        renderMenu();
+                        loadSavedChanges();
+                        showEditMessage('Dados importados com sucesso!');
+                        
+                    } catch (error) {
+                        showEditMessage('Erro ao importar dados. Verifique o arquivo.');
+                    }
+                };
+                reader.readAsText(file);
+            };
+            
+            input.click();
+        }
+
+        // Funções originais do cardápio
         function createDishCard(item) {
             const imageContent = item.imageUrl ? 
                 `<img src="${item.imageUrl}" alt="${item.name}" class="w-full h-48 object-cover lazy-load cursor-pointer hover:opacity-90 transition-opacity" loading="lazy" onclick="openModal('${item.imageUrl}', '${item.name.replace(/'/g, "\\'")}')" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
@@ -872,8 +1115,8 @@
                     </div>
                     
                     <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-800 mb-3" itemprop="name">${item.name}</h3>
-                        <p class="text-gray-600 mb-4 text-sm leading-relaxed" itemprop="description">${item.description}</p>
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 editable" data-type="text" data-key="dish-${item.name.replace(/\s+/g, '-').toLowerCase()}-name" itemprop="name">${item.name}</h3>
+                        <p class="text-gray-600 mb-4 text-sm leading-relaxed editable" data-type="text" data-key="dish-${item.name.replace(/\s+/g, '-').toLowerCase()}-description" itemprop="description">${item.description}</p>
                         
                         <button 
                             onclick="openWhatsApp('${item.name.replace(/'/g, "\\'")}')"
@@ -942,19 +1185,6 @@
                 top: elementPosition,
                 behavior: 'smooth'
             });
-        }
-
-        function showPromotion() {
-            const notification = document.getElementById('notification');
-            notification.classList.add('show');
-        }
-        
-        function confirmPromotion() {
-            const notification = document.getElementById('notification');
-            notification.classList.remove('show');
-            setTimeout(() => {
-                window.open('https://docs.google.com/forms/d/e/1FAIpQLSeg5ADar8dvLSmnqkUYAtObrov8U1QubpI_hdoXfZW-v57xlw/viewform?pli=1', '_blank', 'noopener,noreferrer');
-            }, 300);
         }
 
         function openModal(imageUrl, dishName) {
@@ -1180,7 +1410,7 @@
         function requestPassword() {
             const password = prompt("Digite a senha de administrador:");
             if (password === "Vic20142015@") {
-                window.open('https://zerotofamesites.github.io/adminpainel/', '_blank', 'noopener,noreferrer');
+                enterEditMode();
             } else if (password !== null) {
                 alert("Senha incorreta!");
             }
@@ -1189,15 +1419,10 @@
         document.addEventListener('DOMContentLoaded', function() {
             renderMenu();
             startSlideShow();
+            loadSavedChanges();
             
             window.addEventListener('scroll', toggleScrollButton);
-            
-            document.addEventListener('click', function(e) {
-                if (e.target.closest('.notification') === null && document.getElementById('notification').classList.contains('show')) {
-                    document.getElementById('notification').classList.remove('show');
-                }
-            });
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99d98162f4d500dc',t:'MTc2Mjk4Njk1Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99d98f3da72e00dc',t:'MTc2Mjk4NzUyNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
