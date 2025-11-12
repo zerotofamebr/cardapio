@@ -933,19 +933,6 @@
             });
         }
 
-        function showPromotion() {
-            const notification = document.getElementById('notification');
-            notification.classList.add('show');
-        }
-        
-        function confirmPromotion() {
-            const notification = document.getElementById('notification');
-            notification.classList.remove('show');
-            setTimeout(() => {
-                window.open('https://docs.google.com/forms/d/e/1FAIpQLSeg5ADar8dvLSmnqkUYAtObrov8U1QubpI_hdoXfZW-v57xlw/viewform?pli=1', '_blank', 'noopener,noreferrer');
-            }, 300);
-        }
-
         function openModal(imageUrl, dishName) {
             showChoiceMessage();
             
