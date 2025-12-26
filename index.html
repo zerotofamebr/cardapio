@@ -1,1421 +1,775 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="h-full">
  <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cardápio Digital - Restaurante</title>
+  <title>Card���pio Invó</title>
+  <script src="/_sdk/element_sdk.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&amp;family=Montserrat:wght@300;400;500&amp;display=swap" rel="stylesheet">
   <style>
-        body {
-            box-sizing: border-box;
-        }
-        
-        * {
-            font-family: 'Inter', sans-serif;
-        }
-        
-        .banner-slide {
-            opacity: 0;
-            transform: translateX(100%);
-            transition: all 0.5s ease-in-out;
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-        
-        .banner-slide.active {
-            opacity: 1;
-            transform: translateX(0);
-        }
-        
-        .banner-indicator.active {
-            opacity: 1 !important;
-            transform: scale(1.2);
-        }
-        
-        .dish-card {
-            transition: all 0.3s ease;
-        }
-        
-        .dish-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-        }
-        
-        .price-tag {
-            background: linear-gradient(135deg, #ef4444, #dc2626);
-            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
-        }
-        
-        .whatsapp-btn {
-            background: linear-gradient(135deg, #25D366, #128C7E);
-            transition: all 0.3s ease;
-        }
-        
-        .whatsapp-btn:hover {
-            background: linear-gradient(135deg, #128C7E, #075E54);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.3);
-        }
-        
-        .nav-btn:hover {
-            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-        }
-        
-        .notification {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: linear-gradient(135deg, #ef4444, #dc2626);
-            color: white;
-            padding: 20px 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            z-index: 1001;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            text-align: center;
-            font-weight: 600;
-            max-width: 90%;
-        }
-        
-        .notification.show {
-            opacity: 1;
-        }
-        
-        .confirm-btn {
-            background: white;
-            color: #ef4444;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-weight: bold;
-            margin-top: 15px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 16px;
-        }
-        
-        .confirm-btn:hover {
-            background: #f3f4f6;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        }
-        
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.9);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .modal.show {
-            display: flex;
-            opacity: 1;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .modal-content {
-            max-width: 90%;
-            max-height: 90%;
-            object-fit: contain;
-            border-radius: 10px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-        }
-        
-        .close {
-            position: absolute;
-            top: 20px;
-            right: 35px;
-            color: #fff;
-            font-size: 40px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: color 0.3s ease;
-        }
-        
-        .close:hover {
-            color: #ef4444;
-        }
-        
-        .lazy-load {
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .lazy-load.loaded {
-            opacity: 1;
-        }
-        
-        .section-title {
-            position: relative;
-        }
-        
-        @media (max-width: 768px) {
-            .nav-btn {
-                font-size: 14px;
-                padding: 12px 16px;
-            }
-            
-            .banner-slide h1 {
-                font-size: 2rem;
-            }
-            
-            .banner-slide p {
-                font-size: 1rem;
-            }
-        }
-        
-        .banner-container {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-        
-        .slide-1 { background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); }
-        .slide-2 { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
-        .slide-3 { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
-        .slide-4 { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
-        .slide-5 { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
-        
-        .text-shadow-lg {
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-        }
-        
-        .text-shadow-md {
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
-        }
-
-        /* Estilos do Modo Edição */
-        .edit-mode {
-            position: relative;
-        }
-        
-        .edit-mode::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            border: 2px dashed #3b82f6;
-            background: rgba(59, 130, 246, 0.1);
-            pointer-events: none;
-            z-index: 10;
-        }
-        
-        .edit-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(135deg, #1e40af, #3b82f6);
-            color: white;
-            padding: 10px 20px;
-            z-index: 1000;
-            display: none;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-        }
-        
-        .edit-overlay.active {
-            display: flex;
-        }
-        
-        .edit-panel {
-            position: fixed;
-            top: 60px;
-            right: -400px;
-            width: 380px;
-            height: calc(100vh - 60px);
-            background: white;
-            box-shadow: -5px 0 20px rgba(0,0,0,0.2);
-            z-index: 999;
-            transition: right 0.3s ease;
-            overflow-y: auto;
-            border-left: 3px solid #3b82f6;
-        }
-        
-        .edit-panel.active {
-            right: 0;
-        }
-        
-        .edit-form {
-            padding: 20px;
-        }
-        
-        .edit-form h3 {
-            color: #1e40af;
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            border-bottom: 2px solid #e5e7eb;
-            padding-bottom: 8px;
-        }
-        
-        .edit-form label {
-            display: block;
-            font-weight: 600;
-            color: #374151;
-            margin-bottom: 5px;
-            font-size: 14px;
-        }
-        
-        .edit-form input, .edit-form textarea {
-            width: 100%;
-            padding: 10px;
-            border: 2px solid #e5e7eb;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            font-size: 14px;
-            transition: border-color 0.3s ease;
-        }
-        
-        .edit-form input:focus, .edit-form textarea:focus {
-            outline: none;
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-        }
-        
-        .edit-form textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
-        
-        .edit-btn {
-            background: #3b82f6;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            margin-right: 10px;
-        }
-        
-        .edit-btn:hover {
-            background: #2563eb;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-        }
-        
-        .edit-btn.danger {
-            background: #ef4444;
-        }
-        
-        .edit-btn.danger:hover {
-            background: #dc2626;
-        }
-        
-        .edit-btn.success {
-            background: #10b981;
-        }
-        
-        .edit-btn.success:hover {
-            background: #059669;
-        }
-        
-        .editable {
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .editable:hover {
-            background: rgba(59, 130, 246, 0.1);
-            border-radius: 4px;
-        }
-        
-        .admin-toolbar {
-            display: none;
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            padding: 15px;
-            z-index: 1001;
-        }
-        
-        .admin-toolbar.active {
-            display: block;
-        }
-        
-        .admin-toolbar button {
-            display: block;
-            width: 100%;
-            margin-bottom: 10px;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-        
-        .admin-toolbar button:last-child {
-            margin-bottom: 0;
-        }
-    </style>
+    body {
+      box-sizing: border-box;
+    }
+    
+    .font-playfair {
+      font-family: 'Playfair Display', serif;
+    }
+    
+    .font-montserrat {
+      font-family: 'Montserrat', sans-serif;
+    }
+    
+    .gold-gradient {
+      background: linear-gradient(135deg, #9d7a3a 0%, #c9a961 50%, #9d7a3a 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .ornament {
+      width: 60px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #9d7a3a, transparent);
+      margin: 0 auto;
+    }
+    
+    .menu-item {
+      transition: all 0.3s ease;
+      border-left: 2px solid transparent;
+      padding-left: 1.5rem;
+    }
+    
+    .menu-item:hover {
+      border-left-color: #9d7a3a;
+      transform: translateX(8px);
+    }
+    
+    .menu-item:hover .dish-image {
+      transform: scale(1.05);
+      box-shadow: 0 8px 30px rgba(157, 122, 58, 0.4);
+    }
+    
+    .section-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #9d7a3a, transparent);
+      margin: 3rem 0;
+    }
+    
+    .dish-image {
+      width: 120px;
+      height: 120px;
+      border-radius: 8px;
+      border: 2px solid #9d7a3a;
+      object-fit: cover;
+      transition: all 0.3s ease;
+      background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    
+    .dish-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      opacity: 0.6;
+    }
+    
+    .dish-image img, .dish-image {
+      cursor: pointer;
+    }
+    
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.95);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    
+    .modal-overlay.active {
+      display: flex;
+    }
+    
+    .modal-image {
+      max-width: 90%;
+      max-height: 90%;
+      border: 3px solid #9d7a3a;
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(157, 122, 58, 0.5);
+      animation: zoomIn 0.3s ease;
+    }
+    
+    @keyframes zoomIn {
+      from {
+        transform: scale(0.8);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+    
+    .close-button {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 40px;
+      color: #9d7a3a;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 300;
+      z-index: 10000;
+    }
+    
+    .close-button:hover {
+      color: #c9a961;
+      transform: rotate(90deg);
+    }
+    
+    .nav-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(157, 122, 58, 0.4);
+      background: linear-gradient(135deg, #c9a961 0%, #9d7a3a 100%);
+    }
+  </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
-  <script src="/_sdk/element_sdk.js" type="text/javascript"></script>
  </head>
- <body class="bg-gray-50"><!-- Edit Overlay -->
-  <div id="editOverlay" class="edit-overlay">
-   <div class="flex items-center"><span class="text-xl font-bold mr-4">🔧 MODO EDIÇÃO ATIVO</span> <span class="text-sm opacity-90">Clique em qualquer elemento para editar</span>
-   </div>
-   <div><button onclick="toggleEditPanel()" class="edit-btn mr-2">📝 Painel</button> <button onclick="saveChanges()" class="edit-btn success mr-2">💾 Salvar</button> <button onclick="exitEditMode()" class="edit-btn danger">❌ Sair</button>
-   </div>
-  </div><!-- Edit Panel -->
-  <div id="editPanel" class="edit-panel">
-   <div class="edit-form">
-    <h3>Editor de Conteúdo</h3>
-    <div id="editFormContent">
-     <p class="text-gray-500 text-center py-8">Clique em um elemento para editá-lo</p>
+ <body class="h-full font-montserrat">
+  <div id="app" class="w-full h-full overflow-auto" style="position: relative;"><!-- Modal for Image Zoom -->
+   <div id="imageModal" class="modal-overlay"><span class="close-button">×</span> <img id="modalImage" class="modal-image" src="" alt="Imagem ampliada">
+   </div><!-- Background Image -->
+   <div style="position: absolute; top: 0; left: 0; right: 0; height: 600px; background-image: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjIygdJl0zlDqB2M-HKoX_kPWNt2Dnnt0juhtpwYnJqc4baAaGzzahREGevZWEzyXIngQ5gR2o1zbWyr_ZxmxY8iM9jzpeyIMNnx92n8xvNpNlbbnuAEpnxEwwjJnEV6fI3u9Lh7TNNC-8LWAtZiOjU-XMEipM7X3C5n1O6HJAnNS1cpPlCWNLkMOgUsMrD/s1584/Banner%20para%20LinkedIn%20Advogada%20Moderno%20Elegante%20Simples%20Azul%20Branco.png'); background-size: cover; background-position: center; opacity: 0.15; pointer-events: none; z-index: 0;"></div><!-- Hero Section -->
+   <header class="text-center py-16 px-8 mb-8" style="position: relative; z-index: 1;">
+    <div class="ornament mb-8"></div>
+    <h1 id="restaurant-name" class="font-playfair text-7xl font-bold gold-gradient mb-4">Invó</h1>
+    <p id="restaurant-tagline" class="font-montserrat text-xl tracking-wide mb-8">Comida gostosa do jeitin do abraço de vó</p><!-- Navigation Buttons -->
+    <div style="display: flex; gap: 1rem; max-width: 400px; margin: 0 auto; justify-content: center;"><a href="https://zerotofamebr.github.io/adegainv-/" target="_blank" rel="noopener noreferrer" class="nav-button font-montserrat" style="flex: 1; padding: 0.875rem 1.5rem; background: linear-gradient(135deg, #9d7a3a 0%, #c9a961 100%); color: #0a0a0a; text-decoration: none; border-radius: 8px; font-weight: 500; text-align: center; transition: all 0.3s ease; border: 2px solid #9d7a3a;"> Vinhos </a> <a href="https://zerotofamebr.github.io/bebidasinv-/" target="_blank" rel="noopener noreferrer" class="nav-button font-montserrat" style="flex: 1; padding: 0.875rem 1.5rem; background: linear-gradient(135deg, #9d7a3a 0%, #c9a961 100%); color: #0a0a0a; text-decoration: none; border-radius: 8px; font-weight: 500; text-align: center; transition: all 0.3s ease; border: 2px solid #9d7a3a;"> Bebidas </a>
     </div>
-   </div>
-  </div><!-- Admin Toolbar -->
-  <div id="adminToolbar" class="admin-toolbar"><button onclick="addNewDish()" style="background: #10b981; color: white;">➕ Adicionar Prato</button> <button onclick="editMenuStructure()" style="background: #f59e0b; color: white;">🏗️ Estrutura</button> <button onclick="exportData()" style="background: #8b5cf6; color: white;">📤 Exportar</button> <button onclick="importData()" style="background: #06b6d4; color: white;">📥 Importar</button>
-  </div><!-- Header -->
-  <header class="bg-white shadow-lg sticky top-0 z-50">
-   <div class="container mx-auto px-4 py-4">
-    <div class="flex items-center justify-between">
-     <div class="flex items-center space-x-4">
-      <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-red-500"><img src="https://blogger.googleusercontent.com/img/a/AVvXsEhtI8TskeLJv2S49G5NbBX_Q2-qmkJxU6mSkJLwoKCCe5qa6_HSm2n0XEvT0g11B7GUgXrs9iZ6feAlvrnFecAogM5L0P0nmTEPzrwUvJ3p8qKgtliQvWA1Ja6dUv68aV9TCNdgMoi_Qf_szWXgJQNjh-KfvjdAKN3KCF9OZEL7J84HE3YGn3wwJYzEHVuu" alt="Logo do Restaurante" class="w-full h-full object-cover" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\'text-white font-bold text-xl bg-gradient-to-r from-red-500 to-red-600 w-full h-full flex items-center justify-center rounded-full\'>R</span>';">
+    <div class="ornament mt-8"></div>
+   </header>
+   <div class="max-w-6xl mx-auto px-8 pb-16" style="position: relative; z-index: 1;"><!-- Entradas -->
+    <section class="mb-16">
+     <h2 id="entradas-title" class="font-playfair text-4xl font-semibold text-center mb-12 gold-gradient">Entradas</h2>
+     <div class="space-y-8">
+      <div class="menu-item flex gap-6 items-start">
+       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjaHl9C5mYm6HQMwgaslN8z7pek1E5I43OEkSb-7i_Jz92_8RmYFM9U9YCi4zxPyHW4VY-JCDW9m-7gEPdU30lJJEv5bkT-GLAfM2kJyZX6xavtYd6XsXpChiany2F5GP38K5-7z8CkYJwVPch6C4Tk5bUhcvp_mhY3yOfIPBRudVQ7FUo7J9scY8dz_JM5/s6240/IMG_0468.jpeg" alt="Pastéis Sortidos" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🥟</div>';">
+       </div>
+       <div class="flex-grow">
+        <div class="flex justify-between items-start mb-2">
+         <h3 class="font-playfair text-2xl font-semibold">Pastéis Sortidos</h3><span class="font-montserrat text-xl ml-4">R$ 29,90</span>
+        </div>
+        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Carne, Pepperoni, Costela, Carne de Sol</p>
+       </div>
       </div>
-      <div>
-       <h1 class="text-2xl font-bold text-gray-800 editable" data-type="text" data-key="restaurant-name">Cardápio Digital</h1>
-       <p class="text-gray-600 text-sm editable" data-type="text" data-key="restaurant-subtitle">Sabores únicos, experiências inesquecíveis</p>
+      <div class="menu-item flex gap-6 items-start">
+       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgHIcIycf3R3LuY-iN4fMAGq-fYhqWzQqNY1pfqwMeEPz9ktQ81a8lrcDwsQPuxq2HuGJOja4hrPXh36Tt3OmuSyj21s9FEyBLK9KU0OdGPH_eKFRloDywjIZW2aibnjGqBsSygNw9G7t6ZAd882lJ3t3aKsDaKqxSnkQHWSmmCXTIKalTvk8mLQSZd2P8E/s16000/IMG_0469.jpeg" alt="Pastéis de Camarão" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🦐</div>';">
+       </div>
+       <div class="flex-grow">
+        <div class="flex justify-between items-start mb-2">
+         <h3 class="font-playfair text-2xl font-semibold">Pastéis de Camarão</h3><span class="font-montserrat text-xl ml-4">R$ 34,90</span>
+        </div>
+        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Pastéis com creme cheese, creme de camarão servido com molho de ervas</p>
+       </div>
+      </div>
+      <div class="menu-item flex gap-6 items-start">
+       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiTvN9s9rV_KCTD75eaN4QWEsxQ56LVPlG9x4UcFnJfTndyip8NpB-VhVpP1iGCO5w3AL8OIyh_dGqcDrn4qdld9EusQf6XPogRE9ooKZXkmlE3-2McekufFd6S54v-pnMsgslmGhwrvXv0NuIviHkhP7PULA2QfaBpnaOyz7_6NpPHQNTscbHwJeqH7DU1/s3888/IMG_0479.jpeg" alt="Fritapá de Camarão" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🦐</div>';">
+       </div>
+       <div class="flex-grow">
+        <div class="flex justify-between items-start mb-2">
+         <h3 class="font-playfair text-2xl font-semibold">Fritapá de Camarão</h3><span class="font-montserrat text-xl ml-4">R$ 25,90</span>
+        </div>
+        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Bolinho frito de vatapá de camarão com base de moqueca, crocante por fora e cremoso por dentro</p>
+       </div>
+      </div>
+      <div class="menu-item flex gap-6 items-start">
+       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/a/AVvXsEiB9D0OEGiaQQWfcoIscSrjxtS_A09kHR6A70F-XcS4Y3HoYmBHsrYM7XnrOM-t9L3gqo6cs2FWpMRRkPv5bTuldGu1tNH59hgW2cC2g0zznCVNhIl1Ot2apS1Ha79gB0IzzmkngVhRxpxxh4xHs9Un1mAdIhp3opBt8i-um7j6Nb-trbAvGMRh4X6stdGd" alt="Caldo da Caridade" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🍲</div>';">
+       </div>
+       <div class="flex-grow">
+        <div class="flex justify-between items-start mb-2">
+         <h3 class="font-playfair text-2xl font-semibold">Caldo da Caridade</h3><span class="font-montserrat text-xl ml-4">R$ 16,90</span>
+        </div>
+        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Caldo de carne moída, legumes e ovo</p>
+       </div>
+      </div>
+      <div class="menu-item flex gap-6 items-start">
+       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjwvwE6DcQbcze_mB2L4tneoeonRVv0eXCxXGSMiE1_f3NxBSkOeFhKNVC9QyTTVVVQgm6G5Oi59aUStQKVh7f5AODDYHn4rPRXlrwksG78o8KRQlCgP2Q3mRa5uLwADZ__0N_1_rx_92GzwXRIB4V7wYlfywNYh38YirtyklGexiCrVpj5wCehiJVrVslo/s3888/IMG_0474.jpeg" alt="Carne de Sol Com Macaxeira" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🥩</div>';">
+       </div>
+       <div class="flex-grow">
+        <div class="flex justify-between items-start mb-2">
+         <h3 class="font-playfair text-2xl font-semibold">Carne de Sol Com Macaxeira</h3><span class="font-montserrat text-xl ml-4">R$ 39,90</span>
+        </div>
+        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Carne de sol salteada na manteiga da terra e cebolas roxas, servidas com macaxeira cremosa e cubos de queijo coalho</p>
+       </div>
+      </div>
+      <div class="menu-item flex gap-6 items-start">
+       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiSnsiAPdH97s30LiMn9gGMgidfmRzXDmM6UoIORfIaG8DbQ8Q6VQ8NfX0voK61z-aw2oQTTProT7wAFc1jUKlKIiL3RGyLzGMn2g3q2gZ-LtVUERvQve4eeiORRtg8rm3KqwwQqgmD4spJnFAHw9hVdRv21xdgvFJuiBLqJpFwqJMLRqg5ymk6nmSTm7li/s16000/IMG_0475.jpeg" alt="Sol do Sertão" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🥔</div>';">
+       </div>
+       <div class="flex-grow">
+        <div class="flex justify-between items-start mb-2">
+         <h3 class="font-playfair text-2xl font-semibold">Sol do Sertão</h3><span class="font-montserrat text-xl ml-4">R$ 29,90</span>
+        </div>
+        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Chips crocantes de macaxeira servidas com carne de sol desfiada, creme de nata</p>
+       </div>
+      </div>
+      <div class="menu-item flex gap-6 items-start">
+       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhGbh5RkmvuSrJuxuda6jgcIfFt9jyzl4Nz114LtYlwX5tzadKdWjcTpnrjFO9K1jDlcbxjTQ0pPH6LIJpAFuyu58LGlAco9x4oaOIyomLydM6fYaVYGkYXakF_xuPMa5LPjodQ_WOJP7DjiqU5XIie1B4QKrbz1rXpB1qPXgzwy5PyoxwRupQZk_JpJZ13/w1684-h1069-p-k-no-nu/IMG_0580.jpeg" alt="Batata Frita" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🍟</div>';">
+       </div>
+       <div class="flex-grow">
+        <div class="flex justify-between items-start mb-2">
+         <h3 class="font-playfair text-2xl font-semibold">Batata Frita</h3><span class="font-montserrat text-xl ml-4">R$ 16,90</span>
+        </div>
+        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Palitos de batata inglesa crocantes e servidos com raspas de queijo e molho da casa</p>
+       </div>
+      </div>
+      <div class="menu-item flex gap-6 items-start">
+       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgpKKw7SMFcvMsVDz5QEjWUzWq7R-DYP-z1nqK2FChXmEtSUrEKyPylAcscuGIzgsl8eOwQLKI_p0jnK4LpSmV9I_K10dcjQWYNTbUekX0N6ZCPABwL42i5NXI7bLpO7taM2Kbg58f_o_DrJVDf3iIfIS0u0nHsXh1povlA090XKRAq_xDP_6bl957EZZSW/s3888/IMG_0484.jpeg" alt="Franguim Avuado" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>����</div>';">
+       </div>
+       <div class="flex-grow">
+        <div class="flex justify-between items-start mb-2">
+         <h3 class="font-playfair text-2xl font-semibold">Franguim Avuado</h3><span class="font-montserrat text-xl ml-4">R$ 29,90</span>
+        </div>
+        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Meio da asa marinadas no sous vide, fritas e servidas com molho barbecue asiática de abacaxi e gergelim</p>
+       </div>
+      </div>
+      <div class="menu-item flex gap-6 items-start">
+       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/a/AVvXsEgkaxooT7hzSlO6LZeXLmIzHYnxwxzoGuctJVEJcvoyUNH_G8OHKsNkfwwNhSR3tr-ro7x-WWA_Bx49cwtnDQoXIXP-E7UrhrJbO6B_6RBPW7_s7e57ni16moJ5fWuw_LPuUHrcvh3MXtHygc90bHjjuZxBufgDKdOqD1uCp5P0V3ycLKhOHhJszMYeyM1b" alt="Croquetas Caipira" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🍗</div>';">
+       </div>
+       <div class="flex-grow">
+        <div class="flex justify-between items-start mb-2">
+         <h3 class="font-playfair text-2xl font-semibold">Croquetas Caipira</h3><span class="font-montserrat text-xl ml-4">R$ 29,90</span>
+        </div>
+        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Croquetas de frango recheados com milho e bacon</p>
+       </div>
+      </div>
+      <div class="menu-item flex gap-6 items-start">
+       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgBQ-3ssQy8zdx81f5l6Ob5sTZUoaq8JkE1GIzB0MolmmztlJcvKjkgGsl_kW7ZwiK7F4NPcst-bkTltqzinqkiGUpdzD_sb7B0AqeDloyUXS10iqFw9km_cwnmJxTPCrcfwpZ7sFT2F0Fww5vxnmgcfVFiqrERQquXS9p9RBImeOwAfw-CYwHqAJfX316v/s6240/IMG_0477.jpeg" alt="Sushi de Carrazera" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🍣</div>';">
+       </div>
+       <div class="flex-grow">
+        <div class="flex justify-between items-start mb-2">
+         <h3 class="font-playfair text-2xl font-semibold">Sushi de Carrazera</h3><span class="font-montserrat text-xl ml-4">R$ 34,90</span>
+        </div>
+        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Sushi crocante com massa de macaxeira, cubos de charque e carne de sol servido com molho de rapadura</p>
+       </div>
+      </div>
+      <div class="menu-item flex gap-6 items-start">
+       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhGrDHT88t5yzUcM1dzqjKzB78qlrBDGi1fRAxgYAcz1e_iBtvgLyUiDsfi0GLkDnTlulBKpb2xd2J42NRTGM1yvSDyIIAzfJ3lh9OaWJwFOLnJdz8r0OArImfuIgFoHH32rKsxR9zJ0aCpvc92ATVhU8tBMUiJuGGeeBvqMVKN_SluQSvj3UrPLD25xdWs/w1684-h1069-p-k-no-nu/IMG_0581.jpeg" alt="Isca de Tucunaré" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🐟</div>';">
+       </div>
+       <div class="flex-grow">
+        <div class="flex justify-between items-start mb-2">
+         <h3 class="font-playfair text-2xl font-semibold">Isca de Tucunaré</h3><span class="font-montserrat text-xl ml-4">R$ 32,90</span>
+        </div>
+        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Tiras de tucunaré à milanesa servido com molho rosé</p>
+       </div>
+      </div>
+      <div class="menu-item flex gap-6 items-start">
+       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh0bV_3PCc6Rdh4XYzdI3XEQwi3yyISCANNd9UJqPlUN9MUPjovfwxUDoUlVFVF4i1vYCAZ9toW5dGoHqR-otUwaDer6AWr3prY18y_1oquOzZGmIj5tqI_L8JvZtcBcvHG8SY2AwP3p1uwXpm4gvP22jxoqfz0RNBa_FyafEGO9MlQKxhddvgYu-YbSxtR/s1320/IMG_0583.jpeg" alt="Ai meu coração" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>❤️</div>';">
+       </div>
+       <div class="flex-grow">
+        <div class="flex justify-between items-start mb-2">
+         <h3 class="font-playfair text-2xl font-semibold">Ai meu coração</h3><span class="font-montserrat text-xl ml-4">R$ 39,90</span>
+        </div>
+        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Coração de galinha marinado no shoyu salteado no molho oriental e servido com chips de macaxeira</p>
+       </div>
+      </div>
+      <div class="menu-item flex gap-6 items-start">
+       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjRA9Z7cG17Y6P9hzQNsWSPZcb8xT4WRMd-usR4aU_kwR_T8xqCGAfVnOmxG5RMe6G75Xng91Hz2wO411uLM8Kx_xvbH6lyG2SAl8dAqj2-dOD7s29_DL-zv6VsM3a_nShuyOtBU7oiApMxo60l-E94xbae68aqGTanQklI_VefU8JDmw2zaem4Kjgn41Gx/s3888/IMG_0481.jpeg" alt="Filé no Panne" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🥩</div>';">
+       </div>
+       <div class="flex-grow">
+        <div class="flex justify-between items-start mb-2">
+         <h3 class="font-playfair text-2xl font-semibold">Filé no Panne</h3><span class="font-montserrat text-xl ml-4">R$ 79,90</span>
+        </div>
+        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Tiras de filé mignon salteadas com creme de gorgonzola servido no pão italiano quentinho</p>
+       </div>
+      </div>
+      <div class="menu-item flex gap-6 items-start">
+       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgpn4qEDPVB-xjJAYw8-VTWe0Iu_zC7PEchdHyLoN-Wgo4wGzty7PKluFAA7FWYwtOHv6oAgkimXwEdwiRZzOCcknmog5F3ElkfwyBCr8AnlI5iKw8FGNk2LbFlUXCCfsKXcI_Nqh86OveUFI1-qOnKUd9VU9dFTkwMbWPEMP24ZOpSZuF1E1ZO1kZQ2Mvy/s1434/IMG_0582.jpeg" alt="Camarão alho e óleo" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>���</div>';">
+       </div>
+       <div class="flex-grow">
+        <div class="flex justify-between items-start mb-2">
+         <h3 class="font-playfair text-2xl font-semibold">Camarão alho e óleo</h3><span class="font-montserrat text-xl ml-4">R$ 59,90</span>
+        </div>
+        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Camarão com cascas salteado no azeite de oliva, alho e limão</p>
+       </div>
       </div>
      </div>
-     <div class="hidden md:flex items-center space-x-4"><span class="text-gray-600 editable" data-type="text" data-key="phone-display">📞 (83) 9179-5370</span>
+    </section>
+    <div class="section-divider"></div><!-- Pratos Principais -->
+    <section class="mb-16">
+     <h2 id="principais-title" class="font-playfair text-4xl font-semibold text-center mb-12 gold-gradient">Pratos Principais</h2>
+     <div class="space-y-8">
+      <div class="menu-item flex gap-6 items-start">
+       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEixP2cSPCmz4MddiB3uvXgmly3xOfaIL91HCmv8KgxNc6McBecOvNChyvhesS73iG0oPnR5tnAj951Ymes2yAi14h-UtOCXE85iDSn9ME8F1uH_0cQ4Gpiq6yPaqdwIJ05od3He9lXES-Y1wH26CVvsR_h16k3CcqefNoTZf-3PkF6UWjx3xmmMQ-TmXnbc/s3888/IMG_0483.jpeg" alt="Camarão João Pessoa" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🦐</div>';">
+       </div>
+       <div class="flex-grow">
+        <div class="flex justify-between items-start mb-2">
+         <h3 class="font-playfair text-2xl font-semibold">Camarão João Pessoa</h3><span class="font-montserrat text-xl ml-4">R$ 149,90</span>
+        </div>
+        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Arroz gratinado de camarão puxado à base de moqueca e servido com camarões empanados</p>
+       </div>
+      </div>
+      <div class="menu-item flex gap-6 items-start">
+       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiaLEFMgAWPQezMUINHmtHxeziTevB4eegkuvn78MfPN2DpkVA6bsOhzY5TDo26DcC5m0eJJllpxkBbka-Ut9D40o3wk75kgi9KtM-9E8xNZDZ7c136JlGiEmT-_EBSRJl2Mrr-CITT2I0tRkuhkAgPyW7Q2V6Osbz7bD3JwrS70iyq6yW7ma5CmZHRa7G1/s1320/IMG_0587.jpeg" alt="Filé à Parmegiana dupla" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🍝</div>';">
+       </div>
+       <div class="flex-grow">
+        <div class="flex justify-between items-start mb-2">
+         <h3 class="font-playfair text-2xl font-semibold">Filé à Parmegiana dupla</h3><span class="font-montserrat text-xl ml-4">R$ 129,90</span>
+        </div>
+        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Tradicional filé empanado servido com cama de molho de tomate italiano e gratin de mussarela, servido com massa (grano duro)</p>
+       </div>
+      </div>
+      <div class="menu-item flex gap-6 items-start">
+       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/a/AVvXsEh2Rv3MD-042uJiS9n_ExdXnPLC9Zblef_YHIzD57SxSA3qY15yRSVs09goQWbFHQALa_bWBtMPlmDOs5YEXBl5ERBFlC0yY6NTej5D1xfPksaFWp6v2cNufX_eIR-eyvZbZBSK8rLj_7KsT9sAu_4hK-0XAiW2NBsJcO7_AVqFn8q31CK4YTd4a5z7kcql" alt="Picanha Trinchada" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🥩</div>';">
+       </div>
+       <div class="flex-grow">
+        <div class="flex justify-between items-start mb-2">
+         <h3 class="font-playfair text-2xl font-semibold">Picanha Trinchada</h3><span class="font-montserrat text-xl ml-4">R$ 89,90</span>
+        </div>
+        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Steaks de picanha selada na chapa com manteiga de ervas, sal temperado e cebolas roxas, servido com acompanhamentos: farofa e vinagrete</p>
+       </div>
+      </div>
+      <div class="menu-item flex gap-6 items-start">
+       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/a/AVvXsEgq8dsIPLUBIpBvP2trfO6_jjCr-wuydR9ftMQ1lmiU7BL9iNiupfc682cnpdVmuRRuNBXoguAO7szlkQkOEo8EYD6NzWTSnU23BkB4FqMWkq9xhitVpc7-2o4YOjsJ4lQVhnt4iflP6JcYH0KEqxDBF4N_Jcl4ubk2pBYJZocdmAXx2aKSGgkL63_xlqDC" alt="Picanha Completa" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🥩</div>';">
+       </div>
+       <div class="flex-grow">
+        <div class="flex justify-between items-start mb-2">
+         <h3 class="font-playfair text-2xl font-semibold">Picanha Completa</h3><span class="font-montserrat text-xl ml-4">R$ 159,00</span>
+        </div>
+        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Picanha trinchada grelhada na chapa com temperos especiais, servida com acompanhamentos tradicionais</p>
+       </div>
+      </div>
+      <div class="menu-item flex gap-6 items-start">
+       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhrTFmhbGuscTa1SrjYXr-Sqn2lqeW7NHCOOafVyTRF1JBarOGLmNUQ12WQRWV8q8lGUuola-yWv9_ROoBWfRpdODSUEFSJdX9G9xvto433Qhz8C1sdKVIEh5jxo7l8oFBfND5LCQolDh4OaaYOn_WibFQGIfvFD9VMpzUQaqj31mMQaKNbF0WN_1g85MeQ/s1462/IMG_0586.jpeg" alt="Filé de Seu Pedro" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🥩</div>';">
+       </div>
+       <div class="flex-grow">
+        <div class="flex justify-between items-start mb-2">
+         <h3 class="font-playfair text-2xl font-semibold">Filé de Seu Pedro</h3><span class="font-montserrat text-xl ml-4">R$ 189,00</span>
+        </div>
+        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Medalhões de filé mignon selados e flambados servidos com creme de gorgonzola. Acompanha: Arroz à Piemontese</p>
+       </div>
+      </div>
+      <div class="menu-item flex gap-6 items-start">
+       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg-C6Zld-fY1bEWT401V4aoU9n5i1Ln80dEd0fb_hwQGtAr6Cl599ZRMZT0Ofjtwt5ZJotIq0WG5yYJmuo_axNLhWgUywMKrtQQL1NztvygIBmgiaAA1NYjrjl3J45kWSj8BZEiG31zG2kha0lCGUgqXv6JoS8SMp4KDcP0_4H-fg91KMWEiolet7wngiPt/s3888/IMG_0485.jpeg" alt="Costela de Bacurim" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🍖</div>';">
+       </div>
+       <div class="flex-grow">
+        <div class="flex justify-between items-start mb-2">
+         <h3 class="font-playfair text-2xl font-semibold">Costela de Bacurim</h3><span class="font-montserrat text-xl ml-4">R$ 89,90</span>
+        </div>
+        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Costela suína assada lentamente regada com barbecue de abacaxi. Acompanha batata corte rústico temperadas com tempero do chef</p>
+       </div>
+      </div>
      </div>
-    </div>
-   </div>
-  </header><!-- Banner Section -->
-  <div class="banner-container relative h-96 overflow-hidden">
-   <div class="relative h-full"><!-- Slide 1 -->
-    <div class="banner-slide slide-1 active flex items-center justify-center text-white text-center" style="background-image: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjIygdJl0zlDqB2M-HKoX_kPWNt2Dnnt0juhtpwYnJqc4baAaGzzahREGevZWEzyXIngQ5gR2o1zbWyr_ZxmxY8iM9jzpeyIMNnx92n8xvNpNlbbnuAEpnxEwwjJnEV6fI3u9Lh7TNNC-8LWAtZiOjU-XMEipM7X3C5n1O6HJAnNS1cpPlCWNLkMOgUsMrD/s1584/Banner%20para%20LinkedIn%20Advogada%20Moderno%20Elegante%20Simples%20Azul%20Branco.png'); background-size: cover; background-position: center; background-repeat: no-repeat;">
-     <div class="absolute inset-0 bg-black bg-opacity-40"></div>
-     <div class="max-w-4xl mx-auto px-4 relative z-10">
-      <h1 class="text-5xl font-bold mb-4 text-shadow-lg editable" data-type="text" data-key="banner-1-title">Bem-vindos ao nosso Restaurante</h1>
-      <p class="text-xl mb-8 text-shadow-md editable" data-type="text" data-key="banner-1-subtitle">Descubra sabores únicos e pratos especiais preparados com carinho</p><button onclick="scrollToSection('entradas')" class="bg-white text-gray-800 font-semibold py-3 px-8 rounded-full hover:bg-gray-100 transition-colors shadow-lg"> Ver Cardápio </button>
+    </section>
+    <div class="section-divider"></div><!-- Pratos Executivos -->
+    <section class="mb-16">
+     <h2 id="executivos-title" class="font-playfair text-4xl font-semibold text-center mb-12 gold-gradient">Pratos Executivos</h2>
+     <div class="space-y-8">
+      <div class="menu-item flex gap-6 items-start">
+       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjuECi2xjpnvk3EfiX5cqj6qofdqy2tRifJmeELJoYX4E53FQfMVost7cLJTzmQAMFneHiJV0LW-JRzQTW9LTRUSaWZ8ZrGXY55vLVU4klYY840uD5XXr3Qoio1JtLq9cFR5xqo4Oq5D-y5PCkYwLDJtabV_ZaVydLGsSJY6TdREMNoAs-oMIpQm_-3HOrH/s6240/IMG_0588.jpeg" alt="Cumê de Rico" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🦐</div>';">
+       </div>
+       <div class="flex-grow">
+        <div class="flex justify-between items-start mb-2">
+         <h3 class="font-playfair text-2xl font-semibold">Cumê de Rico</h3><span class="font-montserrat text-xl ml-4">R$ 59,90</span>
+        </div>
+        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Arroz cremoso ao molho branco, puxado com camarões salteados e camarões empanados</p>
+       </div>
+      </div>
+      <div class="menu-item flex gap-6 items-start">
+       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjPlH5EwQb3nLaNFU1g8Uo99Ld4Ob2QwHD-SbJ0RwZpTPL36JR9BPwZGT9B4V1HpJi4g6al2wr7_MXn5_kfW9plZjK9jkKl8sCn8MUDXAaZDMi-lX7KFu2MCuqJNJzHHXw1TZ69oT3FiGXMVDL6ayL7X0ZdFgbZkHi_NMmGrqTLyAggEeHIAYV5znp5iASL/s1506/IMG_0591.jpeg" alt="Boi Bêbo" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>���</div>';">
+       </div>
+       <div class="flex-grow">
+        <div class="flex justify-between items-start mb-2">
+         <h3 class="font-playfair text-2xl font-semibold">Boi Bêbo</h3><span class="font-montserrat text-xl ml-4">R$ 39,90</span>
+        </div>
+        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Costela bovina marinada na cerveja preta e ervas assada levemente ao vapor e servida com nosso delicioso arroz de jerimum e cebolinho</p>
+       </div>
+      </div>
+      <div class="menu-item flex gap-6 items-start">
+       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiqNdELCwu7nu4Cvdw2VWFolczTXNI3nT-ZGgNlsRzCXcgUUztAdH-HQawikC_w8uDzG5L4MvgGxvVc0VKevB2FKYjmXVhObQ-TqYGwE5sZVvA52PP82XwM54TyQfDkLevkWqg2DWE84R4USf4jp5Qklmrpb_NfJehy0KnauCtxaAtQy6oi5c2MEGimYFyQ/s1320/IMG_0592.jpeg" alt="Cumêzim de Vó" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🍚</div>';">
+       </div>
+       <div class="flex-grow">
+        <div class="flex justify-between items-start mb-2">
+         <h3 class="font-playfair text-2xl font-semibold">Cumêzim de Vó</h3><span class="font-montserrat text-xl ml-4">R$ 32,90</span>
+        </div>
+        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Arroz vermelho cozido ao leite, servido com chips de macaxeira crocante e carne de sol desfiçada</p>
+       </div>
+      </div>
+      <div class="menu-item flex gap-6 items-start">
+       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiv_I9Xj8TjcYZbqleQ57g-5p1haruAPqTeOyM4Ty6L3x8I8SjshZxd9vQn7mTWN4JThn_9ugWrZ4RGmgEuOFUCkM5b4SS_tDwMtxhOXAF5rcvVx6eUeQp2AHO13cfbYM3q4aC4l-7NG0Np7yltXcWhC6tT7cTH1BHt8Km0KNWyb6LQFCgP0hJ3Y_JQBrHF/s1675/IMG_0593.jpeg" alt="Filé à Parmegiana" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>��</div>';">
+       </div>
+       <div class="flex-grow">
+        <div class="flex justify-between items-start mb-2">
+         <h3 class="font-playfair text-2xl font-semibold">Filé à Parmegiana</h3><span class="font-montserrat text-xl ml-4">R$ 59,90</span>
+        </div>
+        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Filé empanado com cama de molho de tomate italiano e gratin de mussarela, servido com massa italiana</p>
+       </div>
+      </div>
+      <div class="menu-item flex gap-6 items-start">
+       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhnIq8A0EF0Ed0PzYPn0Xn1SW1VQitEE06ZqkORvRukgmNbrJAObMieff_olxvjWCOyl1cdN-_DThuB3y0cDPBmyO4OxPe8Jzbw_arskmOPMbNBRaeCcQVP_QXKL4ILqI3bV5_271vLWVbpNDJE0z9kQtiX2Z2ViCR5nvFcYOlmXFCNzXy_njqKR9XK0g5C/s3888/1735_Thiago_Ferreira_Fotografia.jpg" alt="Baião de 4" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🍚</div>';">
+       </div>
+       <div class="flex-grow">
+        <div class="flex justify-between items-start mb-2">
+         <h3 class="font-playfair text-2xl font-semibold">Baião de 4</h3><span class="font-montserrat text-xl ml-4">R$ 49,90</span>
+        </div>
+        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Baião de feijão verde puxado com carne de sol, queijo coalho, charque, torresmo e servido com couve frito</p>
+       </div>
+      </div>
+      <div class="menu-item flex gap-6 items-start">
+       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhTI-v_lNJtkfW-putMLKq4sdHNbaiZo4apyyaO2PdOpPGMIXnDLU-NpM5CE0UCkAyAOCu_RAoAeimXjR4m7tV2P-zLk4F9sQfK_HjVQXL9sO_ZNYvq_sLj4X-UEPh3k_zgFbhduFJbou1f8unRU4KYnpUsEw-nkI4T6fS8lJPbiHHT_PChVCV_Qjes7MXZ/s1414/IMG_0594.jpeg" alt="Camarão do Chef" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🦐</div>';">
+       </div>
+       <div class="flex-grow">
+        <div class="flex justify-between items-start mb-2">
+         <h3 class="font-playfair text-2xl font-semibold">Camarão do Chef</h3><span class="font-montserrat text-xl ml-4">R$ 72,90</span>
+        </div>
+        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Massa italiana com molho bisque de camarão, finalizado com tomates confitados e camarões salteados</p>
+       </div>
+      </div>
+      <div class="menu-item flex gap-6 items-start">
+       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhXL-bJp4ImlqkU8XQBMIBOWvX2vFL00gPuiSRyzp-DepWdZ1P-p-8M1hOrKYSsy8SLoGnK0fuyleSaQqXWqM4mBORQ9f_RNOcIsuwB7fLxp5TIWKyFgDXK4RJSGLRjSWdM5R3Ahx9JUX64rlvK_0G1QjBxbeXyP98avg3hCKcDANKl6_75cPVxQzXeFqpP/s3888/1910_Thiago_Ferreira_Fotografia.jpg" alt="Frango à Parmegiana" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🍗</div>';">
+       </div>
+       <div class="flex-grow">
+        <div class="flex justify-between items-start mb-2">
+         <h3 class="font-playfair text-2xl font-semibold">Frango à Parmegiana</h3><span class="font-montserrat text-xl ml-4">R$ 39,90</span>
+        </div>
+        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Filé de frango empanado com cama de molho de tomate italiano e gratinado de mussarela servido com massa italiana</p>
+       </div>
+      </div>
+      <div class="menu-item flex gap-6 items-start">
+       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/a/AVvXsEiF6I3BDBOJS8w_F1YR2io8T37CXODc9vcAEJMn2zQgKVfbb5Knw3XeqpieM3TOAl-FQVMR8Kf-sG9YwC-MmkjhbZTOOmhfMD1wlFpQTJdpGqnWLmrLmMMsUk-UWVV1571Ne-wBtOZ1fD0f8Gc8KyWyapZURWW-Vz4ykAfjZkq3KVz3ClbZ_W2gleoRsA_Y" alt="Frango à Parmegiana Trinchada" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🍗</div>';">
+       </div>
+       <div class="flex-grow">
+        <div class="flex justify-between items-start mb-2">
+         <h3 class="font-playfair text-2xl font-semibold">Frango à Parmegiana Trinchada</h3><span class="font-montserrat text-xl ml-4">R$ 39,90</span>
+        </div>
+        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Filé de frango trinchado com molho de tomate italiano e gratinado de queijo mussarela</p>
+       </div>
+      </div>
+      <div class="menu-item flex gap-6 items-start">
+       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/a/AVvXsEjAr7mxPn09Hqm7B1tNrYuR93WtVkOrWClL2QQsw_IvL8-aWgHECDW17GSRCLLh0ceDUfniANMsEsqUyavsRSXyiKhKVcV3Yw-Gg2LeUl4E3fZlx1tNMnOu5ylWHZwgn01u1DNk2frH7MxiK1ZF0pptGMJUytjBntJTRRW2knvKwPgWbtieYDCHjntzvMtX" alt="Camarão à Romana" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🦐</div>';">
+       </div>
+       <div class="flex-grow">
+        <div class="flex justify-between items-start mb-2">
+         <h3 class="font-playfair text-2xl font-semibold">Camarão à Romana</h3><span class="font-montserrat text-xl ml-4">R$ 54,90</span>
+        </div>
+        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Camarões inteiros com cama de molho rosê e gratinado de mussarela</p>
+       </div>
+      </div>
+      <div class="menu-item flex gap-6 items-start">
+       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://s2-receitas.glbimg.com/-sgWIXsrYhqvx1NPI2R4u-nPXVU=/0x0:1280x800/1000x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_1f540e0b94d8437dbbc39d567a1dee68/internal_photos/bs/2022/T/v/SCRij3TS2bYO5oGKS10A/arroz-a-piamontese-receita.jpg" alt="Arroz à Piemontese" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🍚</div>';">
+       </div>
+       <div class="flex-grow">
+        <div class="flex justify-between items-start mb-2">
+         <h3 class="font-playfair text-2xl font-semibold">Arroz à Piemontese</h3><span class="font-montserrat text-xl ml-4">R$ 19,90</span>
+        </div>
+        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Arroz cremoso quatro queijos</p>
+       </div>
+      </div>
+      <div class="menu-item flex gap-6 items-start">
+       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/a/AVvXsEgkzUEIxBh2VQMEHZGKRgPrORdAII9wAp_tW-pRFphk4avURiZMyZoKLy3eyglRyKtte_HFqlEXksQfDsPavG11bIbeyEgTSg7Omam5otkM7AH6CrGAgp6y-VTe_LZ8IBfMKY9FFNyVC80wuvwsk72E8lyH214zqpds3WpArIKcMa4Ab6UdSNFfheivWJgS" alt="Franguim Magrim" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🍗</div>';">
+       </div>
+       <div class="flex-grow">
+        <div class="flex justify-between items-start mb-2">
+         <h3 class="font-playfair text-2xl font-semibold">Franguim Magrim</h3><span class="font-montserrat text-xl ml-4">R$ 39,90</span>
+        </div>
+        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Filé de frango cozido levemente no suco, grelhado na chapa e servido com arroz branco e mix salada crua</p>
+       </div>
+      </div>
      </div>
-    </div><!-- Slide 2 -->
-    <div class="banner-slide slide-2 flex items-center justify-center text-white text-center" style="background-image: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjuECi2xjpnvk3EfiX5cqj6qofdqy2tRifJmeELJoYX4E53FQfMVost7cLJTzmQAMFneHiJV0LW-JRzQTW9LTRUSaWZ8ZrGXY55vLVU4klYY840uD5XXr3Qoio1JtLq9cFR5xqo4Oq5D-y5PCkYwLDJtabV_ZaVydLGsSJY6TdREMNoAs-oMIpQm_-3HOrH/s6240/IMG_0588.jpeg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
-     <div class="absolute inset-0 bg-black bg-opacity-50"></div>
-     <div class="max-w-4xl mx-auto px-4 relative z-10">
-      <h1 class="text-5xl font-bold mb-4 text-shadow-lg editable" data-type="text" data-key="banner-2-title">Pratos Executivos</h1>
-      <p class="text-xl mb-8 text-shadow-md editable" data-type="text" data-key="banner-2-subtitle">Refeições completas e saborosas para o seu dia a dia</p><button onclick="scrollToSection('executivos')" class="bg-white text-gray-800 font-semibold py-3 px-8 rounded-full hover:bg-gray-100 transition-colors shadow-lg"> Ver Executivos </button>
+    </section>
+    <div class="section-divider"></div><!-- Sobremesas -->
+    <section class="mb-16">
+     <h2 id="sobremesas-title" class="font-playfair text-4xl font-semibold text-center mb-12 gold-gradient">Sobremesas</h2>
+     <div class="space-y-8">
+      <div class="menu-item flex gap-6 items-start">
+       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjQP63-CilGvc5sR03eAHyC_jY8qSio8KO3myjCjCDogbj2VSQ4RIu4-Bx0n0k1NoGzF93sNa2hebTCLlv7wGhbOxbmA4JOmpAA9fgMXEEyxvNZj0yOyWxpRODEQvy-3wRlWUN84iqxSCtrxKmavhiaVOhIqTmPwaQ7MeBiaa7PUj5BPyzJXq5bSeCkv7nh/s5628/2350_Thiago_Ferreira_Fotografia.jpg" alt="Dirmantelo de Goiabada" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>��</div>';">
+       </div>
+       <div class="flex-grow">
+        <div class="flex justify-between items-start mb-2">
+         <h3 class="font-playfair text-2xl font-semibold">Dirmantelo de Goiabada</h3><span class="font-montserrat text-xl ml-4">R$ 32,90</span>
+        </div>
+        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Brûlée de creme de queijo de manteiga com calda de goiabada, crumble de biscoito e castanha de caju</p>
+       </div>
+      </div>
+      <div class="menu-item flex gap-6 items-start">
+       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjvN6Igv_vN-9ZL0ct7rHhI8FP_LRC-8Br2SUxw44WLFW42sua_2Ic2K-Kfh-rlBsBREqB3jcNSK1xP1ahOCGW0-gLxNo1Mo8MZIQdIeLtABBIu-tiQG7m1yr7PfrzjucggWXnLebTWqzf3IDEySNSKjMdXEIQSiTjwfse19yeWjb6k354R_LHLsD1yohXM/s6240/2579_Thiago_Ferreira_Fotografia.jpg" alt="Pudim Matuto" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🍮</div>';">
+       </div>
+       <div class="flex-grow">
+        <div class="flex justify-between items-start mb-2">
+         <h3 class="font-playfair text-2xl font-semibold">Pudim Matuto</h3><span class="font-montserrat text-xl ml-4">R$ 19,90</span>
+        </div>
+        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Nossa tradicional receita de pudim feito com leite de coco e calda de rapadura</p>
+       </div>
+      </div>
+      <div class="menu-item flex gap-6 items-start">
+       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg_wYresLuUGumZHiNmj2VCk-SCBI7g3ASxsVU34QeF66eyV59u-jmL1bPVyiIzJ9TzP4eJjPqBNgyakc0JAI1OlAjHCUTCyds_42EzryD_Eqo1awBm4_dWELSRsGNoBd1lEMD-lJBJkip1WdqniSsKXkoSYRCLvl5JNgT2ZZSTrsKgnuE5vy6pDHXjVBup/s6240/1952_Thiago_Ferreira_Fotografia.jpg" alt="Bagaceira de Chocolate" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🍫</div>';">
+       </div>
+       <div class="flex-grow">
+        <div class="flex justify-between items-start mb-2">
+         <h3 class="font-playfair text-2xl font-semibold">Bagaceira de Chocolate</h3><span class="font-montserrat text-xl ml-4">R$ 32,90</span>
+        </div>
+        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Gran Gateau de chocolate com picolé crocante</p>
+       </div>
+      </div>
+      <div class="menu-item flex gap-6 items-start">
+       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhpX75QJLs-Bq7JoswISnWqYvcTaBbLqTGyW7zbmbGuG8wtvrnFD9Z-QeAD8SOIFHYKBxePixp463qyL6mueCWMgjLN5dGcgEq0HvLA7L8c1hYrGkGq88TakacSrK1nd2BgqthqJr7zytNi3nF8ThtnsVtU1jgbibIpV9kVoDVgKpPbDV-AeX846fCXB-Uy/s1600/b1da8d55-adec-43ff-b2fb-1afedb34ab33.jfif" alt="Cocada Quente" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🥥</div>';">
+       </div>
+       <div class="flex-grow">
+        <div class="flex justify-between items-start mb-2">
+         <h3 class="font-playfair text-2xl font-semibold">Cocada Quente</h3><span class="font-montserrat text-xl ml-4">R$ 34,90</span>
+        </div>
+        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Cocada cremosa assada ao forno com brûlée e sorvete de creme</p>
+       </div>
+      </div>
+      <div class="menu-item flex gap-6 items-start">
+       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/a/AVvXsEgcPI8ajBEuC5wFGqVQsrrZK0iDjnvj645C5jG6D5sB78GQdnMXT7SKbtZPEJrkYKGTxLl45gzU0Jgu5WZWXasAUcMYivAosIqYhXFsSYerwUIJZg2YPB75o-e9q-VQ1B97Twt9mZo5yP4JkW50XJ1BFwL75OGjrjCa0SiudZPzEI9U1MKVtTHX3NgV4hl_" alt="Surpresa de Morango" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🍓</div>';">
+       </div>
+       <div class="flex-grow">
+        <div class="flex justify-between items-start mb-2">
+         <h3 class="font-playfair text-2xl font-semibold">Surpresa de Morango</h3><span class="font-montserrat text-xl ml-4">R$ 34,90</span>
+        </div>
+        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Creme baunilha, sorvete creme e geleia de morango</p>
+       </div>
+      </div>
      </div>
-    </div><!-- Slide 3 -->
-    <div class="banner-slide slide-3 flex items-center justify-center text-white text-center" style="background-image: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgHIcIycf3R3LuY-iN4fMAGq-fYhqWzQqNY1pfqwMeEPz9ktQ81a8lrcDwsQPuxq2HuGJOja4hrPXh36Tt3OmuSyj21s9FEyBLK9KU0OdGPH_eKFRloDywjIZW2aibnjGqBsSygNw9G7t6ZAd882lJ3t3aKsDaKqxSnkQHWSmmCXTIKalTvk8mLQSZd2P8E/s16000/IMG_0469.jpeg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
-     <div class="absolute inset-0 bg-black bg-opacity-50"></div>
-     <div class="max-w-4xl mx-auto px-4 relative z-10">
-      <h1 class="text-5xl font-bold mb-4 text-shadow-lg editable" data-type="text" data-key="banner-3-title">Entradas Especiais</h1>
-      <p class="text-xl mb-8 text-shadow-md editable" data-type="text" data-key="banner-3-subtitle">Comece sua refeição com nossas deliciosas entradas</p><button onclick="scrollToSection('entradas')" class="bg-white text-gray-800 font-semibold py-3 px-8 rounded-full hover:bg-gray-100 transition-colors shadow-lg"> Ver Entradas </button>
-     </div>
-    </div><!-- Slide 4 -->
-    <div class="banner-slide slide-4 flex items-center justify-center text-white text-center" style="background-image: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEixP2cSPCmz4MddiB3uvXgmly3xOfaIL91HCmv8KgxNc6McBecOvNChyvhesS73iG0oPnR5tnAj951Ymes2yAi14h-UtOCXE85iDSn9ME8F1uH_0cQ4Gpiq6yPaqdwIJ05od3He9lXES-Y1wH26CVvsR_h16k3CcqefNoTZf-3PkF6UWjx3xmmMQ-TmXnbc/s3888/IMG_0483.jpeg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
-     <div class="absolute inset-0 bg-black bg-opacity-50"></div>
-     <div class="max-w-4xl mx-auto px-4 relative z-10">
-      <h1 class="text-5xl font-bold mb-4 text-shadow-lg editable" data-type="text" data-key="banner-4-title">Pratos Principais</h1>
-      <p class="text-xl mb-8 text-shadow-md editable" data-type="text" data-key="banner-4-subtitle">Experimente nossos pratos principais cheios de sabor</p><button onclick="scrollToSection('pratos-principais')" class="bg-white text-gray-800 font-semibold py-3 px-8 rounded-full hover:bg-gray-100 transition-colors shadow-lg"> Ver Pratos </button>
-     </div>
-    </div><!-- Slide 5 -->
-    <div class="banner-slide slide-5 flex items-center justify-center text-white text-center" style="background-image: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjwvwE6DcQbcze_mB2L4tneoeonRVv0eXCxXGSMiE1_f3NxBSkOeFhKNVC9QyTTVVVQgm6G5Oi59aUStQKVh7f5AODDYHn4rPRXlrwksG78o8KRQlCgP2Q3mRa5uLwADZ__0N_1_rx_92GzwXRIB4V7wYlfywNYh38YirtyklGexiCrVpj5wCehiJVrVslo/s3888/IMG_0474.jpeg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
-     <div class="absolute inset-0 bg-black bg-opacity-50"></div>
-     <div class="max-w-4xl mx-auto px-4 relative z-10">
-      <h1 class="text-5xl font-bold mb-4 text-shadow-lg editable" data-type="text" data-key="banner-5-title">Peça pelo WhatsApp</h1>
-      <p class="text-xl mb-8 text-shadow-md editable" data-type="text" data-key="banner-5-subtitle">Faça seu pedido de forma rápida e prática</p><button onclick="openWhatsApp('Cardápio Digital')" class="bg-green-500 text-white font-semibold py-3 px-8 rounded-full hover:bg-green-600 transition-colors flex items-center gap-2 mx-auto shadow-lg">
-       <svg width="20" height="20" viewbox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488" />
-       </svg> Fazer Pedido </button>
-     </div>
-    </div>
-   </div><!-- Banner Navigation -->
-   <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2">
-    <div class="flex space-x-3"><button class="banner-indicator w-3 h-3 rounded-full bg-white opacity-50 hover:opacity-100 transition-opacity" onclick="goToSlide(0)"></button> <button class="banner-indicator w-3 h-3 rounded-full bg-white opacity-50 hover:opacity-100 transition-opacity" onclick="goToSlide(1)"></button> <button class="banner-indicator w-3 h-3 rounded-full bg-white opacity-50 hover:opacity-100 transition-opacity" onclick="goToSlide(2)"></button> <button class="banner-indicator w-3 h-3 rounded-full bg-white opacity-50 hover:opacity-100 transition-opacity" onclick="goToSlide(3)"></button> <button class="banner-indicator w-3 h-3 rounded-full bg-white opacity-50 hover:opacity-100 transition-opacity" onclick="goToSlide(4)"></button>
-    </div>
-   </div>
-  </div><!-- Main Content -->
-  <div class="container mx-auto px-4 py-8"><!-- Search Bar -->
-   <div class="max-w-md mx-auto mb-8">
-    <div class="relative"><input type="text" id="searchInput" placeholder="Pesquisar pratos..." class="w-full pl-12 pr-4 py-3 border-2 border-gray-300 rounded-xl focus:border-red-500 focus:outline-none transition-colors text-gray-700 bg-white shadow-lg" oninput="searchDishes()">
-     <div class="absolute left-4 top-1/2 transform -translate-y-1/2">
-      <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-      </svg>
-     </div><button id="clearSearch" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors hidden" onclick="clearSearch()">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-      </svg></button>
-    </div>
-   </div><!-- Navigation Buttons -->
-   <div class="flex justify-center gap-2 sm:gap-4 mb-12 px-2"><button onclick="scrollToSection('entradas')" class="nav-btn bg-red-800 hover:bg-red-900 text-white font-bold py-3 px-3 sm:px-4 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center min-w-0 flex-1 max-w-[100px] sm:max-w-none"> <span class="text-xs sm:text-sm font-semibold">Entradas</span> </button> <button onclick="showPrecoBaixo()" class="nav-btn bg-red-800 hover:bg-red-900 text-white font-bold py-3 px-3 sm:px-4 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center min-w-0 flex-1 max-w-[100px] sm:max-w-none"> <span class="text-xs sm:text-sm font-semibold">Preço baixo</span> </button> <button onclick="openVinhos()" class="nav-btn bg-red-800 hover:bg-red-900 text-white font-bold py-3 px-3 sm:px-4 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center min-w-0 flex-1 max-w-[100px] sm:max-w-none"> <span class="text-xs sm:text-sm font-semibold">Vinhos</span> </button> <button onclick="openBebidas()" class="nav-btn bg-red-800 hover:bg-red-900 text-white font-bold py-3 px-3 sm:px-4 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center min-w-0 flex-1 max-w-[100px] sm:max-w-none"> <span class="text-xs sm:text-sm font-semibold">Bebidas</span> </button>
-   </div>
-  </div><!-- Modal para visualizar imagens -->
-  <div id="imageModal" class="modal"><span class="close" onclick="closeModal()">×</span> <img class="modal-content" id="modalImage" alt="Imagem ampliada">
-  </div><!-- Menu Container -->
-  <div class="container mx-auto px-4 py-8"><!-- Search Results Section -->
-   <div id="searchResults" class="mb-12 hidden">
-    <h2 class="section-title text-3xl font-bold text-gray-800 mb-8 text-left pb-4 editable" data-type="text" data-key="search-results-title" style="font-family: 'Mediapro', sans-serif;">Resultados da Pesquisa</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="searchGrid"><!-- Search results will be populated by JavaScript -->
-    </div>
-    <div id="noResults" class="text-center py-12 hidden">
-     <div class="text-6xl mb-4">
-      🔍
-     </div>
-     <h3 class="text-xl font-semibold text-gray-600 mb-2">Nenhum prato encontrado</h3>
-     <p class="text-gray-500">Tente pesquisar com outras palavras-chave</p>
-    </div>
-   </div><!-- Preço Baixo Section -->
-   <div id="preco-baixo" class="mb-12 hidden">
-    <h2 class="section-title text-3xl font-bold text-gray-800 mb-8 text-left pb-4 editable" data-type="text" data-key="preco-baixo-title" style="font-family: 'Mediapro', sans-serif;">💰 Preços Baixos (R$ 20 - R$ 50)</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="precoBaixoGrid"><!-- Preço baixo items will be populated by JavaScript -->
-    </div>
-   </div><!-- Entradas Section -->
-   <div id="entradas" class="mb-12">
-    <h2 class="section-title text-3xl font-bold text-gray-800 mb-8 text-left pb-4 editable" data-type="text" data-key="entradas-title" style="font-family: 'Mediapro', sans-serif;">Entradas</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="entradasGrid"><!-- Entradas will be populated by JavaScript -->
-    </div>
-   </div><!-- Pratos Principais Section -->
-   <div id="pratos-principais" class="mb-12">
-    <h2 class="section-title text-3xl font-bold text-gray-800 mb-8 text-left pb-4 editable" data-type="text" data-key="pratos-principais-title" style="font-family: 'Mediapro', sans-serif;">Pratos Principais</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="pratosGrid"><!-- Pratos principais will be populated by JavaScript -->
-    </div>
-   </div><!-- Pratos Executivos Section -->
-   <div id="executivos" class="mb-12">
-    <h2 class="section-title text-3xl font-bold text-gray-800 mb-8 text-left pb-4 editable" data-type="text" data-key="executivos-title" style="font-family: 'Mediapro', sans-serif;">Pratos Executivos</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="executivosGrid"><!-- Pratos executivos will be populated by JavaScript -->
-    </div>
-   </div><!-- Sobremesas Section -->
-   <div id="sobremesas" class="mb-12">
-    <h2 class="section-title text-3xl font-bold text-gray-800 mb-8 text-left pb-4 editable" data-type="text" data-key="sobremesas-title" style="font-family: 'Mediapro', sans-serif;">Sobremesas</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="sobremesasGrid"><!-- Sobremesas will be populated by JavaScript -->
-    </div>
-   </div>
-  </div><!-- Scroll to Top Button --> <button id="scrollToTop" class="fixed bottom-6 right-6 bg-red-600 hover:bg-red-700 text-white p-4 rounded-full shadow-lg hover:shadow-xl transform hover:scale-110 transition-all duration-300 z-50 opacity-0 invisible" onclick="scrollToTop()" aria-label="Voltar ao topo">
-   <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
-   </svg></button> <!-- Footer -->
-  <footer class="bg-gray-800 text-white py-8 mt-12">
-   <div class="container mx-auto px-4 text-center">
-    <div class="border-t border-gray-700 pt-6">
-     <p class="text-gray-400 text-sm editable" data-type="text" data-key="footer-text">© 2025 Todos os direitos reservados | Criado por <a href="https://instagram.com/zerotofameoficial" target="_blank" rel="noopener noreferrer" class="text-red-400 hover:text-red-300 font-semibold transition-colors"> @zerotofameoficial </a></p>
-     <div class="mt-4"><button onclick="requestPassword()" class="bg-gray-700 hover:bg-gray-600 text-gray-300 hover:text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors border border-gray-600"> 🔧 Admin </button>
-     </div>
-    </div>
-   </div>
-  </footer>
+    </section>
+   </div><!-- Footer -->
+   <footer class="text-center py-12 border-t border-opacity-20" style="position: relative; z-index: 1;">
+    <p id="footer-text" class="font-montserrat text-sm tracking-wider opacity-60">Chef Executivo: Alexandre Dubois | Reservas: (11) 3456-7890</p>
+   </footer>
+  </div>
   <script>
-        // Variáveis globais
-        let isEditMode = false;
-        let currentEditElement = null;
-        let editData = {};
+    const defaultConfig = {
+      background_color: "#0a0a0a",
+      text_color: "#ffffff",
+      accent_color: "#9d7a3a",
+      border_color: "#2a2a2a",
+      font_family: "Playfair Display",
+      font_size: 16,
+      restaurant_name: "Invó",
+      restaurant_tagline: "Comida gostosa do jeitin do abraço de vó",
+      entradas_title: "Entradas",
+      principais_title: "Pratos Principais",
+      executivos_title: "Pratos Executivos",
+      sobremesas_title: "Sobremesas",
+      footer_text: "• Terça a sábado a partir das 18:00h • Domingo almoço às 11:00h • Contato: 83 9179-5370"
+    };
 
-        // Dados do cardápio
-        const menuItems = [
-            {
-                name: "Pastéis Sortidos",
-                price: "29,90",
-                description: "Carne, Pepperoni, Costela, Carne de Sol",
-                image: "🥟",
-                imageUrl: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjaHl9C5mYm6HQMwgaslN8z7pek1E5I43OEkSb-7i_Jz92_8RmYFM9U9YCi4zxPyHW4VY-JCDW9m-7gEPdU30lJJEv5bkT-GLAfM2kJyZX6xavtYd6XsXpChiany2F5GP38K5-7z8CkYJwVPch6C4Tk5bUhcvp_mhY3yOfIPBRudVQ7FUo7J9scY8dz_JM5/s6240/IMG_0468.jpeg",
-                category: "entradas"
-            },
-            {
-                name: "Pastéis de Camarão",
-                price: "34,90",
-                description: "Pastéis com creme cheese, creme de camarão servido com molho de ervas.",
-                image: "🦐",
-                imageUrl: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgHIcIycf3R3LuY-iN4fMAGq-fYhqWzQqNY1pfqwMeEPz9ktQ81a8lrcDwsQPuxq2HuGJOja4hrPXh36Tt3OmuSyj21s9FEyBLK9KU0OdGPH_eKFRloDywjIZW2aibnjGqBsSygNw9G7t6ZAd882lJ3t3aKsDaKqxSnkQHWSmmCXTIKalTvk8mLQSZd2P8E/s16000/IMG_0469.jpeg",
-                category: "entradas"
-            },
-            {
-                name: "Fritapá de Camarão",
-                price: "25,90",
-                description: "Bolinho frito de vatapá de camarão com base de moqueca, crocante por fora e cremoso por dentro.",
-                image: "🍤",
-                imageUrl: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiTvN9s9rV_KCTD75eaN4QWEsxQ56LVPlG9x4UcFnJfTndyip8NpB-VhVpP1iGCO5w3AL8OIyh_dGqcDrn4qdld9EusQf6XPogRE9ooKZXkmlE3-2McekufFd6S54v-pnMsgslmGhwrvXv0NuIviHkhP7PULA2QfaBpnaOyz7_6NpPHQNTscbHwJeqH7DU1/s3888/IMG_0479.jpeg",
-                category: "entradas"
-            },
-            
-            {
-                name: "Caldo da Caridade",
-                price: "16,90",
-                description: "Caldo de carne moída, legumes e ovo.",
-                image: "🥣",
-                imageUrl: "https://blogger.googleusercontent.com/img/a/AVvXsEiB9D0OEGiaQQWfcoIscSrjxtS_A09kHR6A70F-XcS4Y3HoYmBHsrYM7XnrOM-t9L3gqo6cs2FWpMRRkPv5bTuldGu1tNH59hgW2cC2g0zznCVNhIl1Ot2apS1Ha79gB0IzzmkngVhRxpxxh4xHs9Un1mAdIhp3opBt8i-um7j6Nb-trbAvGMRh4X6stdGd",
-                category: "entradas"
-            },
-            {
-                name: "Carne de Sol Com Macaxeira",
-                price: "39,90",
-                description: "Carne de sol salteada na manteiga da terra e cebolas roxas, servidas com macaxeira cremosa e cubos de queijo coalho.",
-                image: "🥩",
-                imageUrl: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjwvwE6DcQbcze_mB2L4tneoeonRVv0eXCxXGSMiE1_f3NxBSkOeFhKNVC9QyTTVVVQgm6G5Oi59aUStQKVh7f5AODDYHn4rPRXlrwksG78o8KRQlCgP2Q3mRa5uLwADZ__0N_1_rx_92GzwXRIB4V7wYlfywNYh38YirtyklGexiCrVpj5wCehiJVrVslo/s3888/IMG_0474.jpeg",
-                category: "entradas"
-            },
-            {
-                name: "Sol do Sertão",
-                price: "29,90",
-                description: "Chips crocantes de macaxeira servidas com carne de sol desfiada, creme de nata.",
-                image: "🌞",
-                imageUrl: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiSnsiAPdH97s30LiMn9gGMgidfmRzXDmM6UoIORfIaG8DbQ8Q6VQ8NfX0voK61z-aw2oQTTProT7wAFc1jUKlKIiL3RGyLzGMn2g3q2gZ-LtVUERvQve4eeiORRtg8rm3KqwwQqgmD4spJnFAHw9hVdRv21xdgvFJuiBLqJpFwqJMLRqg5ymk6nmSTm7li/s16000/IMG_0475.jpeg",
-                category: "entradas"
-            },
-            {
-                name: "Batata Frita",
-                price: "16,90",
-                description: "Palitos de batata inglesa crocantes e servidos com raspas de queijo e molho da casa.",
-                image: "🍟",
-                imageUrl: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhGbh5RkmvuSrJuxuda6jgcIfFt9jyzl4Nz114LtYlwX5tzadKdWjcTpnrjFO9K1jDlcbxjTQ0pPH6LIJpAFuyu58LGlAco9x4oaOIyomLydM6fYaVYGkYXakF_xuPMa5LPjodQ_WOJP7DjiqU5XIie1B4QKrbz1rXpB1qPXgzwy5PyoxwRupQZk_JpJZ13/w1684-h1069-p-k-no-nu/IMG_0580.jpeg",
-                category: "entradas"
-            },
-            {
-                name: "Franguim Avuado",
-                price: "29,90",
-                description: "Meio da asa marinadas no sous vide, fritas e servidas com molho barbecue asiática de abacaxi e gergelim.",
-                image: "🍗",
-                imageUrl: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgpKKw7SMFcvMsVDz5QEjWUzWq7R-DYP-z1nqK2FChXmEtSUrEKyPylAcscuGIzgsl8eOwQLKI_p0jnK4LpSmV9I_K10dcjQWYNTbUekX0N6ZCPABwL42i5NXI7bLpO7taM2Kbg58f_o_DrJVDf3iIfIS0u0nHsXh1povlA090XKRAq_xDP_6bl957EZZSW/s3888/IMG_0484.jpeg",
-                category: "entradas"
-            },
-            {
-                name: "Croquetas Caipira",
-                price: "29,90",
-                description: "Croquetas de frango recheados com milho e bacon.",
-                image: "🌽",
-                imageUrl: "https://blogger.googleusercontent.com/img/a/AVvXsEgkaxooT7hzSlO6LZeXLmIzHYnxwxzoGuctJVEJcvoyUNH_G8OHKsNkfwwNhSR3tr-ro7x-WWA_Bx49cwtnDQoXIXP-E7UrhrJbO6B_6RBPW7_s7e57ni16moJ5fWuw_LPuUHrcvh3MXtHygc90bHjjuZxBufgDKdOqD1uCp5P0V3ycLKhOHhJszMYeyM1b",
-                category: "entradas"
-            },
-            {
-                name: "Sushi de Carrazera",
-                price: "34,90",
-                description: "Sushi crocante com massa de macaxeira, cubos de charque e carne de sol servido com molho de rapadura.",
-                image: "🍣",
-                imageUrl: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgBQ-3ssQy8zdx81f5l6Ob5sTZUoaq8JkE1GIzB0MolmmztlJcvKjkgGsl_kW7ZwiK7F4NPcst-bkTltqzinqkiGUpdzD_sb7B0AqeDloyUXS10iqFw9km_cwnmJxTPCrcfwpZ7sFT2F0Fww5vxnmgcfVFiqrERQquXS9p9RBImeOwAfw-CYwHqAJfX316v/s6240/IMG_0477.jpeg",
-                category: "entradas"
-            },
-            {
-                name: "Isca de Tucunaré",
-                price: "32,90",
-                description: "Tiras de tucunaré à milanesa servido com molho rosé.",
-                image: "🐟",
-                imageUrl: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhGrDHT88t5yzUcM1dzqjKzB78qlrBDGi1fRAxgYAcz1e_iBtvgLyUiDsfi0GLkDnTlulBKpb2xd2J42NRTGM1yvSDyIIAzfJ3lh9OaWJwFOLnJdz8r0OArImfuIgFoHH32rKsxR9zJ0aCpvc92ATVhU8tBMUiJuGGeeBvqMVKN_SluQSvj3UrPLD25xdWs/w1684-h1069-p-k-no-nu/IMG_0581.jpeg",
-                category: "entradas"
-            },
-            {
-                name: "Filé no Panne",
-                price: "79,90",
-                description: "Tiras de filé mignon salteadas com creme de gorgonzola servido no pão italiano quentinho.",
-                image: "🥩",
-                imageUrl: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjRA9Z7cG17Y6P9hzQNsWSPZcb8xT4WRMd-usR4aU_kwR_T8xqCGAfVnOmxG5RMe6G75Xng91Hz2wO411uLM8Kx_xvbH6lyG2SAl8dAqj2-dOD7s29_DL-zv6VsM3a_nShuyOtBU7oiApMxo60l-E94xbae68aqGTanQklI_VefU8JDmw2zaem4Kjgn41Gx/s3888/IMG_0481.jpeg",
-                category: "entradas"
-            },
-            {
-                name: "Ai meu coração",
-                price: "39,90",
-                description: "Coração de galinha marinado no shoyu salteado no molho oriental e servido com chips de macaxeira.",
-                image: "❤️",
-                imageUrl: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh0bV_3PCc6Rdh4XYzdI3XEQwi3yyISCANNd9UJqPlUN9MUPjovfwxUDoUlVFVF4i1vYCAZ9toW5dGoHqR-otUwaDer6AWr3prY18y_1oquOzZGmIj5tqI_L8JvZtcBcvHG8SY2AwP3p1uwXpm4gvP22jxoqfz0RNBa_FyafEGO9MlQKxhddvgYu-YbSxtR/s1320/IMG_0583.jpeg",
-                category: "entradas"
-            },
-            {
-                name: "Camarão alho e óleo",
-                price: "59,90",
-                description: "Camarão com cascas salteado no azeite de oliva, alho e limão.",
-                image: "🦐",
-                imageUrl: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgpn4qEDPVB-xjJAYw8-VTWe0Iu_zC7PEchdHyLoN-Wgo4wGzty7PKluFAA7FWYwtOHv6oAgkimXwEdwiRZzOCcknmog5F3ElkfwyBCr8AnlI5iKw8FGNk2LbFlUXCCfsKXcI_Nqh86OveUFI1-qOnKUd9VU9dFTkwMbWPEMP24ZOpSZuF1E1ZO1kZQ2Mvy/s1434/IMG_0582.jpeg",
-                category: "entradas"
-            },
+    async function onConfigChange(config) {
+      const bg = config.background_color || defaultConfig.background_color;
+      const text = config.text_color || defaultConfig.text_color;
+      const accent = config.accent_color || defaultConfig.accent_color;
+      const border = config.border_color || defaultConfig.border_color;
+      const fontFamily = config.font_family || defaultConfig.font_family;
+      const fontSize = config.font_size || defaultConfig.font_size;
 
-            {
-                name: "Camarão João Pessoa",
-                price: "149,90",
-                description: "Arroz gratinado de camarão puxado à base de moqueca e servido com camarões empanados.",
-                image: "🦐",
-                imageUrl: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEixP2cSPCmz4MddiB3uvXgmly3xOfaIL91HCmv8KgxNc6McBecOvNChyvhesS73iG0oPnR5tnAj951Ymes2yAi14h-UtOCXE85iDSn9ME8F1uH_0cQ4Gpiq6yPaqdwIJ05od3He9lXES-Y1wH26CVvsR_h16k3CcqefNoTZf-3PkF6UWjx3xmmMQ-TmXnbc/s3888/IMG_0483.jpeg",
-                category: "pratos-principais"
-            },
-            {
-                name: "Filé à Parmegiana dupla",
-                price: "129,90",
-                description: "Tradicional filé empanado servido com cama de molho de tomate italiano e gratin de mussarela, servido com massa (grano duro).",
-                image: "🍝",
-                imageUrl: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiaLEFMgAWPQezMUINHmtHxeziTevB4eegkuvn78MfPN2DpkVA6bsOhzY5TDo26DcC5m0eJJllpxkBbka-Ut9D40o3wk75kgi9KtM-9E8xNZDZ7c136JlGiEmT-_EBSRJl2Mrr-CITT2I0tRkuhkAgPyW7Q2V6Osbz7bD3JwrS70iyq6yW7ma5CmZHRa7G1/s1320/IMG_0587.jpeg",
-                category: "pratos-principais"
-            },
-            {
-                name: "Picanha Trinchada",
-                price: "89,90",
-                description: "Steaks de picanha selada na chapa com manteiga de ervas, sal temperado e cebolas roxas, servido com acompanhamentos:farofa e vinagrete.",
-                image: "🥩",
-                imageUrl: "https://blogger.googleusercontent.com/img/a/AVvXsEh2Rv3MD-042uJiS9n_ExdXnPLC9Zblef_YHIzD57SxSA3qY15yRSVs09goQWbFHQALa_bWBtMPlmDOs5YEXBl5ERBFlC0yY6NTej5D1xfPksaFWp6v2cNufX_eIR-eyvZbZBSK8rLj_7KsT9sAu_4hK-0XAiW2NBsJcO7_AVqFn8q31CK4YTd4a5z7kcql",
-                category: "pratos-principais"
-            },
-            {
-                name: "Picanha Completa",
-                price: "159,00",
-                description: "Picanha trinchada grelhada na chapa com temperos especiais, servida com acompanhamentos tradicionais.",
-                image: "🥩",
-                imageUrl: "https://blogger.googleusercontent.com/img/a/AVvXsEgq8dsIPLUBIpBvP2trfO6_jjCr-wuydR9ftMQ1lmiU7BL9iNiupfc682cnpdVmuRRuNBXoguAO7szlkQkOEo8EYD6NzWTSnU23BkB4FqMWkq9xhitVpc7-2o4YOjsJ4lQVhnt4iflP6JcYH0KEqxDBF4N_Jcl4ubk2pBYJZocdmAXx2aKSGgkL63_xlqDC",
-                category: "pratos-principais"
-            },
-            {
-                name: "Filé de Seu Pedro",
-                price: "189,00",
-                description: "Medalhões de filé mignon selados e flambados servidos com creme de gorgonzola. Acompanha: Arroz à Piemontese.",
-                image: "🥩",
-                imageUrl: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhrTFmhbGuscTa1SrjYXr-Sqn2lqeW7NHCOOafVyTRF1JBarOGLmNUQ12WQRWV8q8lGUuola-yWv9_ROoBWfRpdODSUEFSJdX9G9xvto433Qhz8C1sdKVIEh5jxo7l8oFBfND5LCQolDh4OaaYOn_WibFQGIfvFD9VMpzUQaqj31mMQaKNbF0WN_1g85MeQ/s1462/IMG_0586.jpeg",
-                category: "pratos-principais"
-            },
-            {
-                name: "Costela de Bacurim",
-                price: "89,90",
-                description: "Costela suína assada lentamente regada com barbecue de abacaxi. Acompanha batata corte rústico temperadas com tempero do chef.",
-                image: "🍖",
-                imageUrl: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg-C6Zld-fY1bEWT401V4aoU9n5i1Ln80dEd0fb_hwQGtAr6Cl599ZRMZT0Ofjtwt5ZJotIq0WG5yYJmuo_axNLhWgUywMKrtQQL1NztvygIBmgiaAA1NYjrjl3J45kWSj8BZEiG31zG2kha0lCGUgqXv6JoS8SMp4KDcP0_4H-fg91KMWEiolet7wngiPt/s3888/IMG_0485.jpeg",
-                category: "pratos-principais"
-            },
-            {
-                name: "Cumê de Rico",
-                price: "59,90",
-                description: "Arroz cremoso ao molho branco, puxado com camarões salteados e camarões empanados.",
-                image: "🦐",
-                imageUrl: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjuECi2xjpnvk3EfiX5cqj6qofdqy2tRifJmeELJoYX4E53FQfMVost7cLJTzmQAMFneHiJV0LW-JRzQTW9LTRUSaWZ8ZrGXY55vLVU4klYY840uD5XXr3Qoio1JtLq9cFR5xqo4Oq5D-y5PCkYwLDJtabV_ZaVydLGsSJY6TdREMNoAs-oMIpQm_-3HOrH/s6240/IMG_0588.jpeg",
-                category: "executivos"
-            },
-            {
-                name: "Boi Bêbo",
-                price: "39,90",
-                description: "Costela bovina marinada na cerveja preta e ervas assada levemente ao vapor e servida com nosso delicioso arroz de jerimum e cebolinho.",
-                image: "🍺",
-                imageUrl: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjPlH5EwQb3nLaNFU1g8Uo99Ld4Ob2QwHD-SbJ0RwZpTPL36JR9BPwZGT9B4V1HpJi4g6al2wr7_MXn5_kfW9plZjK9jkKl8sCn8MUDXAaZDMi-lX7KFu2MCuqJNJzHHXw1TZ69oT3FiGXMVDL6ayL7X0ZdFgbZkHi_NMmGrqTLyAggEeHIAYV5znp5iASL/s1506/IMG_0591.jpeg",
-                category: "executivos"
-            },
-            {
-                name: "Cumêzim de Vó",
-                price: "32,90",
-                description: "Arroz vermelho cozido ao leite, servido com chips de macaxeira crocante e carne de sol desfiçada.",
-                image: "🍚",
-                imageUrl: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiqNdELCwu7nu4Cvdw2VWFolczTXNI3nT-ZGgNlsRzCXcgUUztAdH-HQawikC_w8uDzG5L4MvgGxvVc0VKevB2FKYjmXVhObQ-TqYGwE5sZVvA52PP82XwM54TyQfDkLevkWqg2DWE84R4USf4jp5Qklmrpb_NfJehy0KnauCtxaAtQy6oi5c2MEGimYFyQ/s1320/IMG_0592.jpeg",
-                category: "executivos"
-            },
-            {
-                name: "Filé à Parmegiana",
-                price: "59,90",
-                description: "Filé empanado com cama de molho de tomate italiano e gratin de mussarela, servido com massa italiana.",
-                image: "🍝",
-                imageUrl: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiv_I9Xj8TjcYZbqleQ57g-5p1haruAPqTeOyM4Ty6L3x8I8SjshZxd9vQn7mTWN4JThn_9ugWrZ4RGmgEuOFUCkM5b4SS_tDwMtxhOXAF5rcvVx6eUeQp2AHO13cfbYM3q4aC4l-7NG0Np7yltXcWhC6tT7cTH1BHt8Km0KNWyb6LQFCgP0hJ3Y_JQBrHF/s1675/IMG_0593.jpeg",
-                category: "executivos"
-            },
-            {
-                name: "Baião de 4",
-                price: "49,90",
-                description: "Baião de feijão verde puxado com carne de sol, queijo coalho, charque, torresmo e servido com couve frito.",
-                image: "🫘",
-                imageUrl: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhnIq8A0EF0Ed0PzYPn0Xn1SW1VQitEE06ZqkORvRukgmNbrJAObMieff_olxvjWCOyl1cdN-_DThuB3y0cDPBmyO4OxPe8Jzbw_arskmOPMbNBRaeCcQVP_QXKL4ILqI3bV5_271vLWVbpNDJE0z9kQtiX2Z2ViCR5nvFcYOlmXFCNzXy_njqKR9XK0g5C/s3888/1735_Thiago_Ferreira_Fotografia.jpg",
-                category: "executivos"
-            },
-            {
-                name: "Camarão do Chef",
-                price: "72,90",
-                description: "Massa italiana com molho bisque de camarão, finalizado com tomates confitados e camarões salteados.",
-                image: "🍝",
-                imageUrl: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhTI-v_lNJtkfW-putMLKq4sdHNbaiZo4apyyaO2PdOpPGMIXnDLU-NpM5CE0UCkAyAOCu_RAoAeimXjR4m7tV2P-zLk4F9sQfK_HjVQXL9sO_ZNYvq_sLj4X-UEPh3k_zgFbhduFJbou1f8unRU4KYnpUsEw-nkI4T6fS8lJPbiHHT_PChVCV_Qjes7MXZ/s1414/IMG_0594.jpeg",
-                category: "executivos"
-            },
-            {
-                name: "Frango à Parmegiana",
-                price: "39,90",
-                description: "Filé de frango empanado com cama de molho de tomate italiano e gratinado de mussarela servido com massa italiana.",
-                image: "🐔",
-                imageUrl: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhXL-bJp4ImlqkU8XQBMIBOWvX2vFL00gPuiSRyzp-DepWdZ1P-p-8M1hOrKYSsy8SLoGnK0fuyleSaQqXWqM4mBORQ9f_RNOcIsuwB7fLxp5TIWKyFgDXK4RJSGLRjSWdM5R3Ahx9JUX64rlvK_0G1QjBxbeXyP98avg3hCKcDANKl6_75cPVxQzXeFqpP/s3888/1910_Thiago_Ferreira_Fotografia.jpg",
-                category: "executivos"
-            },
-            {
-                name: "Frango à Parmegiana Trinchada",
-                price: "39,90",
-                description: "Filé de frango trinchado com molho de tomate italiano e gratinado de queijo mussarela.",
-                image: "🐔",
-                imageUrl: "https://blogger.googleusercontent.com/img/a/AVvXsEiF6I3BDBOJS8w_F1YR2io8T37CXODc9vcAEJMn2zQgKVfbb5Knw3XeqpieM3TOAl-FQVMR8Kf-sG9YwC-MmkjhbZTOOmhfMD1wlFpQTJdpGqnWLmrLmMMsUk-UWVV1571Ne-wBtOZ1fD0f8Gc8KyWyapZURWW-Vz4ykAfjZkq3KVz3ClbZ_W2gleoRsA_Y",
-                category: "executivos"
-            },
-            {
-                name: "Camarão à Romana",
-                price: "54,90",
-                description: "Camarões inteiros com cama de molho rosê e gratinado de mussarela.",
-                image: "🦐",
-                imageUrl: "https://blogger.googleusercontent.com/img/a/AVvXsEjAr7mxPn09Hqm7B1tNrYuR93WtVkOrWClL2QQsw_IvL8-aWgHECDW17GSRCLLh0ceDUfniANMsEsqUyavsRSXyiKhKVcV3Yw-Gg2LeUl4E3fZlx1tNMnOu5ylWHZwgn01u1DNk2frH7MxiK1ZF0pptGMJUytjBntJTRRW2knvKwPgWbtieYDCHjntzvMtX",
-                category: "executivos"
-            },
-            {
-                name: "Arroz à Piemontese",
-                price: "19,90",
-                description: "Arroz cremoso quatro queijos.",
-                image: "🧀",
-                imageUrl: "https://s2-receitas.glbimg.com/-sgWIXsrYhqvx1NPI2R4u-nPXVU=/0x0:1280x800/1000x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_1f540e0b94d8437dbbc39d567a1dee68/internal_photos/bs/2022/T/v/SCRij3TS2bYO5oGKS10A/arroz-a-piamontese-receita.jpg",
-                category: "executivos"
-            },
-            {
-                name: "Franguim Magrim",
-                price: "39,90",
-                description: "Filé de frango cozido levemente no suco, grelhado na chapa e servido com arroz branco e mix salada crua.",
-                image: "🐔",
-                imageUrl: "https://blogger.googleusercontent.com/img/a/AVvXsEgkzUEIxBh2VQMEHZGKRgPrORdAII9wAp_tW-pRFphk4avURiZMyZoKLy3eyglRyKtte_HFqlEXksQfDsPavG11bIbeyEgTSg7Omam5otkM7AH6CrGAgp6y-VTe_LZ8IBfMKY9FFNyVC80wuvwsk72E8lyH214zqpds3WpArIKcMa4Ab6UdSNFfheivWJgS",
-                category: "executivos"
-            },
-            {
-                name: "Dirmantelo de Goiabada",
-                price: "32,90",
-                description: "Brûlée de creme de queijo de manteiga com calda de goiabada, crumble de biscoito e castanha de caju.",
-                image: "🍮",
-                imageUrl: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjQP63-CilGvc5sR03eAHyC_jY8qSio8KO3myjCjCDogbj2VSQ4RIu4-Bx0n0k1NoGzF93sNa2hebTCLlv7wGhbOxbmA4JOmpAA9fgMXEEyxvNZj0yOyWxpRODEQvy-3wRlWUN84iqxSCtrxKmavhiaVOhIqTmPwaQ7MeBiaa7PUj5BPyzJXq5bSeCkv7nh/s5628/2350_Thiago_Ferreira_Fotografia.jpg",
-                category: "sobremesas"
-            },
-            {
-                name: "Pudim Matuto",
-                price: "19,90",
-                description: "Nossa tradicional receita de pudim feito com leite de coco e calda de rapadura.",
-                image: "🍰",
-                imageUrl: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjvN6Igv_vN-9ZL0ct7rHhI8FP_LRC-8Br2SUxw44WLFW42sua_2Ic2K-Kfh-rlBsBREqB3jcNSK1xP1ahOCGW0-gLxNo1Mo8MZIQdIeLtABBIu-tiQG7m1yr7PfrzjucggWXnLebTWqzf3IDEySNSKjMdXEIQSiTjwfse19yeWjb6k354R_LHLsD1yohXM/s6240/2579_Thiago_Ferreira_Fotografia.jpg",
-                category: "sobremesas"
-            },
-            {
-                name: "Bagaceira de Chocolate",
-                price: "32,90",
-                description: "Gran Gateau de chocolate com picolé crocante.",
-                image: "🍫",
-                imageUrl: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg_wYresLuUGumZHiNmj2VCk-SCBI7g3ASxsVU34QeF66eyV59u-jmL1bPVyiIzJ9TzP4eJjPqBNgyakc0JAI1OlAjHCUTCyds_42EzryD_Eqo1awBm4_dWELSRsGNoBd1lEMD-lJBJkip1WdqniSsKXkoSYRCLvl5JNgT2ZZSTrsKgnuE5vy6pDHXjVBup/s6240/1952_Thiago_Ferreira_Fotografia.jpg",
-                category: "sobremesas"
-            },
-            {
-                name: "Cocada Quente",
-                price: "34,90",
-                description: "Cocada cremosa assada ao forno com brûlée e sorvete de creme.",
-                image: "🥥",
-                imageUrl: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhpX75QJLs-Bq7JoswISnWqYvcTaBbLqTGyW7zbmbGuG8wtvrnFD9Z-QeAD8SOIFHYKBxePixp463qyL6mueCWMgjLN5dGcgEq0HvLA7L8c1hYrGkGq88TakacSrK1nd2BgqthqJr7zytNi3nF8ThtnsVtU1jgbibIpV9kVoDVgKpPbDV-AeX846fCXB-Uy/s1600/b1da8d55-adec-43ff-b2fb-1afedb34ab33.jfif",
-                category: "sobremesas"
-            },
-            {
-                name: "Surpresa de Morango",
-                price: "34,90",
-                description: "Creme baunilha, sorvete creme e geleia de morango.",
-                image: "🍓",
-                imageUrl: "https://blogger.googleusercontent.com/img/a/AVvXsEgcPI8ajBEuC5wFGqVQsrrZK0iDjnvj645C5jG6D5sB78GQdnMXT7SKbtZPEJrkYKGTxLl45gzU0Jgu5WZWXasAUcMYivAosIqYhXFsSYerwUIJZg2YPB75o-e9q-VQ1B97Twt9mZo5yP4JkW50XJ1BFwL75OGjrjCa0SiudZPzEI9U1MKVtTHX3NgV4hl_",
-                category: "sobremesas"
-            }
-        ];
+      // Apply colors
+      document.getElementById('app').style.backgroundColor = bg;
+      document.getElementById('app').style.color = text;
+      
+      // Update accent colors
+      document.querySelectorAll('.gold-gradient').forEach(el => {
+        el.style.background = `linear-gradient(135deg, ${accent} 0%, ${adjustBrightness(accent, 30)} 50%, ${accent} 100%)`;
+        el.style.webkitBackgroundClip = 'text';
+        el.style.webkitTextFillColor = 'transparent';
+        el.style.backgroundClip = 'text';
+      });
 
-        // Funções do Modo Edição
-        function enterEditMode() {
-            isEditMode = true;
-            document.body.classList.add('edit-mode');
-            document.getElementById('editOverlay').classList.add('active');
-            document.getElementById('adminToolbar').classList.add('active');
-            
-            // Adicionar eventos de clique aos elementos editáveis
-            const editableElements = document.querySelectorAll('.editable');
-            editableElements.forEach(element => {
-                element.addEventListener('click', handleEditClick);
-            });
-            
-            showEditMessage('Modo de edição ativado! Clique em qualquer elemento para editá-lo.');
-        }
+      document.querySelectorAll('.ornament').forEach(el => {
+        el.style.background = `linear-gradient(90deg, transparent, ${accent}, transparent)`;
+      });
 
-        function exitEditMode() {
-            isEditMode = false;
-            document.body.classList.remove('edit-mode');
-            document.getElementById('editOverlay').classList.remove('active');
-            document.getElementById('editPanel').classList.remove('active');
-            document.getElementById('adminToolbar').classList.remove('active');
-            
-            // Remover eventos de clique
-            const editableElements = document.querySelectorAll('.editable');
-            editableElements.forEach(element => {
-                element.removeEventListener('click', handleEditClick);
-            });
-            
-            showEditMessage('Modo de edição desativado.');
-        }
+      document.querySelectorAll('.section-divider').forEach(el => {
+        el.style.background = `linear-gradient(90deg, transparent, ${accent}, transparent)`;
+      });
 
-        function toggleEditPanel() {
-            const panel = document.getElementById('editPanel');
-            panel.classList.toggle('active');
-        }
+      document.querySelectorAll('.dish-image').forEach(el => {
+        el.style.borderColor = accent;
+      });
 
-        function handleEditClick(event) {
-            if (!isEditMode) return;
-            
-            event.preventDefault();
-            event.stopPropagation();
-            
-            currentEditElement = event.target;
-            const key = currentEditElement.getAttribute('data-key');
-            const type = currentEditElement.getAttribute('data-type');
-            const currentValue = currentEditElement.textContent || currentEditElement.value;
-            
-            showEditForm(key, type, currentValue);
-            document.getElementById('editPanel').classList.add('active');
-        }
-
-        function showEditForm(key, type, currentValue) {
-            const formContent = document.getElementById('editFormContent');
-            
-            let formHTML = `
-                <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                        Elemento: <span class="font-bold">${key}</span>
-                    </label>
-                </div>
-            `;
-            
-            if (type === 'text') {
-                formHTML += `
-                    <div class="mb-4">
-                        <label for="editValue" class="block text-sm font-medium text-gray-700 mb-2">
-                            Texto:
-                        </label>
-                        <textarea 
-                            id="editValue" 
-                            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" 
-                            rows="3"
-                        >${currentValue}</textarea>
-                    </div>
-                `;
-            } else if (type === 'image') {
-                formHTML += `
-                    <div class="mb-4">
-                        <label for="editValue" class="block text-sm font-medium text-gray-700 mb-2">
-                            URL da Imagem:
-                        </label>
-                        <input 
-                            type="url" 
-                            id="editValue" 
-                            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" 
-                            value="${currentValue}"
-                        >
-                    </div>
-                `;
-            }
-            
-            formHTML += `
-                <div class="flex gap-2">
-                    <button onclick="applyEdit()" class="edit-btn success flex-1">
-                        💾 Aplicar
-                    </button>
-                    <button onclick="cancelEdit()" class="edit-btn danger">
-                        ❌ Cancelar
-                    </button>
-                </div>
-            `;
-            
-            formContent.innerHTML = formHTML;
-        }
-
-        function applyEdit() {
-            if (!currentEditElement) return;
-            
-            const newValue = document.getElementById('editValue').value;
-            const key = currentEditElement.getAttribute('data-key');
-            
-            // Aplicar a mudança
-            if (currentEditElement.tagName === 'INPUT') {
-                currentEditElement.value = newValue;
-            } else {
-                currentEditElement.textContent = newValue;
-            }
-            
-            // Salvar no editData
-            editData[key] = newValue;
-            
-            showEditMessage(`Elemento "${key}" atualizado com sucesso!`);
-            document.getElementById('editPanel').classList.remove('active');
-            currentEditElement = null;
-        }
-
-        function cancelEdit() {
-            document.getElementById('editPanel').classList.remove('active');
-            currentEditElement = null;
-        }
-
-        function saveChanges() {
-            // Simular salvamento (em um sistema real, enviaria para o servidor)
-            localStorage.setItem('menuEditData', JSON.stringify(editData));
-            showEditMessage('Todas as alterações foram salvas com sucesso!');
-        }
-
-        function loadSavedChanges() {
-            const saved = localStorage.getItem('menuEditData');
-            if (saved) {
-                editData = JSON.parse(saved);
-                
-                // Aplicar mudanças salvas
-                Object.keys(editData).forEach(key => {
-                    const element = document.querySelector(`[data-key="${key}"]`);
-                    if (element) {
-                        if (element.tagName === 'INPUT') {
-                            element.value = editData[key];
-                        } else {
-                            element.textContent = editData[key];
-                        }
-                    }
-                });
-            }
-        }
-
-        function showEditMessage(message) {
-            // Criar ou atualizar mensagem de edição
-            let messageEl = document.getElementById('editMessage');
-            if (!messageEl) {
-                messageEl = document.createElement('div');
-                messageEl.id = 'editMessage';
-                messageEl.className = 'fixed top-20 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 text-sm font-medium opacity-0 transition-opacity duration-300';
-                document.body.appendChild(messageEl);
-            }
-            
-            messageEl.textContent = message;
-            messageEl.classList.remove('opacity-0');
-            messageEl.classList.add('opacity-100');
-            
-            setTimeout(() => {
-                messageEl.classList.remove('opacity-100');
-                messageEl.classList.add('opacity-0');
-            }, 3000);
-        }
-
-        // Funções administrativas avançadas
-        function addNewDish() {
-            const name = prompt('Nome do prato:');
-            if (!name) return;
-            
-            const price = prompt('Preço (ex: 29,90):');
-            if (!price) return;
-            
-            const description = prompt('Descrição:');
-            if (!description) return;
-            
-            const category = prompt('Categoria (entradas, pratos-principais, executivos, sobremesas):');
-            if (!category) return;
-            
-            const imageUrl = prompt('URL da imagem (opcional):') || '';
-            const image = prompt('Emoji do prato:') || '🍽️';
-            
-            const newDish = {
-                name,
-                price,
-                description,
-                image,
-                imageUrl,
-                category
-            };
-            
-            menuItems.push(newDish);
-            renderMenu();
-            showEditMessage(`Prato "${name}" adicionado com sucesso!`);
-        }
-
-        function editMenuStructure() {
-            showEditMessage('Funcionalidade de edição de estrutura em desenvolvimento...');
-        }
-
-        function exportData() {
-            const data = {
-                menuItems: menuItems,
-                editData: editData,
-                timestamp: new Date().toISOString()
-            };
-            
-            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `cardapio-backup-${new Date().toISOString().split('T')[0]}.json`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            
-            showEditMessage('Dados exportados com sucesso!');
-        }
-
-        function importData() {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = '.json';
-            
-            input.onchange = function(event) {
-                const file = event.target.files[0];
-                if (!file) return;
-                
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    try {
-                        const data = JSON.parse(e.target.result);
-                        
-                        if (data.menuItems) {
-                            menuItems.length = 0;
-                            menuItems.push(...data.menuItems);
-                        }
-                        
-                        if (data.editData) {
-                            editData = data.editData;
-                        }
-                        
-                        renderMenu();
-                        loadSavedChanges();
-                        showEditMessage('Dados importados com sucesso!');
-                        
-                    } catch (error) {
-                        showEditMessage('Erro ao importar dados. Verifique o arquivo.');
-                    }
-                };
-                reader.readAsText(file);
-            };
-            
-            input.click();
-        }
-
-        // Funções originais do cardápio
-        function createDishCard(item) {
-            const imageContent = item.imageUrl ? 
-                `<img src="${item.imageUrl}" alt="${item.name}" class="w-full h-48 object-cover lazy-load cursor-pointer hover:opacity-90 transition-opacity" loading="lazy" onclick="openModal('${item.imageUrl}', '${item.name.replace(/'/g, "\\'")}')" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                 <div class="h-48 bg-gradient-to-br from-red-100 to-red-200 flex items-center justify-center" style="display: none;">
-                     <span class="text-6xl" role="img" aria-label="${item.name}">${item.image}</span>
-                 </div>` :
-                `<div class="h-48 bg-gradient-to-br from-red-100 to-red-200 flex items-center justify-center">
-                     <span class="text-6xl" role="img" aria-label="${item.name}">${item.image}</span>
-                 </div>`;
-
-            return `
-                <article class="dish-card bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100" itemscope itemtype="https://schema.org/MenuItem">
-                    <div class="relative">
-                        ${imageContent}
-                        <div class="price-tag absolute top-4 right-4 text-white px-3 py-1 rounded-full font-bold text-lg" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
-                            <span itemprop="price">R$ ${item.price}</span>
-                        </div>
-                    </div>
-                    
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-800 mb-3 editable" data-type="text" data-key="dish-${item.name.replace(/\s+/g, '-').toLowerCase()}-name" itemprop="name">${item.name}</h3>
-                        <p class="text-gray-600 mb-4 text-sm leading-relaxed editable" data-type="text" data-key="dish-${item.name.replace(/\s+/g, '-').toLowerCase()}-description" itemprop="description">${item.description}</p>
-                        
-                        <button 
-                            onclick="openWhatsApp('${item.name.replace(/'/g, "\\'")}')"
-                            class="whatsapp-btn w-full text-white font-semibold py-3 px-6 rounded-xl flex items-center justify-center gap-2"
-                            aria-label="Pedir ${item.name} pelo WhatsApp"
-                        >
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
-                            </svg>
-                            Pedir pelo WhatsApp
-                        </button>
-                    </div>
-                </article>
-            `;
-        }
-
-        function openWhatsApp(dishName) {
-            const phoneNumber = "5583991795370";
-            const message = `Olá! Gostaria de pedir ${dishName}`;
-            const encodedMessage = encodeURIComponent(message);
-            const url = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
-            window.open(url, '_blank', 'noopener,noreferrer');
-        }
-
-        function openBebidas() {
-            const url = 'https://zerotofamebr.github.io/bebidasinv-/';
-            window.open(url, '_blank', 'noopener,noreferrer');
-        }
-
-        function openVinhos() {
-            const url = 'https://zerotofamebr.github.io/adegainv-/';
-            window.open(url, '_blank', 'noopener,noreferrer');
-        }
-
-        function showPrecoBaixo() {
-            clearSearch();
-            
-            const precoBaixoSection = document.getElementById('preco-baixo');
-            const precoBaixoGrid = document.getElementById('precoBaixoGrid');
-            const menuSections = document.querySelectorAll('#entradas, #pratos-principais, #executivos, #sobremesas');
-            
-            menuSections.forEach(section => section.classList.add('hidden'));
-            precoBaixoSection.classList.add('hidden');
-            
-            const precoBaixoItems = menuItems.filter(item => {
-                const price = parseFloat(item.price.replace(',', '.'));
-                return price >= 20 && price <= 50;
-            });
-            
-            precoBaixoItems.sort((a, b) => {
-                const priceA = parseFloat(a.price.replace(',', '.'));
-                const priceB = parseFloat(b.price.replace(',', '.'));
-                return priceA - priceB;
-            });
-            
-            precoBaixoGrid.innerHTML = precoBaixoItems.map(item => createDishCard(item)).join('');
-            
-            precoBaixoSection.classList.remove('hidden');
-            
-            setTimeout(initLazyLoading, 100);
-            
-            const headerHeight = 100;
-            const elementPosition = precoBaixoSection.offsetTop - headerHeight;
-            
-            window.scrollTo({
-                top: elementPosition,
-                behavior: 'smooth'
-            });
-        }
-
-        function openModal(imageUrl, dishName) {
-            showChoiceMessage();
-            
-            const modal = document.getElementById('imageModal');
-            const modalImg = document.getElementById('modalImage');
-            modal.classList.add('show');
-            modalImg.src = imageUrl;
-            modalImg.alt = dishName;
-            document.body.style.overflow = 'hidden';
-        }
-
-        function showChoiceMessage() {
-            let messageEl = document.getElementById('choiceMessage');
-            if (!messageEl) {
-                messageEl = document.createElement('div');
-                messageEl.id = 'choiceMessage';
-                messageEl.className = 'fixed top-20 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50 text-sm font-medium opacity-0 transition-opacity duration-300';
-                messageEl.textContent = 'Boa escolha!';
-                document.body.appendChild(messageEl);
-            }
-            
-            messageEl.classList.remove('opacity-0');
-            messageEl.classList.add('opacity-100');
-            
-            setTimeout(() => {
-                messageEl.classList.remove('opacity-100');
-                messageEl.classList.add('opacity-0');
-            }, 2000);
-        }
-
-        function closeModal() {
-            const modal = document.getElementById('imageModal');
-            modal.classList.remove('show');
-            document.body.style.overflow = 'auto';
-        }
-
-        document.getElementById('imageModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeModal();
-            }
+      document.querySelectorAll('.menu-item').forEach(el => {
+        el.addEventListener('mouseenter', function() {
+          this.style.borderLeftColor = accent;
         });
-
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeModal();
-            }
+        el.addEventListener('mouseleave', function() {
+          this.style.borderLeftColor = 'transparent';
         });
+      });
 
-        function initLazyLoading() {
-            const lazyImages = document.querySelectorAll('.lazy-load');
-            
-            if ('IntersectionObserver' in window) {
-                const imageObserver = new IntersectionObserver((entries, observer) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            entry.target.classList.add('loaded');
-                            observer.unobserve(entry.target);
-                        }
-                    });
-                });
+      const footerBorder = document.querySelector('footer');
+      footerBorder.style.borderTopColor = border;
 
-                lazyImages.forEach(img => imageObserver.observe(img));
-            } else {
-                lazyImages.forEach(img => img.classList.add('loaded'));
+      // Apply font
+      document.querySelectorAll('.font-playfair').forEach(el => {
+        el.style.fontFamily = `${fontFamily}, Playfair Display, serif`;
+      });
+
+      // Apply font sizes
+      document.getElementById('restaurant-name').style.fontSize = `${fontSize * 4.375}px`;
+      document.getElementById('restaurant-tagline').style.fontSize = `${fontSize * 1.25}px`;
+      document.querySelectorAll('section h2').forEach(el => {
+        el.style.fontSize = `${fontSize * 2.5}px`;
+      });
+      document.querySelectorAll('.menu-item h3').forEach(el => {
+        el.style.fontSize = `${fontSize * 1.5}px`;
+      });
+      document.querySelectorAll('.menu-item span').forEach(el => {
+        el.style.fontSize = `${fontSize * 1.25}px`;
+      });
+      document.querySelectorAll('.menu-item p').forEach(el => {
+        el.style.fontSize = `${fontSize * 0.875}px`;
+      });
+      document.getElementById('footer-text').style.fontSize = `${fontSize * 0.75}px`;
+
+      // Update text content
+      document.getElementById('restaurant-name').textContent = config.restaurant_name || defaultConfig.restaurant_name;
+      document.getElementById('restaurant-tagline').textContent = config.restaurant_tagline || defaultConfig.restaurant_tagline;
+      document.getElementById('entradas-title').textContent = config.entradas_title || defaultConfig.entradas_title;
+      document.getElementById('principais-title').textContent = config.principais_title || defaultConfig.principais_title;
+      document.getElementById('executivos-title').textContent = config.executivos_title || defaultConfig.executivos_title;
+      document.getElementById('sobremesas-title').textContent = config.sobremesas_title || defaultConfig.sobremesas_title;
+      document.getElementById('footer-text').textContent = config.footer_text || defaultConfig.footer_text;
+    }
+
+    function adjustBrightness(color, percent) {
+      const num = parseInt(color.replace("#", ""), 16);
+      const amt = Math.round(2.55 * percent);
+      const R = (num >> 16) + amt;
+      const G = (num >> 8 & 0x00FF) + amt;
+      const B = (num & 0x0000FF) + amt;
+      return "#" + (0x1000000 + (R < 255 ? R < 1 ? 0 : R : 255) * 0x10000 +
+        (G < 255 ? G < 1 ? 0 : G : 255) * 0x100 +
+        (B < 255 ? B < 1 ? 0 : B : 255))
+        .toString(16).slice(1);
+    }
+
+    function mapToCapabilities(config) {
+      return {
+        recolorables: [
+          {
+            get: () => config.background_color || defaultConfig.background_color,
+            set: (value) => {
+              config.background_color = value;
+              if (window.elementSdk) {
+                window.elementSdk.setConfig({ background_color: value });
+              }
             }
-        }
-
-        function renderMenu() {
-            const entradasGrid = document.getElementById('entradasGrid');
-            const pratosGrid = document.getElementById('pratosGrid');
-            const executivosGrid = document.getElementById('executivosGrid');
-            const sobremesasGrid = document.getElementById('sobremesasGrid');
-            
-            entradasGrid.innerHTML = '';
-            pratosGrid.innerHTML = '';
-            executivosGrid.innerHTML = '';
-            sobremesasGrid.innerHTML = '';
-            
-            const entradas = menuItems.filter(item => item.category === 'entradas');
-            const pratos = menuItems.filter(item => item.category === 'pratos-principais');
-            const executivos = menuItems.filter(item => item.category === 'executivos');
-            const sobremesas = menuItems.filter(item => item.category === 'sobremesas');
-            
-            entradasGrid.innerHTML = entradas.map(item => createDishCard(item)).join('');
-            pratosGrid.innerHTML = pratos.map(item => createDishCard(item)).join('');
-            executivosGrid.innerHTML = executivos.map(item => createDishCard(item)).join('');
-            sobremesasGrid.innerHTML = sobremesas.map(item => createDishCard(item)).join('');
-            
-            setTimeout(initLazyLoading, 100);
-        }
-
-        function searchDishes() {
-            const searchInput = document.getElementById('searchInput');
-            const searchTerm = searchInput.value.toLowerCase().trim();
-            const clearButton = document.getElementById('clearSearch');
-            const searchResults = document.getElementById('searchResults');
-            const searchGrid = document.getElementById('searchGrid');
-            const noResults = document.getElementById('noResults');
-            const precoBaixoSection = document.getElementById('preco-baixo');
-            const menuSections = document.querySelectorAll('#entradas, #pratos-principais, #executivos, #sobremesas');
-            
-            if (searchTerm.length > 0) {
-                clearButton.classList.remove('hidden');
-            } else {
-                clearButton.classList.add('hidden');
+          },
+          {
+            get: () => config.text_color || defaultConfig.text_color,
+            set: (value) => {
+              config.text_color = value;
+              if (window.elementSdk) {
+                window.elementSdk.setConfig({ text_color: value });
+              }
             }
-            
-            if (searchTerm.length === 0) {
-                searchResults.classList.add('hidden');
-                precoBaixoSection.classList.add('hidden');
-                menuSections.forEach(section => section.classList.remove('hidden'));
-                return;
+          },
+          {
+            get: () => config.accent_color || defaultConfig.accent_color,
+            set: (value) => {
+              config.accent_color = value;
+              if (window.elementSdk) {
+                window.elementSdk.setConfig({ accent_color: value });
+              }
             }
-            
-            const filteredItems = menuItems.filter(item => 
-                item.name.toLowerCase().includes(searchTerm) ||
-                item.description.toLowerCase().includes(searchTerm) ||
-                item.category.toLowerCase().includes(searchTerm)
-            );
-            
-            menuSections.forEach(section => section.classList.add('hidden'));
-            precoBaixoSection.classList.add('hidden');
-            
-            searchResults.classList.remove('hidden');
-            
-            if (filteredItems.length > 0) {
-                searchGrid.innerHTML = filteredItems.map(item => createDishCard(item)).join('');
-                searchGrid.classList.remove('hidden');
-                noResults.classList.add('hidden');
-                
-                setTimeout(initLazyLoading, 100);
-            } else {
-                searchGrid.classList.add('hidden');
-                noResults.classList.remove('hidden');
+          },
+          {
+            get: () => config.border_color || defaultConfig.border_color,
+            set: (value) => {
+              config.border_color = value;
+              if (window.elementSdk) {
+                window.elementSdk.setConfig({ border_color: value });
+              }
             }
-        }
-        
-        function clearSearch() {
-            const searchInput = document.getElementById('searchInput');
-            const clearButton = document.getElementById('clearSearch');
-            const searchResults = document.getElementById('searchResults');
-            const precoBaixoSection = document.getElementById('preco-baixo');
-            const menuSections = document.querySelectorAll('#entradas, #pratos-principais, #executivos, #sobremesas');
-            
-            searchInput.value = '';
-            clearButton.classList.add('hidden');
-            searchResults.classList.add('hidden');
-            precoBaixoSection.classList.add('hidden');
-            menuSections.forEach(section => section.classList.remove('hidden'));
-            
-            searchInput.focus();
-        }
-
-        function scrollToSection(sectionId) {
-            clearSearch();
-            
-            const section = document.getElementById(sectionId);
-            if (section) {
-                const headerHeight = 100;
-                const elementPosition = section.offsetTop - headerHeight;
-                
-                window.scrollTo({
-                    top: elementPosition,
-                    behavior: 'smooth'
-                });
+          }
+        ],
+        borderables: [],
+        fontEditable: {
+          get: () => config.font_family || defaultConfig.font_family,
+          set: (value) => {
+            config.font_family = value;
+            if (window.elementSdk) {
+              window.elementSdk.setConfig({ font_family: value });
             }
-        }
-
-        let currentSlide = 0;
-        const totalSlides = 5;
-        let slideInterval;
-
-        function showSlide(index) {
-            const slides = document.querySelectorAll('.banner-slide');
-            const indicators = document.querySelectorAll('.banner-indicator');
-            
-            slides.forEach(slide => slide.classList.remove('active'));
-            indicators.forEach(indicator => indicator.classList.remove('active'));
-            
-            slides[index].classList.add('active');
-            indicators[index].classList.add('active');
-            
-            currentSlide = index;
-        }
-
-        function nextSlide() {
-            currentSlide = (currentSlide + 1) % totalSlides;
-            showSlide(currentSlide);
-        }
-
-        function goToSlide(index) {
-            showSlide(index);
-            clearInterval(slideInterval);
-            startSlideShow();
-        }
-
-        function startSlideShow() {
-            slideInterval = setInterval(nextSlide, 3000);
-        }
-
-        function scrollToTop() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        }
-
-        function toggleScrollButton() {
-            const scrollButton = document.getElementById('scrollToTop');
-            const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
-            
-            if (scrollPosition > 300) {
-                scrollButton.classList.remove('opacity-0', 'invisible');
-                scrollButton.classList.add('opacity-100', 'visible');
-            } else {
-                scrollButton.classList.add('opacity-0', 'invisible');
-                scrollButton.classList.remove('opacity-100', 'visible');
+          }
+        },
+        fontSizeable: {
+          get: () => config.font_size || defaultConfig.font_size,
+          set: (value) => {
+            config.font_size = value;
+            if (window.elementSdk) {
+              window.elementSdk.setConfig({ font_size: value });
             }
+          }
         }
+      };
+    }
 
-        function requestPassword() {
-            const password = prompt("Digite a senha de administrador:");
-            if (password === "Vic20142015@") {
-                enterEditMode();
-            } else if (password !== null) {
-                alert("Senha incorreta!");
-            }
-        }
+    function mapToEditPanelValues(config) {
+      return new Map([
+        ["restaurant_name", config.restaurant_name || defaultConfig.restaurant_name],
+        ["restaurant_tagline", config.restaurant_tagline || defaultConfig.restaurant_tagline],
+        ["entradas_title", config.entradas_title || defaultConfig.entradas_title],
+        ["principais_title", config.principais_title || defaultConfig.principais_title],
+        ["executivos_title", config.executivos_title || defaultConfig.executivos_title],
+        ["sobremesas_title", config.sobremesas_title || defaultConfig.sobremesas_title],
+        ["footer_text", config.footer_text || defaultConfig.footer_text]
+      ]);
+    }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            renderMenu();
-            startSlideShow();
-            loadSavedChanges();
-            
-            window.addEventListener('scroll', toggleScrollButton);
-        });
-    </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99d98f3da72e00dc',t:'MTc2Mjk4NzUyNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities,
+        mapToEditPanelValues
+      });
+    }
+
+    onConfigChange(defaultConfig);
+    
+    // Image Zoom Functionality
+    const modal = document.getElementById('imageModal');
+    const modalImg = document.getElementById('modalImage');
+    const closeBtn = document.querySelector('.close-button');
+    
+    // Add click event to all zoomable images
+    document.addEventListener('click', function(e) {
+      if (e.target.classList.contains('zoomable-image')) {
+        modal.classList.add('active');
+        modalImg.src = e.target.src;
+      }
+    });
+    
+    // Close modal when clicking the X button
+    closeBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      modal.classList.remove('active');
+    });
+    
+    // Close modal when clicking outside the image
+    modal.addEventListener('click', function() {
+      modal.classList.remove('active');
+    });
+    
+    // Prevent closing when clicking the image itself
+    modalImg.addEventListener('click', function(e) {
+      e.stopPropagation();
+    });
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9b3c5564e01fc5ea',t:'MTc2NjcwNzYwMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
