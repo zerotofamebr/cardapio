@@ -3,658 +3,229 @@
  <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cardapio Invó</title>
-  <script src="/_sdk/element_sdk.js"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Menu Gastrobar</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&amp;family=Montserrat:wght@300;400;500&amp;display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&amp;family=Montserrat:wght@300;400;500&amp;display=swap" rel="stylesheet">
   <style>
-    body {
-      box-sizing: border-box;
-    }
-    
-    .font-playfair {
-      font-family: 'Playfair Display', serif;
-    }
-    
-    .font-montserrat {
-      font-family: 'Montserrat', sans-serif;
-    }
-    
-    .gold-gradient {
-      background: linear-gradient(135deg, #9d7a3a 0%, #c9a961 50%, #9d7a3a 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    
-    .ornament {
-      width: 60px;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, #9d7a3a, transparent);
-      margin: 0 auto;
-    }
-    
-    .menu-item {
-      transition: all 0.3s ease;
-      border-left: 2px solid transparent;
-      padding-left: 1.5rem;
-    }
-    
-    .menu-item:hover {
-      border-left-color: #9d7a3a;
-      transform: translateX(8px);
-    }
-    
-    .menu-item:hover .dish-image {
-      transform: scale(1.05);
-      box-shadow: 0 8px 30px rgba(157, 122, 58, 0.4);
-    }
-    
-    .section-divider {
-      height: 1px;
-      background: linear-gradient(90deg, transparent, #9d7a3a, transparent);
-      margin: 3rem 0;
-    }
-    
-    .dish-image {
-      width: 120px;
-      height: 120px;
-      border-radius: 8px;
-      border: 2px solid #9d7a3a;
-      object-fit: cover;
-      transition: all 0.3s ease;
-      background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-    
-    .dish-placeholder {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 48px;
-      opacity: 0.6;
-    }
-    
-    .dish-image img, .dish-image {
-      cursor: pointer;
-    }
-    
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.95);
-      z-index: 9999;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-    }
-    
-    .modal-overlay.active {
-      display: flex;
-    }
-    
-    .modal-image {
-      max-width: 90%;
-      max-height: 90%;
-      border: 3px solid #9d7a3a;
-      border-radius: 12px;
-      box-shadow: 0 20px 60px rgba(157, 122, 58, 0.5);
-      animation: zoomIn 0.3s ease;
-    }
-    
-    @keyframes zoomIn {
-      from {
-        transform: scale(0.8);
-        opacity: 0;
-      }
-      to {
-        transform: scale(1);
-        opacity: 1;
-      }
-    }
-    
-    .close-button {
-      position: absolute;
-      top: 20px;
-      right: 30px;
-      font-size: 40px;
-      color: #9d7a3a;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      font-weight: 300;
-      z-index: 10000;
-    }
-    
-    .close-button:hover {
-      color: #c9a961;
-      transform: rotate(90deg);
-    }
-    
-    .nav-button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(157, 122, 58, 0.4);
-      background: linear-gradient(135deg, #c9a961 0%, #9d7a3a 100%);
-    }
+    body { box-sizing: border-box; }
+    .font-display { font-family: 'Cormorant Garamond', serif; }
+    .font-body { font-family: 'Montserrat', sans-serif; }
+    .wavy-line { width: 60px; height: 20px; opacity: 0.6; }
   </style>
-  <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="/_sdk/element_sdk.js" type="text/javascript"></script>
  </head>
- <body class="h-full font-montserrat">
-  <div id="app" class="w-full h-full overflow-auto" style="position: relative;"><!-- Modal for Image Zoom -->
-   <div id="imageModal" class="modal-overlay"><span class="close-button">×</span> <img id="modalImage" class="modal-image" src="" alt="Imagem ampliada">
-   </div><!-- Background Image -->
-   <div style="position: absolute; top: 0; left: 0; right: 0; height: 600px; background-image: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjIygdJl0zlDqB2M-HKoX_kPWNt2Dnnt0juhtpwYnJqc4baAaGzzahREGevZWEzyXIngQ5gR2o1zbWyr_ZxmxY8iM9jzpeyIMNnx92n8xvNpNlbbnuAEpnxEwwjJnEV6fI3u9Lh7TNNC-8LWAtZiOjU-XMEipM7X3C5n1O6HJAnNS1cpPlCWNLkMOgUsMrD/s1584/Banner%20para%20LinkedIn%20Advogada%20Moderno%20Elegante%20Simples%20Azul%20Branco.png'); background-size: cover; background-position: center; opacity: 0.15; pointer-events: none; z-index: 0;"></div><!-- Hero Section -->
-   <header class="text-center py-16 px-8 mb-8" style="position: relative; z-index: 1;">
-    <div class="ornament mb-8"></div>
-    <h1 id="restaurant-name" class="font-playfair text-7xl font-bold gold-gradient mb-4">Invó</h1>
-    <p id="restaurant-tagline" class="font-montserrat text-xl tracking-wide mb-8">Comida gostosa do jeitin do abraço de vó</p><!-- Navigation Buttons -->
-    <div style="display: flex; gap: 1rem; max-width: 400px; margin: 0 auto; justify-content: center;"><a href="https://zerotofamebr.github.io/adegainv-/" target="_blank" rel="noopener noreferrer" class="nav-button font-montserrat" style="flex: 1; padding: 0.875rem 1.5rem; background: linear-gradient(135deg, #9d7a3a 0%, #c9a961 100%); color: #0a0a0a; text-decoration: none; border-radius: 8px; font-weight: 500; text-align: center; transition: all 0.3s ease; border: 2px solid #9d7a3a;"> Vinhos </a> <a href="https://zerotofamebr.github.io/bebidasinv-/" target="_blank" rel="noopener noreferrer" class="nav-button font-montserrat" style="flex: 1; padding: 0.875rem 1.5rem; background: linear-gradient(135deg, #9d7a3a 0%, #c9a961 100%); color: #0a0a0a; text-decoration: none; border-radius: 8px; font-weight: 500; text-align: center; transition: all 0.3s ease; border: 2px solid #9d7a3a;"> Bebidas </a>
-    </div>
-    <div class="ornament mt-8"></div>
-   </header>
-   <div class="max-w-6xl mx-auto px-8 pb-16" style="position: relative; z-index: 1;"><!-- Entradas -->
-    <section class="mb-16">
-     <h2 id="entradas-title" class="font-playfair text-4xl font-semibold text-center mb-12 gold-gradient">Entradas</h2>
-     <div class="space-y-8">
-      <div class="menu-item flex gap-6 items-start">
-       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjaHl9C5mYm6HQMwgaslN8z7pek1E5I43OEkSb-7i_Jz92_8RmYFM9U9YCi4zxPyHW4VY-JCDW9m-7gEPdU30lJJEv5bkT-GLAfM2kJyZX6xavtYd6XsXpChiany2F5GP38K5-7z8CkYJwVPch6C4Tk5bUhcvp_mhY3yOfIPBRudVQ7FUo7J9scY8dz_JM5/s6240/IMG_0468.jpeg" alt="Pastéis Sortidos" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🥟</div>';">
-       </div>
-       <div class="flex-grow">
-        <div class="flex justify-between items-start mb-2">
-         <h3 class="font-playfair text-2xl font-semibold">Pastéis Sortidos</h3><span class="font-montserrat text-xl ml-4">R$ 29,90</span>
-        </div>
-        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Carne, Pepperoni, Costela, Carne de Sol</p>
-       </div>
-      </div>
-      <div class="menu-item flex gap-6 items-start">
-       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgHIcIycf3R3LuY-iN4fMAGq-fYhqWzQqNY1pfqwMeEPz9ktQ81a8lrcDwsQPuxq2HuGJOja4hrPXh36Tt3OmuSyj21s9FEyBLK9KU0OdGPH_eKFRloDywjIZW2aibnjGqBsSygNw9G7t6ZAd882lJ3t3aKsDaKqxSnkQHWSmmCXTIKalTvk8mLQSZd2P8E/s16000/IMG_0469.jpeg" alt="Pastéis de Camarão" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🦐</div>';">
-       </div>
-       <div class="flex-grow">
-        <div class="flex justify-between items-start mb-2">
-         <h3 class="font-playfair text-2xl font-semibold">Pastéis de Camarão</h3><span class="font-montserrat text-xl ml-4">R$ 34,90</span>
-        </div>
-        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Pastéis com creme cheese, creme de camarão servido com molho de ervas</p>
-       </div>
-      </div>
-      <div class="menu-item flex gap-6 items-start">
-       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiTvN9s9rV_KCTD75eaN4QWEsxQ56LVPlG9x4UcFnJfTndyip8NpB-VhVpP1iGCO5w3AL8OIyh_dGqcDrn4qdld9EusQf6XPogRE9ooKZXkmlE3-2McekufFd6S54v-pnMsgslmGhwrvXv0NuIviHkhP7PULA2QfaBpnaOyz7_6NpPHQNTscbHwJeqH7DU1/s3888/IMG_0479.jpeg" alt="Fritapá de Camarão" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🦐</div>';">
-       </div>
-       <div class="flex-grow">
-        <div class="flex justify-between items-start mb-2">
-         <h3 class="font-playfair text-2xl font-semibold">Fritapá de Camarão</h3><span class="font-montserrat text-xl ml-4">R$ 25,90</span>
-        </div>
-        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Bolinho frito de vatapá de camarão com base de moqueca, crocante por fora e cremoso por dentro</p>
-       </div>
-      </div>
-      <div class="menu-item flex gap-6 items-start">
-       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/a/AVvXsEiB9D0OEGiaQQWfcoIscSrjxtS_A09kHR6A70F-XcS4Y3HoYmBHsrYM7XnrOM-t9L3gqo6cs2FWpMRRkPv5bTuldGu1tNH59hgW2cC2g0zznCVNhIl1Ot2apS1Ha79gB0IzzmkngVhRxpxxh4xHs9Un1mAdIhp3opBt8i-um7j6Nb-trbAvGMRh4X6stdGd" alt="Caldo da Caridade" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🍲</div>';">
-       </div>
-       <div class="flex-grow">
-        <div class="flex justify-between items-start mb-2">
-         <h3 class="font-playfair text-2xl font-semibold">Caldo da Caridade</h3><span class="font-montserrat text-xl ml-4">R$ 16,90</span>
-        </div>
-        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Caldo de carne moída, legumes e ovo</p>
-       </div>
-      </div>
-      <div class="menu-item flex gap-6 items-start">
-       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjwvwE6DcQbcze_mB2L4tneoeonRVv0eXCxXGSMiE1_f3NxBSkOeFhKNVC9QyTTVVVQgm6G5Oi59aUStQKVh7f5AODDYHn4rPRXlrwksG78o8KRQlCgP2Q3mRa5uLwADZ__0N_1_rx_92GzwXRIB4V7wYlfywNYh38YirtyklGexiCrVpj5wCehiJVrVslo/s3888/IMG_0474.jpeg" alt="Carne de Sol Com Macaxeira" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🥩</div>';">
-       </div>
-       <div class="flex-grow">
-        <div class="flex justify-between items-start mb-2">
-         <h3 class="font-playfair text-2xl font-semibold">Carne de Sol Com Macaxeira</h3><span class="font-montserrat text-xl ml-4">R$ 39,90</span>
-        </div>
-        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Carne de sol salteada na manteiga da terra e cebolas roxas, servidas com macaxeira cremosa e cubos de queijo coalho</p>
-       </div>
-      </div>
-      <div class="menu-item flex gap-6 items-start">
-       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiSnsiAPdH97s30LiMn9gGMgidfmRzXDmM6UoIORfIaG8DbQ8Q6VQ8NfX0voK61z-aw2oQTTProT7wAFc1jUKlKIiL3RGyLzGMn2g3q2gZ-LtVUERvQve4eeiORRtg8rm3KqwwQqgmD4spJnFAHw9hVdRv21xdgvFJuiBLqJpFwqJMLRqg5ymk6nmSTm7li/s16000/IMG_0475.jpeg" alt="Sol do Sertão" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🥔</div>';">
-       </div>
-       <div class="flex-grow">
-        <div class="flex justify-between items-start mb-2">
-         <h3 class="font-playfair text-2xl font-semibold">Sol do Sertão</h3><span class="font-montserrat text-xl ml-4">R$ 29,90</span>
-        </div>
-        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Chips crocantes de macaxeira servidas com carne de sol desfiada, creme de nata</p>
-       </div>
-      </div>
-      <div class="menu-item flex gap-6 items-start">
-       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhGbh5RkmvuSrJuxuda6jgcIfFt9jyzl4Nz114LtYlwX5tzadKdWjcTpnrjFO9K1jDlcbxjTQ0pPH6LIJpAFuyu58LGlAco9x4oaOIyomLydM6fYaVYGkYXakF_xuPMa5LPjodQ_WOJP7DjiqU5XIie1B4QKrbz1rXpB1qPXgzwy5PyoxwRupQZk_JpJZ13/w1684-h1069-p-k-no-nu/IMG_0580.jpeg" alt="Batata Frita" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🍟</div>';">
-       </div>
-       <div class="flex-grow">
-        <div class="flex justify-between items-start mb-2">
-         <h3 class="font-playfair text-2xl font-semibold">Batata Frita</h3><span class="font-montserrat text-xl ml-4">R$ 16,90</span>
-        </div>
-        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Palitos de batata inglesa crocantes e servidos com raspas de queijo e molho da casa</p>
-       </div>
-      </div>
-      <div class="menu-item flex gap-6 items-start">
-       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgpKKw7SMFcvMsVDz5QEjWUzWq7R-DYP-z1nqK2FChXmEtSUrEKyPylAcscuGIzgsl8eOwQLKI_p0jnK4LpSmV9I_K10dcjQWYNTbUekX0N6ZCPABwL42i5NXI7bLpO7taM2Kbg58f_o_DrJVDf3iIfIS0u0nHsXh1povlA090XKRAq_xDP_6bl957EZZSW/s3888/IMG_0484.jpeg" alt="Franguim Avuado" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>����</div>';">
-       </div>
-       <div class="flex-grow">
-        <div class="flex justify-between items-start mb-2">
-         <h3 class="font-playfair text-2xl font-semibold">Franguim Avuado</h3><span class="font-montserrat text-xl ml-4">R$ 29,90</span>
-        </div>
-        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Meio da asa marinadas no sous vide, fritas e servidas com molho barbecue asiática de abacaxi e gergelim</p>
-       </div>
-      </div>
-      <div class="menu-item flex gap-6 items-start">
-       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/a/AVvXsEgkaxooT7hzSlO6LZeXLmIzHYnxwxzoGuctJVEJcvoyUNH_G8OHKsNkfwwNhSR3tr-ro7x-WWA_Bx49cwtnDQoXIXP-E7UrhrJbO6B_6RBPW7_s7e57ni16moJ5fWuw_LPuUHrcvh3MXtHygc90bHjjuZxBufgDKdOqD1uCp5P0V3ycLKhOHhJszMYeyM1b" alt="Croquetas Caipira" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🍗</div>';">
-       </div>
-       <div class="flex-grow">
-        <div class="flex justify-between items-start mb-2">
-         <h3 class="font-playfair text-2xl font-semibold">Croquetas Caipira</h3><span class="font-montserrat text-xl ml-4">R$ 29,90</span>
-        </div>
-        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Croquetas de frango recheados com milho e bacon</p>
-       </div>
-      </div>
-      <div class="menu-item flex gap-6 items-start">
-       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgBQ-3ssQy8zdx81f5l6Ob5sTZUoaq8JkE1GIzB0MolmmztlJcvKjkgGsl_kW7ZwiK7F4NPcst-bkTltqzinqkiGUpdzD_sb7B0AqeDloyUXS10iqFw9km_cwnmJxTPCrcfwpZ7sFT2F0Fww5vxnmgcfVFiqrERQquXS9p9RBImeOwAfw-CYwHqAJfX316v/s6240/IMG_0477.jpeg" alt="Sushi de Carrazera" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🍣</div>';">
-       </div>
-       <div class="flex-grow">
-        <div class="flex justify-between items-start mb-2">
-         <h3 class="font-playfair text-2xl font-semibold">Sushi de Carrazera</h3><span class="font-montserrat text-xl ml-4">R$ 34,90</span>
-        </div>
-        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Sushi crocante com massa de macaxeira, cubos de charque e carne de sol servido com molho de rapadura</p>
-       </div>
-      </div>
-      <div class="menu-item flex gap-6 items-start">
-       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhGrDHT88t5yzUcM1dzqjKzB78qlrBDGi1fRAxgYAcz1e_iBtvgLyUiDsfi0GLkDnTlulBKpb2xd2J42NRTGM1yvSDyIIAzfJ3lh9OaWJwFOLnJdz8r0OArImfuIgFoHH32rKsxR9zJ0aCpvc92ATVhU8tBMUiJuGGeeBvqMVKN_SluQSvj3UrPLD25xdWs/w1684-h1069-p-k-no-nu/IMG_0581.jpeg" alt="Isca de Tucunaré" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🐟</div>';">
-       </div>
-       <div class="flex-grow">
-        <div class="flex justify-between items-start mb-2">
-         <h3 class="font-playfair text-2xl font-semibold">Isca de Tucunaré</h3><span class="font-montserrat text-xl ml-4">R$ 32,90</span>
-        </div>
-        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Tiras de tucunaré à milanesa servido com molho rosé</p>
-       </div>
-      </div>
-      <div class="menu-item flex gap-6 items-start">
-       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh0bV_3PCc6Rdh4XYzdI3XEQwi3yyISCANNd9UJqPlUN9MUPjovfwxUDoUlVFVF4i1vYCAZ9toW5dGoHqR-otUwaDer6AWr3prY18y_1oquOzZGmIj5tqI_L8JvZtcBcvHG8SY2AwP3p1uwXpm4gvP22jxoqfz0RNBa_FyafEGO9MlQKxhddvgYu-YbSxtR/s1320/IMG_0583.jpeg" alt="Ai meu coração" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>❤️</div>';">
-       </div>
-       <div class="flex-grow">
-        <div class="flex justify-between items-start mb-2">
-         <h3 class="font-playfair text-2xl font-semibold">Ai meu coração</h3><span class="font-montserrat text-xl ml-4">R$ 39,90</span>
-        </div>
-        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Coração de galinha marinado no shoyu salteado no molho oriental e servido com chips de macaxeira</p>
-       </div>
-      </div>
-      <div class="menu-item flex gap-6 items-start">
-       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjRA9Z7cG17Y6P9hzQNsWSPZcb8xT4WRMd-usR4aU_kwR_T8xqCGAfVnOmxG5RMe6G75Xng91Hz2wO411uLM8Kx_xvbH6lyG2SAl8dAqj2-dOD7s29_DL-zv6VsM3a_nShuyOtBU7oiApMxo60l-E94xbae68aqGTanQklI_VefU8JDmw2zaem4Kjgn41Gx/s3888/IMG_0481.jpeg" alt="Filé no Panne" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🥩</div>';">
-       </div>
-       <div class="flex-grow">
-        <div class="flex justify-between items-start mb-2">
-         <h3 class="font-playfair text-2xl font-semibold">Filé no Panne</h3><span class="font-montserrat text-xl ml-4">R$ 79,90</span>
-        </div>
-        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Tiras de filé mignon salteadas com creme de gorgonzola servido no pão italiano quentinho</p>
-       </div>
-      </div>
-      <div class="menu-item flex gap-6 items-start">
-       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgpn4qEDPVB-xjJAYw8-VTWe0Iu_zC7PEchdHyLoN-Wgo4wGzty7PKluFAA7FWYwtOHv6oAgkimXwEdwiRZzOCcknmog5F3ElkfwyBCr8AnlI5iKw8FGNk2LbFlUXCCfsKXcI_Nqh86OveUFI1-qOnKUd9VU9dFTkwMbWPEMP24ZOpSZuF1E1ZO1kZQ2Mvy/s1434/IMG_0582.jpeg" alt="Camarão alho e óleo" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>���</div>';">
-       </div>
-       <div class="flex-grow">
-        <div class="flex justify-between items-start mb-2">
-         <h3 class="font-playfair text-2xl font-semibold">Camarão alho e óleo</h3><span class="font-montserrat text-xl ml-4">R$ 59,90</span>
-        </div>
-        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Camarão com cascas salteado no azeite de oliva, alho e limão</p>
-       </div>
-      </div>
+ <body class="h-full bg-white">
+  <div id="menu-container" class="min-h-full w-full overflow-auto bg-white">
+   <div class="max-w-5xl mx-auto px-8 py-12">
+    <!-- Logo -->
+    <div class="text-center mb-4">
+     <div class="inline-block mb-3">
+      <img id="logo-image" src="https://blogger.googleusercontent.com/img/a/AVvXsEhWlg_Ol83gnlXlQ_sN0RDyJUkhzKuVUvxSgbk7voU1C95ToE3hYMyjb2F1RACNiAgw4dLuy3z86QV8FrDJvwQ2XYjE47dkQhaCYBxCRZ8d9V7cU2db4MFd4K9mQi8CNwZ2sf4vS9ulcfROcApNT1pU1tkh700GEqNwxGvyJ_ffnfaT74JKTAAe3lcTYLs" alt="Logo" class="h-32 w-auto object-contain" loading="lazy">
      </div>
-    </section>
-    <div class="section-divider"></div><!-- Pratos Principais -->
-    <section class="mb-16">
-     <h2 id="principais-title" class="font-playfair text-4xl font-semibold text-center mb-12 gold-gradient">Pratos Principais</h2>
-     <div class="space-y-8">
-      <div class="menu-item flex gap-6 items-start">
-       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEixP2cSPCmz4MddiB3uvXgmly3xOfaIL91HCmv8KgxNc6McBecOvNChyvhesS73iG0oPnR5tnAj951Ymes2yAi14h-UtOCXE85iDSn9ME8F1uH_0cQ4Gpiq6yPaqdwIJ05od3He9lXES-Y1wH26CVvsR_h16k3CcqefNoTZf-3PkF6UWjx3xmmMQ-TmXnbc/s3888/IMG_0483.jpeg" alt="Camarão João Pessoa" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🦐</div>';">
-       </div>
-       <div class="flex-grow">
-        <div class="flex justify-between items-start mb-2">
-         <h3 class="font-playfair text-2xl font-semibold">Camarão João Pessoa</h3><span class="font-montserrat text-xl ml-4">R$ 149,90</span>
-        </div>
-        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Arroz gratinado de camarão puxado à base de moqueca e servido com camarões empanados</p>
-       </div>
-      </div>
-      <div class="menu-item flex gap-6 items-start">
-       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiaLEFMgAWPQezMUINHmtHxeziTevB4eegkuvn78MfPN2DpkVA6bsOhzY5TDo26DcC5m0eJJllpxkBbka-Ut9D40o3wk75kgi9KtM-9E8xNZDZ7c136JlGiEmT-_EBSRJl2Mrr-CITT2I0tRkuhkAgPyW7Q2V6Osbz7bD3JwrS70iyq6yW7ma5CmZHRa7G1/s1320/IMG_0587.jpeg" alt="Filé à Parmegiana dupla" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🍝</div>';">
-       </div>
-       <div class="flex-grow">
-        <div class="flex justify-between items-start mb-2">
-         <h3 class="font-playfair text-2xl font-semibold">Filé à Parmegiana dupla</h3><span class="font-montserrat text-xl ml-4">R$ 129,90</span>
-        </div>
-        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Tradicional filé empanado servido com cama de molho de tomate italiano e gratin de mussarela, servido com massa (grano duro)</p>
-       </div>
-      </div>
-      <div class="menu-item flex gap-6 items-start">
-       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/a/AVvXsEh2Rv3MD-042uJiS9n_ExdXnPLC9Zblef_YHIzD57SxSA3qY15yRSVs09goQWbFHQALa_bWBtMPlmDOs5YEXBl5ERBFlC0yY6NTej5D1xfPksaFWp6v2cNufX_eIR-eyvZbZBSK8rLj_7KsT9sAu_4hK-0XAiW2NBsJcO7_AVqFn8q31CK4YTd4a5z7kcql" alt="Picanha Trinchada" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🥩</div>';">
-       </div>
-       <div class="flex-grow">
-        <div class="flex justify-between items-start mb-2">
-         <h3 class="font-playfair text-2xl font-semibold">Picanha Trinchada</h3><span class="font-montserrat text-xl ml-4">R$ 89,90</span>
-        </div>
-        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Steaks de picanha selada na chapa com manteiga de ervas, sal temperado e cebolas roxas, servido com acompanhamentos: farofa e vinagrete</p>
-       </div>
-      </div>
-      <div class="menu-item flex gap-6 items-start">
-       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/a/AVvXsEgq8dsIPLUBIpBvP2trfO6_jjCr-wuydR9ftMQ1lmiU7BL9iNiupfc682cnpdVmuRRuNBXoguAO7szlkQkOEo8EYD6NzWTSnU23BkB4FqMWkq9xhitVpc7-2o4YOjsJ4lQVhnt4iflP6JcYH0KEqxDBF4N_Jcl4ubk2pBYJZocdmAXx2aKSGgkL63_xlqDC" alt="Picanha Completa" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🥩</div>';">
-       </div>
-       <div class="flex-grow">
-        <div class="flex justify-between items-start mb-2">
-         <h3 class="font-playfair text-2xl font-semibold">Picanha Completa</h3><span class="font-montserrat text-xl ml-4">R$ 159,00</span>
-        </div>
-        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Picanha trinchada grelhada na chapa com temperos especiais, servida com acompanhamentos tradicionais</p>
-       </div>
-      </div>
-      <div class="menu-item flex gap-6 items-start">
-       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhrTFmhbGuscTa1SrjYXr-Sqn2lqeW7NHCOOafVyTRF1JBarOGLmNUQ12WQRWV8q8lGUuola-yWv9_ROoBWfRpdODSUEFSJdX9G9xvto433Qhz8C1sdKVIEh5jxo7l8oFBfND5LCQolDh4OaaYOn_WibFQGIfvFD9VMpzUQaqj31mMQaKNbF0WN_1g85MeQ/s1462/IMG_0586.jpeg" alt="Filé de Seu Pedro" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🥩</div>';">
-       </div>
-       <div class="flex-grow">
-        <div class="flex justify-between items-start mb-2">
-         <h3 class="font-playfair text-2xl font-semibold">Filé de Seu Pedro</h3><span class="font-montserrat text-xl ml-4">R$ 189,00</span>
-        </div>
-        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Medalhões de filé mignon selados e flambados servidos com creme de gorgonzola. Acompanha: Arroz à Piemontese</p>
-       </div>
-      </div>
-      <div class="menu-item flex gap-6 items-start">
-       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg-C6Zld-fY1bEWT401V4aoU9n5i1Ln80dEd0fb_hwQGtAr6Cl599ZRMZT0Ofjtwt5ZJotIq0WG5yYJmuo_axNLhWgUywMKrtQQL1NztvygIBmgiaAA1NYjrjl3J45kWSj8BZEiG31zG2kha0lCGUgqXv6JoS8SMp4KDcP0_4H-fg91KMWEiolet7wngiPt/s3888/IMG_0485.jpeg" alt="Costela de Bacurim" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🍖</div>';">
-       </div>
-       <div class="flex-grow">
-        <div class="flex justify-between items-start mb-2">
-         <h3 class="font-playfair text-2xl font-semibold">Costela de Bacurim</h3><span class="font-montserrat text-xl ml-4">R$ 89,90</span>
-        </div>
-        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Costela suína assada lentamente regada com barbecue de abacaxi. Acompanha batata corte rústico temperadas com tempero do chef</p>
-       </div>
-      </div>
-     </div>
-    </section>
-    <div class="section-divider"></div><!-- Pratos Executivos -->
-    <section class="mb-16">
-     <h2 id="executivos-title" class="font-playfair text-4xl font-semibold text-center mb-12 gold-gradient">Pratos Executivos</h2>
-     <div class="space-y-8">
-      <div class="menu-item flex gap-6 items-start">
-       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjuECi2xjpnvk3EfiX5cqj6qofdqy2tRifJmeELJoYX4E53FQfMVost7cLJTzmQAMFneHiJV0LW-JRzQTW9LTRUSaWZ8ZrGXY55vLVU4klYY840uD5XXr3Qoio1JtLq9cFR5xqo4Oq5D-y5PCkYwLDJtabV_ZaVydLGsSJY6TdREMNoAs-oMIpQm_-3HOrH/s6240/IMG_0588.jpeg" alt="Cumê de Rico" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🦐</div>';">
-       </div>
-       <div class="flex-grow">
-        <div class="flex justify-between items-start mb-2">
-         <h3 class="font-playfair text-2xl font-semibold">Cumê de Rico</h3><span class="font-montserrat text-xl ml-4">R$ 59,90</span>
-        </div>
-        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Arroz cremoso ao molho branco, puxado com camarões salteados e camarões empanados</p>
-       </div>
-      </div>
-      <div class="menu-item flex gap-6 items-start">
-       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjPlH5EwQb3nLaNFU1g8Uo99Ld4Ob2QwHD-SbJ0RwZpTPL36JR9BPwZGT9B4V1HpJi4g6al2wr7_MXn5_kfW9plZjK9jkKl8sCn8MUDXAaZDMi-lX7KFu2MCuqJNJzHHXw1TZ69oT3FiGXMVDL6ayL7X0ZdFgbZkHi_NMmGrqTLyAggEeHIAYV5znp5iASL/s1506/IMG_0591.jpeg" alt="Boi Bêbo" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>���</div>';">
-       </div>
-       <div class="flex-grow">
-        <div class="flex justify-between items-start mb-2">
-         <h3 class="font-playfair text-2xl font-semibold">Boi Bêbo</h3><span class="font-montserrat text-xl ml-4">R$ 39,90</span>
-        </div>
-        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Costela bovina marinada na cerveja preta e ervas assada levemente ao vapor e servida com nosso delicioso arroz de jerimum e cebolinho</p>
-       </div>
-      </div>
-      <div class="menu-item flex gap-6 items-start">
-       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiqNdELCwu7nu4Cvdw2VWFolczTXNI3nT-ZGgNlsRzCXcgUUztAdH-HQawikC_w8uDzG5L4MvgGxvVc0VKevB2FKYjmXVhObQ-TqYGwE5sZVvA52PP82XwM54TyQfDkLevkWqg2DWE84R4USf4jp5Qklmrpb_NfJehy0KnauCtxaAtQy6oi5c2MEGimYFyQ/s1320/IMG_0592.jpeg" alt="Cumêzim de Vó" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🍚</div>';">
-       </div>
-       <div class="flex-grow">
-        <div class="flex justify-between items-start mb-2">
-         <h3 class="font-playfair text-2xl font-semibold">Cumêzim de Vó</h3><span class="font-montserrat text-xl ml-4">R$ 32,90</span>
-        </div>
-        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Arroz vermelho cozido ao leite, servido com chips de macaxeira crocante e carne de sol desfiçada</p>
-       </div>
-      </div>
-      <div class="menu-item flex gap-6 items-start">
-       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiv_I9Xj8TjcYZbqleQ57g-5p1haruAPqTeOyM4Ty6L3x8I8SjshZxd9vQn7mTWN4JThn_9ugWrZ4RGmgEuOFUCkM5b4SS_tDwMtxhOXAF5rcvVx6eUeQp2AHO13cfbYM3q4aC4l-7NG0Np7yltXcWhC6tT7cTH1BHt8Km0KNWyb6LQFCgP0hJ3Y_JQBrHF/s1675/IMG_0593.jpeg" alt="Filé à Parmegiana" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>��</div>';">
-       </div>
-       <div class="flex-grow">
-        <div class="flex justify-between items-start mb-2">
-         <h3 class="font-playfair text-2xl font-semibold">Filé à Parmegiana</h3><span class="font-montserrat text-xl ml-4">R$ 59,90</span>
-        </div>
-        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Filé empanado com cama de molho de tomate italiano e gratin de mussarela, servido com massa italiana</p>
-       </div>
-      </div>
-      <div class="menu-item flex gap-6 items-start">
-       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhnIq8A0EF0Ed0PzYPn0Xn1SW1VQitEE06ZqkORvRukgmNbrJAObMieff_olxvjWCOyl1cdN-_DThuB3y0cDPBmyO4OxPe8Jzbw_arskmOPMbNBRaeCcQVP_QXKL4ILqI3bV5_271vLWVbpNDJE0z9kQtiX2Z2ViCR5nvFcYOlmXFCNzXy_njqKR9XK0g5C/s3888/1735_Thiago_Ferreira_Fotografia.jpg" alt="Baião de 4" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🍚</div>';">
-       </div>
-       <div class="flex-grow">
-        <div class="flex justify-between items-start mb-2">
-         <h3 class="font-playfair text-2xl font-semibold">Baião de 4</h3><span class="font-montserrat text-xl ml-4">R$ 49,90</span>
-        </div>
-        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Baião de feijão verde puxado com carne de sol, queijo coalho, charque, torresmo e servido com couve frito</p>
-       </div>
-      </div>
-      <div class="menu-item flex gap-6 items-start">
-       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhTI-v_lNJtkfW-putMLKq4sdHNbaiZo4apyyaO2PdOpPGMIXnDLU-NpM5CE0UCkAyAOCu_RAoAeimXjR4m7tV2P-zLk4F9sQfK_HjVQXL9sO_ZNYvq_sLj4X-UEPh3k_zgFbhduFJbou1f8unRU4KYnpUsEw-nkI4T6fS8lJPbiHHT_PChVCV_Qjes7MXZ/s1414/IMG_0594.jpeg" alt="Camarão do Chef" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🦐</div>';">
-       </div>
-       <div class="flex-grow">
-        <div class="flex justify-between items-start mb-2">
-         <h3 class="font-playfair text-2xl font-semibold">Camarão do Chef</h3><span class="font-montserrat text-xl ml-4">R$ 72,90</span>
-        </div>
-        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Massa italiana com molho bisque de camarão, finalizado com tomates confitados e camarões salteados</p>
-       </div>
-      </div>
-      <div class="menu-item flex gap-6 items-start">
-       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhXL-bJp4ImlqkU8XQBMIBOWvX2vFL00gPuiSRyzp-DepWdZ1P-p-8M1hOrKYSsy8SLoGnK0fuyleSaQqXWqM4mBORQ9f_RNOcIsuwB7fLxp5TIWKyFgDXK4RJSGLRjSWdM5R3Ahx9JUX64rlvK_0G1QjBxbeXyP98avg3hCKcDANKl6_75cPVxQzXeFqpP/s3888/1910_Thiago_Ferreira_Fotografia.jpg" alt="Frango à Parmegiana" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🍗</div>';">
-       </div>
-       <div class="flex-grow">
-        <div class="flex justify-between items-start mb-2">
-         <h3 class="font-playfair text-2xl font-semibold">Frango à Parmegiana</h3><span class="font-montserrat text-xl ml-4">R$ 39,90</span>
-        </div>
-        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Filé de frango empanado com cama de molho de tomate italiano e gratinado de mussarela servido com massa italiana</p>
-       </div>
-      </div>
-      <div class="menu-item flex gap-6 items-start">
-       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/a/AVvXsEiF6I3BDBOJS8w_F1YR2io8T37CXODc9vcAEJMn2zQgKVfbb5Knw3XeqpieM3TOAl-FQVMR8Kf-sG9YwC-MmkjhbZTOOmhfMD1wlFpQTJdpGqnWLmrLmMMsUk-UWVV1571Ne-wBtOZ1fD0f8Gc8KyWyapZURWW-Vz4ykAfjZkq3KVz3ClbZ_W2gleoRsA_Y" alt="Frango à Parmegiana Trinchada" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🍗</div>';">
-       </div>
-       <div class="flex-grow">
-        <div class="flex justify-between items-start mb-2">
-         <h3 class="font-playfair text-2xl font-semibold">Frango à Parmegiana Trinchada</h3><span class="font-montserrat text-xl ml-4">R$ 39,90</span>
-        </div>
-        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Filé de frango trinchado com molho de tomate italiano e gratinado de queijo mussarela</p>
-       </div>
-      </div>
-      <div class="menu-item flex gap-6 items-start">
-       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/a/AVvXsEjAr7mxPn09Hqm7B1tNrYuR93WtVkOrWClL2QQsw_IvL8-aWgHECDW17GSRCLLh0ceDUfniANMsEsqUyavsRSXyiKhKVcV3Yw-Gg2LeUl4E3fZlx1tNMnOu5ylWHZwgn01u1DNk2frH7MxiK1ZF0pptGMJUytjBntJTRRW2knvKwPgWbtieYDCHjntzvMtX" alt="Camarão à Romana" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🦐</div>';">
-       </div>
-       <div class="flex-grow">
-        <div class="flex justify-between items-start mb-2">
-         <h3 class="font-playfair text-2xl font-semibold">Camarão à Romana</h3><span class="font-montserrat text-xl ml-4">R$ 54,90</span>
-        </div>
-        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Camarões inteiros com cama de molho rosê e gratinado de mussarela</p>
-       </div>
-      </div>
-      <div class="menu-item flex gap-6 items-start">
-       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://s2-receitas.glbimg.com/-sgWIXsrYhqvx1NPI2R4u-nPXVU=/0x0:1280x800/1000x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_1f540e0b94d8437dbbc39d567a1dee68/internal_photos/bs/2022/T/v/SCRij3TS2bYO5oGKS10A/arroz-a-piamontese-receita.jpg" alt="Arroz à Piemontese" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🍚</div>';">
-       </div>
-       <div class="flex-grow">
-        <div class="flex justify-between items-start mb-2">
-         <h3 class="font-playfair text-2xl font-semibold">Arroz à Piemontese</h3><span class="font-montserrat text-xl ml-4">R$ 19,90</span>
-        </div>
-        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Arroz cremoso quatro queijos</p>
-       </div>
-      </div>
-      <div class="menu-item flex gap-6 items-start">
-       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/a/AVvXsEgkzUEIxBh2VQMEHZGKRgPrORdAII9wAp_tW-pRFphk4avURiZMyZoKLy3eyglRyKtte_HFqlEXksQfDsPavG11bIbeyEgTSg7Omam5otkM7AH6CrGAgp6y-VTe_LZ8IBfMKY9FFNyVC80wuvwsk72E8lyH214zqpds3WpArIKcMa4Ab6UdSNFfheivWJgS" alt="Franguim Magrim" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🍗</div>';">
-       </div>
-       <div class="flex-grow">
-        <div class="flex justify-between items-start mb-2">
-         <h3 class="font-playfair text-2xl font-semibold">Franguim Magrim</h3><span class="font-montserrat text-xl ml-4">R$ 39,90</span>
-        </div>
-        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Filé de frango cozido levemente no suco, grelhado na chapa e servido com arroz branco e mix salada crua</p>
-       </div>
-      </div>
-     </div>
-    </section>
-    <div class="section-divider"></div><!-- Sobremesas -->
-    <section class="mb-16">
-     <h2 id="sobremesas-title" class="font-playfair text-4xl font-semibold text-center mb-12 gold-gradient">Sobremesas</h2>
-     <div class="space-y-8">
-      <div class="menu-item flex gap-6 items-start">
-       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjQP63-CilGvc5sR03eAHyC_jY8qSio8KO3myjCjCDogbj2VSQ4RIu4-Bx0n0k1NoGzF93sNa2hebTCLlv7wGhbOxbmA4JOmpAA9fgMXEEyxvNZj0yOyWxpRODEQvy-3wRlWUN84iqxSCtrxKmavhiaVOhIqTmPwaQ7MeBiaa7PUj5BPyzJXq5bSeCkv7nh/s5628/2350_Thiago_Ferreira_Fotografia.jpg" alt="Dirmantelo de Goiabada" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>��</div>';">
-       </div>
-       <div class="flex-grow">
-        <div class="flex justify-between items-start mb-2">
-         <h3 class="font-playfair text-2xl font-semibold">Dirmantelo de Goiabada</h3><span class="font-montserrat text-xl ml-4">R$ 32,90</span>
-        </div>
-        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Brûlée de creme de queijo de manteiga com calda de goiabada, crumble de biscoito e castanha de caju</p>
-       </div>
-      </div>
-      <div class="menu-item flex gap-6 items-start">
-       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjvN6Igv_vN-9ZL0ct7rHhI8FP_LRC-8Br2SUxw44WLFW42sua_2Ic2K-Kfh-rlBsBREqB3jcNSK1xP1ahOCGW0-gLxNo1Mo8MZIQdIeLtABBIu-tiQG7m1yr7PfrzjucggWXnLebTWqzf3IDEySNSKjMdXEIQSiTjwfse19yeWjb6k354R_LHLsD1yohXM/s6240/2579_Thiago_Ferreira_Fotografia.jpg" alt="Pudim Matuto" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🍮</div>';">
-       </div>
-       <div class="flex-grow">
-        <div class="flex justify-between items-start mb-2">
-         <h3 class="font-playfair text-2xl font-semibold">Pudim Matuto</h3><span class="font-montserrat text-xl ml-4">R$ 19,90</span>
-        </div>
-        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Nossa tradicional receita de pudim feito com leite de coco e calda de rapadura</p>
-       </div>
-      </div>
-      <div class="menu-item flex gap-6 items-start">
-       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg_wYresLuUGumZHiNmj2VCk-SCBI7g3ASxsVU34QeF66eyV59u-jmL1bPVyiIzJ9TzP4eJjPqBNgyakc0JAI1OlAjHCUTCyds_42EzryD_Eqo1awBm4_dWELSRsGNoBd1lEMD-lJBJkip1WdqniSsKXkoSYRCLvl5JNgT2ZZSTrsKgnuE5vy6pDHXjVBup/s6240/1952_Thiago_Ferreira_Fotografia.jpg" alt="Bagaceira de Chocolate" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🍫</div>';">
-       </div>
-       <div class="flex-grow">
-        <div class="flex justify-between items-start mb-2">
-         <h3 class="font-playfair text-2xl font-semibold">Bagaceira de Chocolate</h3><span class="font-montserrat text-xl ml-4">R$ 32,90</span>
-        </div>
-        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Gran Gateau de chocolate com picolé crocante</p>
-       </div>
-      </div>
-      <div class="menu-item flex gap-6 items-start">
-       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhpX75QJLs-Bq7JoswISnWqYvcTaBbLqTGyW7zbmbGuG8wtvrnFD9Z-QeAD8SOIFHYKBxePixp463qyL6mueCWMgjLN5dGcgEq0HvLA7L8c1hYrGkGq88TakacSrK1nd2BgqthqJr7zytNi3nF8ThtnsVtU1jgbibIpV9kVoDVgKpPbDV-AeX846fCXB-Uy/s1600/b1da8d55-adec-43ff-b2fb-1afedb34ab33.jfif" alt="Cocada Quente" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🥥</div>';">
-       </div>
-       <div class="flex-grow">
-        <div class="flex justify-between items-start mb-2">
-         <h3 class="font-playfair text-2xl font-semibold">Cocada Quente</h3><span class="font-montserrat text-xl ml-4">R$ 34,90</span>
-        </div>
-        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Cocada cremosa assada ao forno com brûlée e sorvete de creme</p>
-       </div>
-      </div>
-      <div class="menu-item flex gap-6 items-start">
-       <div class="dish-image flex-shrink-0" style="background: none; overflow: hidden;"><img src="https://blogger.googleusercontent.com/img/a/AVvXsEgcPI8ajBEuC5wFGqVQsrrZK0iDjnvj645C5jG6D5sB78GQdnMXT7SKbtZPEJrkYKGTxLl45gzU0Jgu5WZWXasAUcMYivAosIqYhXFsSYerwUIJZg2YPB75o-e9q-VQ1B97Twt9mZo5yP4JkW50XJ1BFwL75OGjrjCa0SiudZPzEI9U1MKVtTHX3NgV4hl_" alt="Surpresa de Morango" class="zoomable-image" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<div class=\'dish-placeholder\'>🍓</div>';">
-       </div>
-       <div class="flex-grow">
-        <div class="flex justify-between items-start mb-2">
-         <h3 class="font-playfair text-2xl font-semibold">Surpresa de Morango</h3><span class="font-montserrat text-xl ml-4">R$ 34,90</span>
-        </div>
-        <p class="font-montserrat text-sm font-light leading-relaxed opacity-80">Creme baunilha, sorvete creme e geleia de morango</p>
-       </div>
-      </div>
-     </div>
-    </section>
-   </div><!-- Footer -->
-   <footer class="text-center py-12 border-t border-opacity-20" style="position: relative; z-index: 1;">
-    <p id="footer-text" class="font-montserrat text-sm tracking-wider opacity-60">Chef Executivo: Alexandre Dubois | Reservas: (11) 3456-7890</p>
-   </footer>
+    </div><!-- Restaurant Name -->
+    <div id="restaurant-name" class="font-display text-2xl text-center tracking-widest mb-2" style="color: #999999;"></div><!-- Title -->
+    <h1 id="category-title" class="font-display text-6xl text-center tracking-wide mb-6" style="color: #2a2a2a;"></h1><!-- Divider -->
+    <div class="flex justify-center mb-12">
+     <svg class="wavy-line" id="divider" viewbox="0 0 60 20" preserveaspectratio="xMidYMid meet">
+      <path d="M0,10 Q7.5,5 15,10 T30,10 T45,10 T60,10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+     </svg>
+    </div><!-- Menu Items -->
+    <div id="menu-items" class="space-y-20"></div>
+   </div>
   </div>
   <script>
+    const menuData = [
+      { name: "Pastéis de carne e azeitona", description: "Carne bovina com temperos leves e pedacinhos pequenos de azeitonas\nservido com o tradicional molho rosê", price: "29,90", color: "#E8A87C", image: "https://blogger.googleusercontent.com/img/a/AVvXsEh9wWxDroFH52aybfK6mHOOEcZ9RGa2FHDKexJ287OGHADZHmj29JgBEZhMHi1NgwXP4c2PLnI2fTAKXtJftPfDgSRMnCS3ATz_O_CkrGLLiYd6QKuR2QdxVN2zlGGG1kCo7wCHjgIO4DrLRoGaPONh5ZkVW5hHaTbk6DgiY7lAc5lbuCPfbxwEwE7_Zgo=s16000" },
+      { name: "Pastéis de 4 queijos", description: "Blend de mussarela, parmesão, queijo coalho, cream cheese e gorgonzola acompanha nossa tradicional geleia de uva feita na casa", price: "31,90", color: "#F4C8A0", image: "https://blogger.googleusercontent.com/img/a/AVvXsEhzBi0q8If4x3EIRHrstS5VMMxtMdqgQCisf-zLww_w5qaS9KGlQdpHhWlfpCXsa596tHwftwoaJNzGfJteEzSSYUxMKpnwiyk4jftKKV5HCuFGW-e_a3R07fTgZ4rk5aROoBsjXzNieqB0wt50a4eAz87TXmV6dIMfxh5fBwV7e7jLPmvfaw6xVYnzYG8=s16000" },
+      { name: "Pastéis de carne de sol na nata", description: "Feito com carne de sol selecionada produzida na casa, acompanha uma porção extra de nata cremosa e cream cheese", price: "29,90", color: "#D4845E", image: "https://blogger.googleusercontent.com/img/a/AVvXsEiiat5-KeyhyKWE7B7JDbs79A_1fdHGLTyHGXJ4XMTAOo6-KT02-D7cor0BfyvUd1UKl_wcmMYApfJZVQ4oQCuaRBjgl9nhpSrBM6aL_Emi1hE2-3zDY0xq-2TFHEU6iAmMAQ98QnDy6JOsk2c5jrjv5Crp9TBewvsFsyrpf3TAu-HZKASuGHFX0KsYxb0=s16000" },
+      { name: "Pastéis de costela", description: "Recheado com carne desfiada de costela bovina cozida lentamente com temperos caseiros e cerveja, acompanha geleia de manga com pimenta", price: "29,90", color: "#B8704A", image: "https://blogger.googleusercontent.com/img/a/AVvXsEjsFa81uQoHlT0ryKrf8rmKu7pBBMVa0OicpFWxkOrICsmfm_KONaP4fSSRxBJFwTYaXwjCLup-fID2822ddjDWW0e4N5KAJowSJ1RJp28S1K9cH5_ZoRkqmCJztMB5Vf6Gd_0RhdKZLOtZWi9bQrrRMhXoBPnF-bu3jcWAIdSQNO5k2iKlS36SVqpyZ8g" },
+      { name: "ENTRADAS", isSection: true },
+      { name: "Batata frita tradicional", description: "Servidas com molho rosé", price: "16,90", color: "#F4D699", image: "https://blogger.googleusercontent.com/img/a/AVvXsEid27jgUT0OdY7W3pNEnSKLoHsrxwc35r7wr7buezd15zE88wd-8Z8CmOx76Rqj2MiKBvw5lGP_t9cc3JEzoq6VTw1d6VJzuFP1JundDf5H-tdVXmSFFkqyzJN4ajJ9-Sq_j61FGpcjs3l8KQt_5LG2eRiJqpRC2eVyYkAvnJuiQ6UnFX5qhmMzPiFZNTQ" },
+      { name: "Batata frita de vó", description: "Porção generosa de batata frita coberta com queijo de manteiga derretido, cupim desfiado, crocante de bacon e molho rosé", price: "29,90", color: "#E8C458", image: "https://blogger.googleusercontent.com/img/a/AVvXsEhhokvrL_ZJWd17Uu6-OCdNnuB4HhKwPOZsWSMsEtWn-XRdKuxxlbe8HWTr-IAfuLJTphwB49vO_dzS1RmKt-FDB7Y_kv9CnQYED4Io_7zJE5qbdXRo2ptQ8mw6vPtmPRZmt5-_J5ndEu5XfJsRllrOphWW8VvT0y2SuQiaMgmTJkXHNI6XEuPQEhm4oH8" },
+      { name: "Croquetas Caipira", description: "6 croquetas de frango cremoso recheadas com milho e bacon", price: "29,90", color: "#D49A4C", image: "https://blogger.googleusercontent.com/img/a/AVvXsEhFw1aCEGFCAttE6dfs14tJUjfCOUPVIy_bUHM7GZiGeryHe40Gq3Ca3vnmEWgGzBOEtObeeiXX641HSm1ZNZBAvnERANHXVkgDK_uvd4YmMCpgLcbqDX_IvMzqR_Iq0qV-2Su6i_v4i1DcwMYFO-ELc7lAx8AlJDQQfbOdxwtIFbCJc3ArVzIwZrwKIR4=s16000" },
+      { name: "Sushi de Carrazera", description: "Sushi crocante com massa de macaxeira, cubos de charque e carne de sol servido com molho teriyaki de rapadura", price: "34,90", color: "#C89560", image: "https://blogger.googleusercontent.com/img/a/AVvXsEh-AGn2iD6xQqDAzsaLleeMBUdPev7Zz0k-UHOJCwR5KozbpyDYB0zaj62J9dGqumhqVuhKdJv2XBZO6iwaP8DNS8FLiiIARtpBENMBKaYlpT4MlJmaYkFremMthWU-amRg-LIlh55vMXAIWLMblVkmo8bi3i9-QQrE-Lx2DXeBiN-qd95o9ynsSo0908M" },
+      { name: "Filé no Panne", description: "Tiras de filé mignon salteadas com creme de gorgonzola servido no pão italiano quentinho", price: "59,90", color: "#8B6348", image: "https://blogger.googleusercontent.com/img/a/AVvXsEg9WpbUUYaY9M_nh5_5Z2yOJXZT5eQOPS8EX9GJBT71pNPuso0e8k5cAk7aC9s-luyvFsFpiA-ig3ZuyOXi43aEvMoWi2FDuD2D7FPp_73iK4p8UrRZURZ5aIIB0EZA-8JQPd28zePsFUWwq8HPZ3f5m7f4G2wn5dVMxLeiuU0nkRbk1qm6Z6Or7HIHzz0=s16000" },
+      { name: "Trio nordestino", description: "Tiras de carne de sol grelhadas na manteiga da terra acompanhada de macaxeira frita e queijo coalho", price: "39,90", color: "#A0704A", image: "https://blogger.googleusercontent.com/img/a/AVvXsEjjXMYyS4zzq79k1TQIan85BfjtP-aEHicTFsA_Oe_-wzqDr7K4juI_0KvSQ7v8R5_QKzNeBiqOnJxLKiJJOzjk0Zr0NHKABnkpylmO_6taHn-6YYvs3rJAA8ySsBr9jZ8GLEPcPB76lV78QeLpjWhHKjmrXdG13C23X7T4qmiU8iRyoIBcundYchiLP8M=s16000" },
+      { name: "Ai meu coração", description: "Coração de galinha marinado no shoyu salteado no molho oriental e servido com chips de macaxeira", price: "39,90", color: "#7A4A3A", image: "https://blogger.googleusercontent.com/img/a/AVvXsEjTvMBZwgbQJ3gvxPJq4z-TS5TwgbR0nImb8yg6xY2zqmMVbjzbwiD2a0ZmR63vJs58q3gCjXgQhqtmuXOqQpEy5IElDjqJLpeO21eZpIdvfiNmFqw7Av3nfITh1H38NeCFHgXcSTNsS9kitpeyCsO2BhappaIUhMUPZJm0A-1W7rmGy023fh-jeE-BkGw" },
+      { name: "Panceta de porco", description: "Barriga suína selecionada à pururuca servida com geleia de manga e pimenta da fazendinha, farofa e vinagrete", price: "24,90", color: "#B8664A", image: "https://blogger.googleusercontent.com/img/a/AVvXsEj2um2K2e4tp-Bav6cSFSqhMQTjzabfWfFyONeU6RpOJrxkl80rrYsiJZ__mqgRSwsAoZhzVY0mDuISRghi-oo8EbE_5dQNQJtD1qG4VNrFqyWz0wWjtTA9-3G5hN5mwABF92zEX6WDxiLwLBhU1JeqQfpjnQCQX0Cvcq8vcTXcFRBU3S2f7BHwboaglio" },
+      { name: "Sol do Sertão", description: "Chips crocantes de macaxeira servidas com carne de sol desfiada e creme de nata", price: "29,90", color: "#E8BC64", image: "https://blogger.googleusercontent.com/img/a/AVvXsEjkIDo_ioQpksSdpZ8_kx8fGLprZkgPwJNOu3wvJBaqFy88mHpqBMVVva6NziHnXFSSwJcpBeTj_8WfX6HxcYK46w3Q-G0a6v1nTLwEOO4f4F_oTR50nAAY_LtuBo30MojqyOzKpBEwQ5fI1Yl-jT-xQLP0Ta9o8VByBJ13nUsreusjyU2d0EzVknIppfE" },
+      { name: "Gostosura", description: "3 sanduíches no pão brioche com cupim desfiado, picles de cebola roxa, queijo de manteiga e maionese de limão siciliano", price: "32,90", color: "#D4956A", image: "https://blogger.googleusercontent.com/img/a/AVvXsEjDY9gg5tQQc0NCz9gcnu6zb58HavhQE5aRiriKL2JXQizcHL3Z4L8_76sNf62-V8chd9lcYDHzOOrgkOpEvLHADGza3WiB3Bk8w_0OioCT9V-FpT6z1za-X_TDOcPVjGXmozGxcX0m2J5IYUI96Hvi3ncuy9dAPCs9txXE85LNIpE0F5MbIwbC0N7HfIk" },
+      { name: "Camarão chique", description: "Camarões empanados fritos acompanhados de creme de queijo, tomates confitados e molho pesto", price: "33,90", color: "#E8A876", image: "https://blogger.googleusercontent.com/img/a/AVvXsEibLAwVEqeknXMC7ZBih4tu4nkZJQtTnHHtGvjkpeTH8oJd3S3Trs51PC8A-TcECMZrMRKtAE9Jakc5LJ3Fx9YGC6B5Cr-1G8__bcB9hOzCq8Qdqh0JBLmnKFiwfEk0M4BYmAQgzRiZpZVuOFBvMVMIQyGx4ENa4dE4WyAXqwZ-wEw-IdQtj2oiYT-fl3A" },
+      { name: "Isca de tucunaré", description: "Iscas de peixe empanadas com fubá de milho e fritas, servidas com maionese de limão siciliano (sem glúten)", price: "32,90", color: "#F0B874", image: "https://blogger.googleusercontent.com/img/a/AVvXsEj71zaL0K0n4p5gwD6ykd1TgixyTlSJrThna0Kdk-lSk8o5xVXbH7uKaEAp1I8_AYIfohCePrpx_-AekY92T-7wZIC9louawz2GKXAkmGwUc4dxP6CIwAZMpuZ_oLIksO-SGpl3pRYZaNlY9KYUHrXQDq0TQLq9RyI88jc7xr59Z62w51zhomNqcM7vh7c" },
+      { name: "CUMBUQUINHAS", isSection: true },
+      { name: "Escondidinho de macaxeira", description: "Carne de sol na manteiga da terra, coberta com purê de macaxeira com gratinado de queijo", price: "19,90", color: "#D4A574", image: "https://blogger.googleusercontent.com/img/a/AVvXsEh6BylJ7bAz719-U_ihF34rgorc38mtcv5RwgrOhQZffBC10_4nN1WJcLQ-pl1ZrMbVgqyNgaK3_LfdjVlpbxagXkPiDviq6otgA2KwVAZMtUIKiz2mZyjsuo0dhmEVuCLWDxPaBThZ0hK5skcZJ9qfUAhcTFk7S3UxpC3A3xTDQpjCcbf8F6iEAjo9GCk" },
+      { name: "Escondidinho de camarão", description: "Camarões gratinados com tempero especial cobertos com purê de macaxeiras com gratinados de queijo", price: "22,90", color: "#E8B878", image: "https://blogger.googleusercontent.com/img/a/AVvXsEgKj56hyicbNqfxRw1AFtXWrbXytWaPwfly2UsUtIkaLiIdY-oRJ94wFC9IowXDv-oS-BZwOEnWT5RqSgS8BieDpKeiRGE0oSMntkZF0s7oOQZXfyz8CQ-dZWBAtqhmRgCeQKlsYLgYf2dlH4Dr2xJryvu05dpTR8MKy6zCijnCI9FqNWB4mLrpLb-hQIQ" },
+      { name: "Caldo da caridade", description: "Receita tradicional de dona Francisquinha, feito com carne moída e ovos, acompanha um pãozinho assado", price: "16,90", color: "#C4956A", image: "https://blogger.googleusercontent.com/img/a/AVvXsEjRwJOa04Oe3NS7zkaH3SNTsaz44qXlQREaxlKEqJzZDIqDRxDTeJFp-3N0bdAvlpxp3KP3_ntO2-ObuYvHJAXPbuW1K5UNwQk7U0zzEjN0PaOwhTNExpoo_q4Y458uyIRhs3lXKuYwYpasNmpea3h6Uv2EFFwpeRiZ857GWCYfrbnoB0rTEPnuIVvGoPc" },
+      { name: "CARNES", isSection: true },
+      { name: "Filé à Parmegiana de Carne", description: "Tradicional filé empanado servido com cama de molho de tomate italiano e gratin de mussarela, servido com massa (grano duro)", price: "129,90", color: "#6B4423", image: "https://blogger.googleusercontent.com/img/a/AVvXsEjAv58yCi1gH1EeU0_KmfhfYpPwdpgGtygSwl9Cg0alYSna1GaQVHPVr6N15iJLgG0Y3vtjDuSEEZFun4mVOkqRQdzG9HdFBXOt_w4slFqYsBdquPqCSUWDupfIEbYvRN3HaxZKeBjucIcXQALstU9nbRvZh2pJwq46bP6LaTcHbqKSzykHGevXnJ8zi1E" },
+      { name: "Parmegiana da Sophie", description: "Nosso tradicional filé empanado com molho de tomate lisinho, massa bavetti com molho branco, queijo parmesão, acompanhado de batata frita", price: "84,90", color: "#7A5433", image: "https://blogger.googleusercontent.com/img/a/AVvXsEhIYAd_6heVGNx7dg3d1mqAyxdFjm2hfXKcpwEvJFkZzW3TOx1G0nEigcfOGuQWPsvE06MspunoN8L6fYzXCCaElxbKBoZqKyC3FJXnWwMeERFNquKlqss0h6gPlM1LzRcYZPCSnFT5Wz9KlPAJ_0m6sCH7fKLuxtQJ8KwiQu49qaHPoheTVN7ftZY4FH0" },
+      { name: "Filé de seu Pedro", description: "Medalhões de filé mignon selados e flambados, servidos com molho de gorgonzola. Acompanha: Arroz com brócolis.", price: "189,00", color: "#754A32", image: "https://blogger.googleusercontent.com/img/a/AVvXsEgJq0BSa0Bt63BlOjR9ITIRBlxRWPWoC5AHppIEWKCnTkACLBPVUFfAhqHu3bxFDo4UR0gwq_rXo8ww_bBv_vC3n4GqeejZUUrOKx7qud4oDsTSot3i2u4QHaxdXUwaQZN7GJy_2z9XNOS7yZVNvdOhdgc3ryh8YsJ1p42EjNn850IrhO6CFjeyhg9wPZM" },
+      { name: "Picanha de Vó", description: "Picanha grelhada na chapa com molho de queijos sertanejos, servida com baião de dois, macaxeira frita, farofa e vinagrete.", price: "159,00", color: "#6B4423", image: "https://blogger.googleusercontent.com/img/a/AVvXsEjyfHL0Y1BIh2fNjakAXQM3hI8OfvUP_TKsfbJa0JvxWR79rCaf70MT6tj6zolLot6X03KSLmqmAjHiGmKJoTIfLoy8o27PqxzY8Br7Qm-TSYjuNzUy7yBy3NsCWPcPrt4FFrFzgSqkiSHScoZlXrx2O0dQCTJmw2NHtsRA7oyTLlrxdpKPspcZegF60jU" },
+      { name: "Picanha de sol", description: "Picanha de sol (feita na casa) selada na chapa com manteiga de ervas e cebolas roxas, servido com arroz de leite vermelho, farofa e vinagrete", price: "99,90", color: "#8B5A2B", image: "https://blogger.googleusercontent.com/img/a/AVvXsEjY1WZuxpQuko0BGlXvlfFykNZQVJXogA3lVpEyBWhW7OhSBWcOqYAcWQkOp-L6M38rhLBCsMy-6NWszjkVRRKviw7itol_w6sEQv3LeZzG3wZ9cQC3iGSLBqUO7xfV-YyR9l42cyHnFLw1DMQ_H_EP7B1qR__p-WcPHHniOaM8Ren6VTDU9ZJpo9JEqvA" },
+      { name: "Boi bêbo", description: "Costela bovina marinada na cerveja preta e ervas assada levemente ao vapor e servida com nosso delicioso arroz de leite e chips de macaxeira", price: "39,90", color: "#7A4423", image: "https://blogger.googleusercontent.com/img/a/AVvXsEh1glNtyR1PrWKh0TFK5xV0-qraovtEAXPmx7Fz40UtgQGnJfYiH7tkuM3uewxo_U1D1ooUWayaoGTLM_6Zb8DLDnhvobZ3pAbYpDWpPfY1g4L75ShiGu2hmBlxF-ciUlOab2ZZ00ZRQzvpMj4kvVFG4YAbMQDQCIlC5wKM-xhPVCTGT78cUagMqT0S-Sk" },
+      { name: "Baião de 4", description: "Baião de feijão verde, com carne de sol, queijo coalho, charque, torresmo e servido com couve frito", price: "49,90", color: "#9B6B47", image: "https://blogger.googleusercontent.com/img/a/AVvXsEhWK62Zjb4fFhSPMw4apLWnKvt68Fn9MxSiWr4X7GPXSoaFxieM4YEAsnN15q4Bk-9lwy2QfoJP3_LDcqI1L22S78MRClIw212pw7iHWEgHAajwlI9gvGzEkmouC6MmgvtukttEcdSjNq7PPQPZPnrERHMSzGA5Bv0C5LlYmZg0haD1r4MY9NIfhbBg2Zc" },
+      { name: "Cumêzim de Vó", description: "Arroz vermelho cozido ao leite, servido com chips de macaxeira crocante e carne de sol desfiçada", price: "39,90", color: "#A0704A", image: "https://blogger.googleusercontent.com/img/a/AVvXsEhCwlr8wMVVOQpcBt174H73lYZ0rZVFIg5MAxNQpbAMBtaiV5KA9wAHcvK0eVMA3ZvliJqng2MonxZJDxrlAKitXyGFy4z7y05HcFiv5zqYq7DruMaYlAgi2OlWm7tSpmlRXoEKKBm1JIGOZkuVui5yRxETdSDdlv_cQ4eqA4A65RlQ6K1rfTFVn9whjng" },
+      { name: "Lasanha de Voinha", description: "Lasanha à bolonhesa tradicional, com um segredinho trazido da itália", price: "49,90", color: "#8B4513", image: "https://blogger.googleusercontent.com/img/a/AVvXsEhoQwBbiEkLmR21wPu3bfY1faesS09LRTP1klC7h5bpwVSg3R5wNYZe3ESA7rz4lj6JBmNSCRlv4CyUrfTOLpmXgdicmOp-PpO6sOJs1G1M-Iw0mlV3oRACMHZ04ysnApOn_IOEiLTiirlClu5zrIiCkNW8jse44zwTra7NP22Q8PHunX79RvoAPaaR4dA" },
+      { name: "Costela de bacurim", description: "Costela suína assada lentamente regada com barbecue de abacaxi. Acompanha batata corte rústico temperadas com tempero do chef e porção de arroz branco", price: "89,90", color: "#A0522D", image: "https://blogger.googleusercontent.com/img/a/AVvXsEjxXYWaNi9lDQffhSMmrejTrTCp00BIgG8ZAoO5Gyfl4mxmTVB5SwEr3c2yQtVUqMWR4YnjFB-PcCELTYeDlHE_KeByscdazAPqCjTlNWEGlCKM07NOT_Q5SaVNGwvWrX6SlNTTYyU-iU6istpVGTnWaObyHZCgUFIVRuw3Ga8pcEaiy51Q1qRlifjRioU" },
+      { name: "Macarrão do Véi", description: "Massa bavetti com molho especial de filé de sol na nata, gratinado com queijo", price: "54,90", color: "#9B6B47", image: "https://blogger.googleusercontent.com/img/a/AVvXsEiSL-IArbE1s2cHUq2ncvd_vJoJYIrG-TLjWT0a-9BDhCAFtnrfGYG11Y1Fy0BKGiq7JrwkCbWew0FFzhgHJpaTDyiWM4xA7ZAsoQQeiSG9M-8RqCnD2T9bmuIix2ikn1T0DYlEPsMfMGD8vTg0_-eiARx1nb_s0ofqqkjT7X84-YNECBnStschPeLlzxE" },
+      { name: "AVES", isSection: true },
+      { name: "Frango à parmegiana", description: "Filé de frango empanado com cama de molho de tomate italiano e gratinado de mussarela servido com massa italiana", price: "39,90", color: "#D4956A", image: "https://blogger.googleusercontent.com/img/a/AVvXsEifxgqc-ytL2Wy5sa1xh-AHyI7szOSQCFamEI1YUqF2FKWRYtTWBuaA8Or0PkDgSdtQoZSJgO_mMX1IHDqsNh4cYj6fmarP7T03gl6BXVNzyagMPmCG2iG4z0IpMOXIcovOSC_HOSmmfTgAOE8axOTZnhgAd9fVR5o7KOqu8jMs_Pt3-M3F282sslwCgu4" },
+      { name: "Franguim magrim", description: "Filé de frango marinado e grelhado na chapa e servido com arroz branco e mix salada crua", price: "39,90", color: "#E8A87C", image: "https://blogger.googleusercontent.com/img/a/AVvXsEhoI7MLRIqgzgIe-RjMJa14j1u5YzfYiJXGT4IW2z728vjrKcZ2skc4PCkKTEHsJqrWeCxVj9QRcBMuWWuL337P_svj78Kc2BS8XJC2W7NmVjosw7JGO59kHKQy5JjdgjnU9IzJIls9AAAhTAQ3SRqImF7LB2X3hbC91OsbCzRC3wXUoly3NZdxmFPpMjk" },
+      { name: "Frango atropelado", description: "Filé de frango marinado e grelhado na chapa e servido com arroz branco e mix salada crua", price: "39,90", color: "#E8A87C", image: "https://blogger.googleusercontent.com/img/a/AVvXsEgDT-brLutqL01LdGCoB6n_6dIrfFuXJ7nRx0jWu3bAkLittm57ezLzsamyDiJHpKCixpHfYUSKBxKBmwTv8DUCWDKYu3bpvtqQjmJpoIHu2LX4sLMe5gNNqP7D8XcppQxrPhc--NxUktn0qWVuARFIQ2oY4w9DG9BjYEhUaYlYAPWeOJz7gZ9vMRsX_HM" },
+      { name: "FRUTOS DO MAR", isSection: true },
+      { name: "Camarão parmegiana", description: "Camarões empanados fritos com molho de tomate da casa, gratinados com queijo servidos com massa bavetti", price: "79,90", color: "#E8B878", image: "https://blogger.googleusercontent.com/img/a/AVvXsEhXIHh0co32HOS3XuToZpNKPgl6zYwoV7UnopSmmSgx_LyTZKBrRi2KdD1-X1NRHKP9d1nhGDVQz5tNW7d_KHM5WD5FI2cjblfux2dVIuWkufSL1r8QdZAVDyGw9WN_1Iol0Ehpu74sDow4JOHjxoxlF0NqecdCYVmpZUNLC87Q8OYheWdMuGaTC75A0_0" },
+      { name: "Cumê de rico", description: "Arroz cremoso ao molho branco, puxado com camarões salteados e camarões empanados", price: "99,90", color: "#F0B874", image: "https://blogger.googleusercontent.com/img/a/AVvXsEjfMB3XncrLW7MVPrEL3iHjf0RxTHFueRlhpUD0yyy9eF_kLroOcWsKDpZCOCJGSM45EmM2yT2SCuQKr5WYMMtyMZuxQszBNlYieK5hYUBnlA-f7E8saHtOCWPiJruRMMkdvrG97xYuv5_c_IvTdGmAmiCzPmP6gSrAtE28L1LeiEq7WEW-Ola8HBnsjUs" },
+      { name: "Macarrão al limone", description: "Massa bavetti com camarões selecionados grelhados, envoltos com molho cítrico", price: "59,90", color: "#E8B878", image: "https://blogger.googleusercontent.com/img/a/AVvXsEhf_vd9NXLGmnchoZSo4R4FnhiP6hc2DE6f73yA430hdvNKqSkCbhtLnBF-O_EyhIOLkRQ880fMT63nJPf8mnV2LAlJTtVCrfWU1-Aa5L9OO6lJDkz9f4kq6Ev5NPzLBpztVPnGw_eLJNRU9SJsh1hQrIad_dOvmP7D60GELwTFp96NJ_Mf6BnLTfKJ-dE" },
+      { name: "Peixe à delicia", description: "Filé de peixe crocante intercalado com fatias finas de banana frita, queijo, coberto com molho branco e gratinado. Acompanha arroz com brócolis", price: "59,90", color: "#F0B874", image: "https://blogger.googleusercontent.com/img/a/AVvXsEgI38aDq3AQz5yI2gnZKvW_lBpWOBeh0X4tgwmy0jWbG9Sd_Fpw1_T7UYaUr5WYaTZJabx1zIpx1hriyW6QrY5xpXk0RazEpNAcU_Saqe5-1vssb86PW5xKb9WYVLj7hswXDC2wYdWhp4UzE19WM8styUQbk5JIkBQQqdmFasSSaKXT1kycj5vVEMqT1UQ" },
+      { name: "Peixe ao pesto", description: "Filé de peixe levemente empanado no fubá de milho, frito, coberto com molho pesto, arroz branco e batatas souté", price: "49,90", color: "#F0B874", image: "https://blogger.googleusercontent.com/img/a/AVvXsEjy9Mwe4ko6ADy74Lgno_fs0PVMEZekprC6J_a2kZTLOS-TYHKCj9SWVEVzQ24gFLPFAVpzGJS-DDCrmlGUuoLZnURbq-l_GUk0B4nTivtqRqwtqub6ZgDQSXfl-MqeGqL5bNJXEhP-hS7z4E6WqfJnoJAJK30cPxXhQpn4HawfmCFgnZAIh6WYlxrRzCA" },
+      { name: "PORÇÕES", isSection: true },
+      { name: "Arroz à Piemontese", description: "Arroz cremoso com blend de queijos e tempero especial", price: "19,90", color: "#E8C458", image: "https://blogger.googleusercontent.com/img/a/AVvXsEi-BaogGscnviuh28kQcgg3mNX6ubyw_n4VUHSUAMojx_sVCUpNag7U8LYxQ1l07hSXzidYNXSt0uyQRFXGYGKRaymZryKVYVt5KiAgWLJaNcBJWC3a3lZdCLznk9UT6TcKo4LI5yETFtB3vo3Ti6ltcio5eXWNym0dJZVoemrFznpVY51vkHX2Nu9mj0Q" },
+      { name: "Arroz branco", description: "Arroz branco fluffy e macio", price: "12,90", color: "#F0E6D2", image: "https://blogger.googleusercontent.com/img/a/AVvXsEig9CHgibhZwnTitt6kEifh9xNWzelxKodPvSqVaDX4qVKyymknKonOnnE-vw-j5APMGae-WFYxBrYcWWAUHRjsq98Lh8REXztuZUQfzpa671rkP5zEzYyqbH2rHjKQdts_gmvZJ3gmsN0O4ggonMD0WT7_wUkbtQepV-QujYKJxYubG7V5Kvky5onhs9A" },
+      { name: "Baião de dois ao leite", description: "Tradicional baião de dois preparado ao leite cremoso", price: "19,90", color: "#D4A574", image: "https://blogger.googleusercontent.com/img/a/AVvXsEhOGGXni0Jc4lFmKP4fM3Es8hbPPlxCI3LIyuEa4UI36W1BLkgOLQqcb0b5iegmyxChgXBZtSZoCEmR4D-SE1Lag50vsp-JUrjKgJPbMnID41uG29XRO8hn1FmnMo2y2Guo37QLEbVrOP1WCBYxXghkM5y1yCHU0G57-2gmQKCTqqfOtj9P5IZ38rWu1uI" },
+      { name: "Massa bavetti", description: "Massa bavetti com molho vermelho ou branco a escolher", price: "19,90", color: "#E8B878", image: "https://blogger.googleusercontent.com/img/a/AVvXsEhwYfiT8-M9p7tfG0YFSs2NBBlyw-DHzstxZqAHkX4vXXb1xG5n08kngjrHlR8_Y-Z9k-vOEclg_UEhLFbuBrbJR62ke8mokUHMMWBTaCpAGfwsa2V2962jqL21trBKZo7Kgi5ehUJmLAgIJZb8pUrx0duygdgNkpU3lLydZvwlGf4BgZNOuUer9zHQqWg" },
+      { name: "Macaxeira cremosa", description: "Macaxeira cremosa com tempero especial", price: "19,90", color: "#F0D99F", image: "https://blogger.googleusercontent.com/img/a/AVvXsEjK78JIHlCEC0gS9JQpalYMUZQvL6F6oPV3CW4Bhgo_XJJ9HCbG2kEeoTH3_AHeu8KFF2xvQ_dJwwAw7rhuwbI9vVDJr0JtQDjKAndK9tjwTGy6p8tzh6VBMRqp1SSo0X2Raw_sc6UqCJmU2f1-NapM6U3jr6ciNqGVfLPgNwMq-gwk48Z51xQDNQbuB9M" },
+      { name: "Farofa ou vinagrete", description: "Farofa ou vinagrete a escolher", price: "9,90", color: "#E8C458", image: "https://blogger.googleusercontent.com/img/a/AVvXsEj-fC3NoiF6V91gXf8IbhPAD5MKnDcGQpElc0Sew3tvv6mOJg6NxW212ltLv0vYMXZ3rXBYDO8zuiK7XhSbddk3DjkinIfzmIGp58u3AMbB43S7ZN7boghIno686RGLqkzy-z1K6fVBesZuw9SWHhdjIF0Zd6KdwymEkFYj45whIeePVeTntXytiuf-tXA" },
+      { name: "NOSSAS SOBREMESAS", isSection: true },
+      { name: "Dirmantelo de Goiabada", description: "Brûlée de creme de queijo de manteiga com calda de goiabada, crumble de biscoito e castanha de caju", price: "32,90", color: "#D4736F", image: "https://blogger.googleusercontent.com/img/a/AVvXsEiuCvBnZeKTwvH8kHhIDOntqHQQ0QD8oKQzmtDxgvRM1BQQ1-Bo6KDeo-oUG2dwNeJhYMWd7xZsPDt-OIZGoYYD9RIL6AqLSZ3Eks87KG7SzpPuFqgSZzW7Ne22xJxOn3h7Jk84Vut7-WWnHyIX-8XtCBzj6Z7lqPHuQyjU1HItc6NHButMJkoDycKgSHc" },
+      { name: "Pudim Matuto", description: "Nossa tradicional receita de pudim feito com leite de coco e calda de rapadura", price: "39,90", color: "#D4A574", image: "https://blogger.googleusercontent.com/img/a/AVvXsEgtpCVp4EPrvRJN0a903T3TtAgrd7piX0oM62k4TtnwEu4FFxM7ynjvDeO_7TyX2IEN4ZCkSAhgsQ-b09mBXFJ_uiUrv6GCdSRDkJlebvP56Qvg6XLTsv96wF1mp2yH9y6izxUkmPM90-o6fqwv6bfmZX8OqEFfZIwRdDNmxcG9i0bbxY7o5lw7WTSJTAw" },
+
+      { name: "Bagaceira de Chocolate", description: "Gran Gateau de chocolate com picolé crocante", price: "32,90", color: "#6B4423", image: "https://blogger.googleusercontent.com/img/a/AVvXsEicuEdXhKjU5kQUDvW4bSuD40pX0Bn14Jyp-EThMLmOniR5DIQf2zO5eul-IpGvCl8CykzcAIQof09FKvKEf_B5nW-YhM3exsyELIDfdqm15C_d7Wum6wpU2d8uGu2FDSteiqHH_O-Lh8I4csydPjUsY6MK_hJBc-dIEugq4xF-gUPqa7a-CeFedObJXPE" },
+
+      { name: "Cocada Quente", description: "Cocada cremosa assada ao forno com brûlée e sorvete de creme", price: "34,90", color: "#E8C458", image: "https://blogger.googleusercontent.com/img/a/AVvXsEhYFuFlld580jTheufZA-sTb99jzJsSUTpmh5II1LU9BN4FWc7LQdYoZYAnQBsCJl1tQ2h65FRzrdlZIApo-5a3VdVHA6VTQCnmVD43my5BDx2aCTmL8xAUyoN8PRzwX1l3RDAcP6suw9xDHsksAkgCNCMj4e2gtrhTo6GG7VjnIjVOgr56VEIJyLDYEEI" },
+
+      { name: "Mil folhas Nutella", description: "Lâminas de massa folheada, intercaladas com Nutella e banana flambada. Acompanha sorvete de creme", price: "32,90", color: "#8B6F47", image: "https://blogger.googleusercontent.com/img/a/AVvXsEi_nlTDHkK7esG9zXnOfxC7HpMHvjq-wi7575fpLwvW925AszRGmR-kwR639Ii0RTn5qdMP7U_Gp305U2O0TcjUieedQiPlS4AdPCUlIOeOQx-L88JIOyG1C9UasgemUvfR_dV9ZmqteyoF_jWS0pqu0en-KSwtP-MKJV7DPIMwYCvlzK8QUgYYYgdlUI4" },
+
+      { name: "Mil folhas Doce de Leite", description: "Lâminas de massa folheada intercaladas com doce de leite e geleia de maçã. Acompanhadas de sorvete de creme", price: "32,90", color: "#C4956A", image: "https://blogger.googleusercontent.com/img/a/AVvXsEjZDy2u1jLc8DyfAyaGj5GzqwoDnk-meo8UjnWtRxKnXd08jb9liV3pDCJ_6cWPe6cTxsYq-qgkhkAd9k1L7FdGH81DdJwkZHRGizgP7TpHvHfi7AoS04nXfZUIFYdvPBTjBEHV0G_9i-WXbenkrKLLoFZRDJEsM0o_aTbTGD8O3J1QzqIrDVpjF_J0qiE" },
+
+    ];
+
     const defaultConfig = {
-      background_color: "#0a0a0a",
-      text_color: "#ffffff",
-      accent_color: "#9d7a3a",
-      border_color: "#2a2a2a",
-      font_family: "Playfair Display",
+      background_color: "#FFFFFF",
+      text_color: "#2a2a2a",
+      accent_color: "#D4AF37",
+      secondary_text_color: "#999999",
+      font_family: "Cormorant Garamond",
       font_size: 16,
-      restaurant_name: "Invó",
-      restaurant_tagline: "Comida gostosa do jeitin do abraço de vó",
-      entradas_title: "Entradas",
-      principais_title: "Pratos Principais",
-      executivos_title: "Pratos Executivos",
-      sobremesas_title: "Sobremesas",
-      footer_text: "• Terça a sábado a partir das 18:00h • Domingo almoço às 11:00h • Contato: 83 9179-5370"
+      category_title: "ENTRADAS",
+      restaurant_name: ""
     };
 
-    async function onConfigChange(config) {
-      const bg = config.background_color || defaultConfig.background_color;
-      const text = config.text_color || defaultConfig.text_color;
-      const accent = config.accent_color || defaultConfig.accent_color;
-      const border = config.border_color || defaultConfig.border_color;
+    function renderMenuItems(config) {
+      const container = document.getElementById('menu-items');
+      const textColor = config.text_color || defaultConfig.text_color;
+      const secondaryColor = config.secondary_text_color || defaultConfig.secondary_text_color;
+      const accentColor = config.accent_color || defaultConfig.accent_color;
       const fontFamily = config.font_family || defaultConfig.font_family;
       const fontSize = config.font_size || defaultConfig.font_size;
 
-      // Apply colors
-      document.getElementById('app').style.backgroundColor = bg;
-      document.getElementById('app').style.color = text;
+      let html = '';
       
-      // Update accent colors
-      document.querySelectorAll('.gold-gradient').forEach(el => {
-        el.style.background = `linear-gradient(135deg, ${accent} 0%, ${adjustBrightness(accent, 30)} 50%, ${accent} 100%)`;
-        el.style.webkitBackgroundClip = 'text';
-        el.style.webkitTextFillColor = 'transparent';
-        el.style.backgroundClip = 'text';
-      });
-
-      document.querySelectorAll('.ornament').forEach(el => {
-        el.style.background = `linear-gradient(90deg, transparent, ${accent}, transparent)`;
-      });
-
-      document.querySelectorAll('.section-divider').forEach(el => {
-        el.style.background = `linear-gradient(90deg, transparent, ${accent}, transparent)`;
-      });
-
-      document.querySelectorAll('.dish-image').forEach(el => {
-        el.style.borderColor = accent;
-      });
-
-      document.querySelectorAll('.menu-item').forEach(el => {
-        el.addEventListener('mouseenter', function() {
-          this.style.borderLeftColor = accent;
-        });
-        el.addEventListener('mouseleave', function() {
-          this.style.borderLeftColor = 'transparent';
-        });
-      });
-
-      const footerBorder = document.querySelector('footer');
-      footerBorder.style.borderTopColor = border;
-
-      // Apply font
-      document.querySelectorAll('.font-playfair').forEach(el => {
-        el.style.fontFamily = `${fontFamily}, Playfair Display, serif`;
-      });
-
-      // Apply font sizes
-      document.getElementById('restaurant-name').style.fontSize = `${fontSize * 4.375}px`;
-      document.getElementById('restaurant-tagline').style.fontSize = `${fontSize * 1.25}px`;
-      document.querySelectorAll('section h2').forEach(el => {
-        el.style.fontSize = `${fontSize * 2.5}px`;
-      });
-      document.querySelectorAll('.menu-item h3').forEach(el => {
-        el.style.fontSize = `${fontSize * 1.5}px`;
-      });
-      document.querySelectorAll('.menu-item span').forEach(el => {
-        el.style.fontSize = `${fontSize * 1.25}px`;
-      });
-      document.querySelectorAll('.menu-item p').forEach(el => {
-        el.style.fontSize = `${fontSize * 0.875}px`;
-      });
-      document.getElementById('footer-text').style.fontSize = `${fontSize * 0.75}px`;
-
-      // Update text content
-      document.getElementById('restaurant-name').textContent = config.restaurant_name || defaultConfig.restaurant_name;
-      document.getElementById('restaurant-tagline').textContent = config.restaurant_tagline || defaultConfig.restaurant_tagline;
-      document.getElementById('entradas-title').textContent = config.entradas_title || defaultConfig.entradas_title;
-      document.getElementById('principais-title').textContent = config.principais_title || defaultConfig.principais_title;
-      document.getElementById('executivos-title').textContent = config.executivos_title || defaultConfig.executivos_title;
-      document.getElementById('sobremesas-title').textContent = config.sobremesas_title || defaultConfig.sobremesas_title;
-      document.getElementById('footer-text').textContent = config.footer_text || defaultConfig.footer_text;
+      // Add navigation buttons at the very start
+      html += `
+        <div class="flex justify-center gap-6 mb-12">
+          <a href="https://zerotofamebr.github.io/adegainv-/" target="_blank" rel="noopener noreferrer" class="px-6 py-2 font-body text-sm font-light tracking-wide transition-all duration-300 border border-gray-300 hover:border-gray-500 hover:text-gray-700" style="color: #666666;"> Vinhos </a> 
+          <a href="https://zerotofamebr.github.io/bebidasinv-/" target="_blank" rel="noopener noreferrer" class="px-6 py-2 font-body text-sm font-light tracking-wide transition-all duration-300 border border-gray-300 hover:border-gray-500 hover:text-gray-700" style="color: #666666;"> Bebidas </a>
+        </div>
+      `;
+      
+      html += menuData.map((item, index) => {
+        // Check if this is the ENTRADAS section
+        if (item.isSection && item.name === "ENTRADAS") {
+          // Render the section title without the buttons
+          let sectionHtml = `
+            <div class="section-title mt-16 mb-8 pt-8 border-t border-gray-300">
+              <h2 class="font-display font-normal tracking-widest text-3xl md:text-4xl" 
+                  style="color: ${textColor}; font-family: '${fontFamily}', serif; font-size: ${fontSize * 2.5}px;">
+                ${item.name}
+              </h2>
+            </div>
+          `;
+          
+          return sectionHtml;
+        }
+        
+        // Render other sections normally
+        if (item.isSection) {
+          return `
+            <div class="section-title mt-16 mb-8 pt-8 border-t border-gray-300">
+              <h2 class="font-display font-normal tracking-widest text-3xl md:text-4xl" 
+                  style="color: ${textColor}; font-family: '${fontFamily}', serif; font-size: ${fontSize * 2.5}px;">
+                ${item.name}
+              </h2>
+            </div>
+          `;
+        }
+        
+        // Render menu items
+        return `
+        <div class="menu-item flex gap-6 items-start pb-6 border-b border-gray-200" style="margin-bottom: 1.5rem;">
+          <!-- Image -->
+          <div class="flex-shrink-0">
+            <div class="w-32 h-32 md:w-40 md:h-40 rounded-lg overflow-hidden relative" style="background: ${item.color}; opacity: 1;">
+              ${item.image ? 
+                `<img src="${item.image}?w=200&q=75" alt="${item.name}" class="w-full h-full object-cover" loading="lazy" decoding="async" srcset="${item.image}?w=160&q=75 160w, ${item.image}?w=200&q=75 200w" onerror="this.style.display='none'; this.parentElement.style.background='${item.color}';">` :
+                ``
+              }
+            </div>
+          </div>
+          <!-- Content -->
+          <div class="flex-1 pt-1">
+            <h3 class="font-display font-normal tracking-wide mb-2 transition-colors duration-300" 
+                style="color: ${textColor}; font-family: '${fontFamily}', serif; font-size: ${fontSize * 1.3}px;">
+              ${item.name}
+            </h3>
+            <p class="font-body text-sm font-light leading-relaxed mb-3" 
+               style="color: ${secondaryColor}; font-size: ${fontSize * 0.85}px; white-space: normal; word-wrap: break-word;">
+              ${item.description.replace(/\n/g, '<br>')}
+            </p>
+            <!-- Price -->
+            <div class="flex items-center gap-3">
+              <span class="font-display font-light" 
+                    style="color: ${accentColor}; font-family: '${fontFamily}', serif; font-size: ${fontSize * 1.2}px;">
+                R$${item.price}
+              </span>
+            </div>
+          </div>
+        </div>
+      `;
+      }).join('');
+      
+      container.innerHTML = html;
     }
 
-    function adjustBrightness(color, percent) {
-      const num = parseInt(color.replace("#", ""), 16);
-      const amt = Math.round(2.55 * percent);
-      const R = (num >> 16) + amt;
-      const G = (num >> 8 & 0x00FF) + amt;
-      const B = (num & 0x0000FF) + amt;
-      return "#" + (0x1000000 + (R < 255 ? R < 1 ? 0 : R : 255) * 0x10000 +
-        (G < 255 ? G < 1 ? 0 : G : 255) * 0x100 +
-        (B < 255 ? B < 1 ? 0 : B : 255))
-        .toString(16).slice(1);
+    async function onConfigChange(config) {
+      const bgColor = config.background_color || defaultConfig.background_color;
+      const textColor = config.text_color || defaultConfig.text_color;
+      const accentColor = config.accent_color || defaultConfig.accent_color;
+      const secondaryColor = config.secondary_text_color || defaultConfig.secondary_text_color;
+      const fontFamily = config.font_family || defaultConfig.font_family;
+      const fontSize = config.font_size || defaultConfig.font_size;
+
+      // Background
+      document.getElementById('menu-container').style.backgroundColor = bgColor;
+
+      // Category title
+      const titleEl = document.getElementById('category-title');
+      titleEl.textContent = config.category_title || defaultConfig.category_title;
+      titleEl.style.color = textColor;
+      titleEl.style.fontFamily = `'${fontFamily}', serif`;
+      titleEl.style.fontSize = `${fontSize * 3.5}px`;
+
+      // Restaurant name
+      const restaurantEl = document.getElementById('restaurant-name');
+      restaurantEl.textContent = config.restaurant_name || defaultConfig.restaurant_name;
+      restaurantEl.style.color = secondaryColor;
+      restaurantEl.style.fontFamily = `'${fontFamily}', serif`;
+      restaurantEl.style.fontSize = `${fontSize * 1.5}px`;
+
+      // Divider
+      document.getElementById('divider').style.color = accentColor;
+
+      // Render menu items
+      renderMenuItems(config);
     }
 
     function mapToCapabilities(config) {
@@ -664,36 +235,28 @@
             get: () => config.background_color || defaultConfig.background_color,
             set: (value) => {
               config.background_color = value;
-              if (window.elementSdk) {
-                window.elementSdk.setConfig({ background_color: value });
-              }
+              window.elementSdk.setConfig({ background_color: value });
             }
           },
           {
             get: () => config.text_color || defaultConfig.text_color,
             set: (value) => {
               config.text_color = value;
-              if (window.elementSdk) {
-                window.elementSdk.setConfig({ text_color: value });
-              }
+              window.elementSdk.setConfig({ text_color: value });
             }
           },
           {
             get: () => config.accent_color || defaultConfig.accent_color,
             set: (value) => {
               config.accent_color = value;
-              if (window.elementSdk) {
-                window.elementSdk.setConfig({ accent_color: value });
-              }
+              window.elementSdk.setConfig({ accent_color: value });
             }
           },
           {
-            get: () => config.border_color || defaultConfig.border_color,
+            get: () => config.secondary_text_color || defaultConfig.secondary_text_color,
             set: (value) => {
-              config.border_color = value;
-              if (window.elementSdk) {
-                window.elementSdk.setConfig({ border_color: value });
-              }
+              config.secondary_text_color = value;
+              window.elementSdk.setConfig({ secondary_text_color: value });
             }
           }
         ],
@@ -702,18 +265,14 @@
           get: () => config.font_family || defaultConfig.font_family,
           set: (value) => {
             config.font_family = value;
-            if (window.elementSdk) {
-              window.elementSdk.setConfig({ font_family: value });
-            }
+            window.elementSdk.setConfig({ font_family: value });
           }
         },
         fontSizeable: {
           get: () => config.font_size || defaultConfig.font_size,
           set: (value) => {
             config.font_size = value;
-            if (window.elementSdk) {
-              window.elementSdk.setConfig({ font_size: value });
-            }
+            window.elementSdk.setConfig({ font_size: value });
           }
         }
       };
@@ -721,55 +280,13 @@
 
     function mapToEditPanelValues(config) {
       return new Map([
-        ["restaurant_name", config.restaurant_name || defaultConfig.restaurant_name],
-        ["restaurant_tagline", config.restaurant_tagline || defaultConfig.restaurant_tagline],
-        ["entradas_title", config.entradas_title || defaultConfig.entradas_title],
-        ["principais_title", config.principais_title || defaultConfig.principais_title],
-        ["executivos_title", config.executivos_title || defaultConfig.executivos_title],
-        ["sobremesas_title", config.sobremesas_title || defaultConfig.sobremesas_title],
-        ["footer_text", config.footer_text || defaultConfig.footer_text]
+        ["category_title", config.category_title || defaultConfig.category_title],
+        ["restaurant_name", config.restaurant_name || defaultConfig.restaurant_name]
       ]);
     }
 
-    if (window.elementSdk) {
-      window.elementSdk.init({
-        defaultConfig,
-        onConfigChange,
-        mapToCapabilities,
-        mapToEditPanelValues
-      });
-    }
-
+    // Initialize
     onConfigChange(defaultConfig);
-    
-    // Image Zoom Functionality
-    const modal = document.getElementById('imageModal');
-    const modalImg = document.getElementById('modalImage');
-    const closeBtn = document.querySelector('.close-button');
-    
-    // Add click event to all zoomable images
-    document.addEventListener('click', function(e) {
-      if (e.target.classList.contains('zoomable-image')) {
-        modal.classList.add('active');
-        modalImg.src = e.target.src;
-      }
-    });
-    
-    // Close modal when clicking the X button
-    closeBtn.addEventListener('click', function(e) {
-      e.stopPropagation();
-      modal.classList.remove('active');
-    });
-    
-    // Close modal when clicking outside the image
-    modal.addEventListener('click', function() {
-      modal.classList.remove('active');
-    });
-    
-    // Prevent closing when clicking the image itself
-    modalImg.addEventListener('click', function(e) {
-      e.stopPropagation();
-    });
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9b3c5564e01fc5ea',t:'MTc2NjcwNzYwMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9dae1c48b0e10b0d',t:'MTc3MzI2OTM0Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
