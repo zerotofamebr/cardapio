@@ -19,15 +19,18 @@
  </head>
  <body class="h-full bg-white">
   <div id="menu-container" class="min-h-full w-full overflow-auto bg-white">
-   <div class="max-w-5xl mx-auto px-8 py-12"><!-- Logo -->
+   <div class="max-w-5xl mx-auto px-8 py-12">
+    <!-- Logo -->
     <div class="text-center mb-4">
-     <div class="inline-block mb-3"><img id="logo-image" src="https://blogger.googleusercontent.com/img/a/AVvXsEhWlg_Ol83gnlXlQ_sN0RDyJUkhzKuVUvxSgbk7voU1C95ToE3hYMyjb2F1RACNiAgw4dLuy3z86QV8FrDJvwQ2XYjE47dkQhaCYBxCRZ8d9V7cU2db4MFd4K9mQi8CNwZ2sf4vS9ulcfROcApNT1pU1tkh700GEqNwxGvyJ_ffnfaT74JKTAAe3lcTYLs" alt="Logo" class="h-32 w-auto object-contain" loading="lazy">
+     <div class="inline-block mb-3">
+      <img id="logo-image" src="https://blogger.googleusercontent.com/img/a/AVvXsEhWlg_Ol83gnlXlQ_sN0RDyJUkhzKuVUvxSgbk7voU1C95ToE3hYMyjb2F1RACNiAgw4dLuy3z86QV8FrDJvwQ2XYjE47dkQhaCYBxCRZ8d9V7cU2db4MFd4K9mQi8CNwZ2sf4vS9ulcfROcApNT1pU1tkh700GEqNwxGvyJ_ffnfaT74JKTAAe3lcTYLs" alt="Logo" class="h-32 w-auto object-contain" loading="lazy">
      </div>
     </div><!-- Restaurant Name -->
     <div id="restaurant-name" class="font-display text-2xl text-center tracking-widest mb-2" style="color: #999999;"></div><!-- Title -->
     <h1 id="category-title" class="font-display text-6xl text-center tracking-wide mb-6" style="color: #2a2a2a;"></h1><!-- Divider -->
     <div class="flex justify-center mb-12">
-     <svg class="wavy-line" id="divider" viewbox="0 0 60 20" preserveaspectratio="xMidYMid meet"><path d="M0,10 Q7.5,5 15,10 T30,10 T45,10 T60,10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+     <svg class="wavy-line" id="divider" viewbox="0 0 60 20" preserveaspectratio="xMidYMid meet">
+      <path d="M0,10 Q7.5,5 15,10 T30,10 T45,10 T60,10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
      </svg>
     </div><!-- Menu Items -->
     <div id="menu-items" class="space-y-20"></div>
@@ -80,7 +83,7 @@
       { name: "Peixe ao pesto", description: "Filé de peixe levemente empanado no fubá de milho, frito, coberto com molho pesto, arroz branco e batatas souté", price: "49,90", color: "#F0B874", image: "https://blogger.googleusercontent.com/img/a/AVvXsEjy9Mwe4ko6ADy74Lgno_fs0PVMEZekprC6J_a2kZTLOS-TYHKCj9SWVEVzQ24gFLPFAVpzGJS-DDCrmlGUuoLZnURbq-l_GUk0B4nTivtqRqwtqub6ZgDQSXfl-MqeGqL5bNJXEhP-hS7z4E6WqfJnoJAJK30cPxXhQpn4HawfmCFgnZAIh6WYlxrRzCA" },
       { name: "PORÇÕES", isSection: true },
       { name: "Arroz à Piemontese", description: "Arroz cremoso com blend de queijos e tempero especial", price: "19,90", color: "#E8C458", image: "https://blogger.googleusercontent.com/img/a/AVvXsEi-BaogGscnviuh28kQcgg3mNX6ubyw_n4VUHSUAMojx_sVCUpNag7U8LYxQ1l07hSXzidYNXSt0uyQRFXGYGKRaymZryKVYVt5KiAgWLJaNcBJWC3a3lZdCLznk9UT6TcKo4LI5yETFtB3vo3Ti6ltcio5eXWNym0dJZVoemrFznpVY51vkHX2Nu9mj0Q" },
-      { name: "Arroz branco", description: "", price: "12,90", color: "#F0E6D2", image: "https://blogger.googleusercontent.com/img/a/AVvXsEig9CHgibhZwnTitt6kEifh9xNWzelxKodPvSqVaDX4qVKyymknKonOnnE-vw-j5APMGae-WFYxBrYcWWAUHRjsq98Lh8REXztuZUQfzpa671rkP5zEzYyqbH2rHjKQdts_gmvZJ3gmsN0O4ggonMD0WT7_wUkbtQepV-QujYKJxYubG7V5Kvky5onhs9A" },
+      { name: "Arroz branco", description: "Porção de arroz branco", price: "12,90", color: "#F0E6D2", image: "https://blogger.googleusercontent.com/img/a/AVvXsEig9CHgibhZwnTitt6kEifh9xNWzelxKodPvSqVaDX4qVKyymknKonOnnE-vw-j5APMGae-WFYxBrYcWWAUHRjsq98Lh8REXztuZUQfzpa671rkP5zEzYyqbH2rHjKQdts_gmvZJ3gmsN0O4ggonMD0WT7_wUkbtQepV-QujYKJxYubG7V5Kvky5onhs9A" },
       { name: "Baião de dois ao leite", description: "Tradicional baião de dois preparado ao leite cremoso", price: "19,90", color: "#D4A574", image: "https://blogger.googleusercontent.com/img/a/AVvXsEhOGGXni0Jc4lFmKP4fM3Es8hbPPlxCI3LIyuEa4UI36W1BLkgOLQqcb0b5iegmyxChgXBZtSZoCEmR4D-SE1Lag50vsp-JUrjKgJPbMnID41uG29XRO8hn1FmnMo2y2Guo37QLEbVrOP1WCBYxXghkM5y1yCHU0G57-2gmQKCTqqfOtj9P5IZ38rWu1uI" },
       { name: "Massa bavetti", description: "Massa bavetti com molho vermelho ou branco a escolher", price: "19,90", color: "#E8B878", image: "https://blogger.googleusercontent.com/img/a/AVvXsEhwYfiT8-M9p7tfG0YFSs2NBBlyw-DHzstxZqAHkX4vXXb1xG5n08kngjrHlR8_Y-Z9k-vOEclg_UEhLFbuBrbJR62ke8mokUHMMWBTaCpAGfwsa2V2962jqL21trBKZo7Kgi5ehUJmLAgIJZb8pUrx0duygdgNkpU3lLydZvwlGf4BgZNOuUer9zHQqWg" },
       { name: "Macaxeira cremosa", description: "Macaxeira cremosa com tempero especial", price: "19,90", color: "#F0D99F", image: "https://blogger.googleusercontent.com/img/a/AVvXsEjK78JIHlCEC0gS9JQpalYMUZQvL6F6oPV3CW4Bhgo_XJJ9HCbG2kEeoTH3_AHeu8KFF2xvQ_dJwwAw7rhuwbI9vVDJr0JtQDjKAndK9tjwTGy6p8tzh6VBMRqp1SSo0X2Raw_sc6UqCJmU2f1-NapM6U3jr6ciNqGVfLPgNwMq-gwk48Z51xQDNQbuB9M" },
@@ -285,5 +288,5 @@
     // Initialize
     onConfigChange(defaultConfig);
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9db6dfc34619f61e',t:'MTc3MzM2MTIzOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9db6e1bfa41df61e',t:'MTc3MzM2MTMyMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
